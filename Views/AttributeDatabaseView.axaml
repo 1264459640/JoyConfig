@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AttributeDatabaseEditor.ViewModels"
+             xmlns:models="using:AttributeDatabaseEditor.Models"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
+             x:Class="AttributeDatabaseEditor.Views.AttributeDatabaseView"
+             x:DataType="vm:AttributeDatabaseViewModel">
+    <DockPanel>
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   DockPanel.Dock="Bottom"
+                   Margin="10"/>
+
+        <ScrollViewer>
+            <StackPanel>
+                <!-- Attribute Sets Section -->
+                <Expander Header="Attribute Sets" IsExpanded="True">
+                    <ListBox ItemsSource="{Binding AttributeSets}"
+                             SelectedItem="{Binding SelectedAttributeSet, Mode=TwoWay}"
+                             Margin="5">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Expander>
+
+                <!-- Attributes Section -->
+                <Expander Header="Attributes" IsExpanded="True">
+                    <ItemsControl ItemsSource="{Binding AttributeCategories}" Margin="5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander Header="{Binding CategoryName}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Margin="15,0,0,0" Theme="{StaticResource SubExpanderTheme}">
+                                    <ListBox ItemsSource="{Binding Attributes}"
+                                             SelectedItem="{Binding $parent[UserControl].DataContext.SelectedAttribute, Mode=TwoWay}"
+                                             Margin="15,0,0,0">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Id}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+    <UserControl.Resources>
+        <ControlTheme x:Key="SubExpanderTheme" TargetType="Expander">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DockPanel>
+                        <ToggleButton Name="HeaderButton"
+                                      DockPanel.Dock="Top"
+                                      Background="#383838"
+                                      Height="28"
+                                      IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                      Content="{TemplateBinding Header}"
+                                      VerticalContentAlignment="Center"
+                                      HorizontalContentAlignment="Stretch"
+                                      Padding="12,0">
+                            <ToggleButton.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center" Grid.Column="0"/>
+                                        <PathIcon Data="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z" 
+                                                  Width="12" Height="12" VerticalAlignment="Center" Foreground="White"
+                                                  Grid.Column="1">
+                                        </PathIcon>
+                                    </Grid>
+                                </DataTemplate>
+                            </ToggleButton.ContentTemplate>
+                        </ToggleButton>
+                        <ContentPresenter Name="Content"
+                                          IsVisible="{TemplateBinding IsExpanded}"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="24,5,0,5"/>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </UserControl.Resources>
+</UserControl>

@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace AttributeDatabaseEditor.Models.AttributeDatabase;
+
+public partial class AttributeValue
+{
+    public int Id { get; set; }
+
+    public string AttributeSetId { get; set; } = null!;
+
+    public string AttributeType { get; set; } = null!;
+
+    public string AttributeCategory { get; set; } = null!;
+
+    public string? AttributeTypeComment { get; set; }
+
+    public double BaseValue { get; set; }
+
+    public double MinValue { get; set; }
+
+    public double MaxValue { get; set; }
+
+    public virtual AttributeSet AttributeSet { get; set; } = null!;
+
+    public virtual Attribute AttributeTypeNavigation { get; set; } = null!;
+}

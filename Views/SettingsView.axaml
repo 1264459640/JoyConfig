@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AttributeDatabaseEditor.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AttributeDatabaseEditor.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+    <Border Background="#AA333333" CornerRadius="10" Padding="20" BoxShadow="0 0 20 5 #111111">
+        <Grid RowDefinitions="*,Auto" Width="600">
+            <TabControl Grid.Row="0">
+                <TabItem Header="Database">
+                    <StackPanel Spacing="10" Margin="10">
+        <TextBlock Text="Attribute Database Path:"/>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Text="{Binding AttributeDatabasePath}" Grid.Column="0"/>
+          <Button Content="Browse..." Command="{Binding BrowseForAttributeDatabaseCommand}" Grid.Column="1"/>
+        </Grid>
+
+        <TextBlock Text="Gameplay Effect Database Path:"/>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Text="{Binding GameplayEffectDatabasePath}" Grid.Column="0"/>
+          <Button Content="Browse..." Command="{Binding BrowseForGameplayEffectDatabaseCommand}" Grid.Column="1"/>
+        </Grid>
+      </StackPanel>
+    </TabItem>
+
+    <TabItem Header="Appearance">
+      <StackPanel Spacing="10" Margin="10">
+        <TextBlock Text="Theme:"/>
+        <ComboBox SelectedItem="{Binding Theme}">
+          <ComboBoxItem Content="Light"/>
+          <ComboBoxItem Content="Dark"/>
+        </ComboBox>
+
+        <TextBlock Text="Language:"/>
+        <ComboBox SelectedItem="{Binding Language}">
+          <ComboBoxItem Content="en-US"/>
+          <ComboBoxItem Content="zh-CN"/>
+        </ComboBox>
+      </StackPanel>
+    </TabItem>
+
+    <TabItem Header="Editor Behavior">
+      <StackPanel Spacing="10" Margin="10">
+        <CheckBox IsChecked="{Binding IsAutosaveEnabled}" Content="Enable Autosave"/>
+        <StackPanel Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsAutosaveEnabled}">
+          <TextBlock Text="Autosave Interval (minutes):"/>
+          <NumericUpDown Value="{Binding AutosaveInterval}" Minimum="1"/>
+        </StackPanel>
+        <CheckBox IsChecked="{Binding LoadLastDatabaseOnStartup}" Content="Load last database on startup"/>
+      </StackPanel>
+    </TabItem>
+
+    <TabItem Header="About">
+      <StackPanel Spacing="10" Margin="10">
+        <TextBlock Text="Attribute Database Editor v1.0.0"/>
+        <TextBlock Text="Copyright © 2024 Your Name"/>
+      </StackPanel>
+    </TabItem>
+  </TabControl>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+                <Button Content="Save &amp; Close" Command="{Binding TriggerSaveAndCloseCommand}"/>
+                <Button Content="Cancel" Command="{Binding TriggerCancelCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
