@@ -1,11 +1,11 @@
-using AttributeDatabaseEditor.Models.Settings;
+using JoyConfig.Models.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.Json;
 using System.IO;
 using System;
 
-namespace AttributeDatabaseEditor.ViewModels
+namespace JoyConfig.ViewModels
 {
     public partial class SettingsViewModel : EditorViewModelBase
     {
@@ -41,9 +41,12 @@ namespace AttributeDatabaseEditor.ViewModels
             Title = "Settings";
             // Define the path for the settings file
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var appFolderPath = Path.Combine(appDataPath, "AttributeDatabaseEditor");
+            var appFolderPath = Path.Combine(appDataPath, "JoyConfig");
             Directory.CreateDirectory(appFolderPath); // Ensure the directory exists
             _settingsFilePath = Path.Combine(appFolderPath, "settings.json");
+            _appSettings = new AppSettings();
+            _theme = _appSettings.Theme;
+            _language = _appSettings.Language;
 
             LoadSettings();
         }

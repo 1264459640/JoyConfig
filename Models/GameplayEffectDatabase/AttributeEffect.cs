@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AttributeDatabaseEditor.Models.GameplayEffectDatabase;
+namespace JoyConfig.Models.GameplayEffectDatabase;
 
 public partial class AttributeEffect
 {

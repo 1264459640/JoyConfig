@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using AttributeDatabaseEditor.ViewModels;
+using JoyConfig.ViewModels;
 
-namespace AttributeDatabaseEditor.Views;
+namespace JoyConfig.Views;
 
 public partial class AttributeDatabaseView : UserControl
 {

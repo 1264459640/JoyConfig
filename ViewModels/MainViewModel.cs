@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace AttributeDatabaseEditor.ViewModels;
+namespace JoyConfig.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
@@ -18,6 +18,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool _isSettingsVisible;
 
+    [ObservableProperty]
+    private string? _selectedWorkspace = "AttributeDatabase";
+
     public MainViewModel()
     {
         // Set the default workspace
@@ -25,6 +28,23 @@ public partial class MainViewModel : ObservableObject
         
         // Set the default editor
         CurrentEditor = new WelcomeViewModel();
+    }
+
+    [RelayCommand]
+    private void OpenAttributeDatabase()
+    {
+        CurrentWorkspace = new AttributeDatabaseViewModel(this);
+        SelectedWorkspace = "AttributeDatabase";
+        IsSettingsVisible = false;
+    }
+
+    [RelayCommand]
+    private void OpenGameplayEffectDatabase()
+    {
+        // TODO: Replace with actual GameplayEffectDatabaseViewModel
+        CurrentWorkspace = new WelcomeViewModel { Title = "Gameplay Effect Database" };
+        SelectedWorkspace = "GameplayEffectDatabase";
+        IsSettingsVisible = false;
     }
 
     [RelayCommand]
@@ -38,6 +58,7 @@ public partial class MainViewModel : ObservableObject
         };
         SettingsViewModel.Cancel += (s, e) => IsSettingsVisible = false;
         IsSettingsVisible = true;
+        SelectedWorkspace = "Settings";
     }
 }
 

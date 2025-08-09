@@ -1,4 +1,4 @@
-namespace AttributeDatabaseEditor.Models.Settings
+namespace JoyConfig.Models.Settings
 {
     /// <summary>
     /// Represents the application settings that are persisted.

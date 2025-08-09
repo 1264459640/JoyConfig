@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 
-namespace AttributeDatabaseEditor;
+namespace JoyConfig;
 
 public partial class MainWindow : Window
 {

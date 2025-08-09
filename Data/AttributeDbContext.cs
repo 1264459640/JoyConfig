@@ -1,7 +1,7 @@
-using AttributeDatabaseEditor.Models;
+using JoyConfig.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AttributeDatabaseEditor.Data;
+namespace JoyConfig.Data;
 
 public class AttributeDbContext : DbContext
 {

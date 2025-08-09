@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace AttributeDatabaseEditor.Views;
+namespace JoyConfig.Views;
 
 public partial class AttributeSetView : UserControl
 {

@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:AttributeDatabaseEditor.ViewModels"
-             xmlns:models="using:AttributeDatabaseEditor.Models"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:models="using:JoyConfig.Models"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
-             x:Class="AttributeDatabaseEditor.Views.AttributeDatabaseView"
+             x:Class="JoyConfig.Views.AttributeDatabaseView"
              x:DataType="vm:AttributeDatabaseViewModel">
     <DockPanel>
         <TextBlock Text="{Binding ErrorMessage}"

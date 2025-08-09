@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AttributeDatabaseEditor.Models.AttributeDatabase;
+namespace JoyConfig.Models.AttributeDatabase;
 
 public partial class AttributeDatabaseContext : DbContext
 {

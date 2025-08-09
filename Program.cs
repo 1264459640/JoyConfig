@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace AttributeDatabaseEditor;
+namespace JoyConfig;
 
 class Program
 {
@@ -9,8 +9,21 @@ class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("Starting application...");
+        try
+        {
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error starting application:");
+            Console.WriteLine(e.ToString());
+        }
+        Console.WriteLine("Application stopped.");
+    }
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()

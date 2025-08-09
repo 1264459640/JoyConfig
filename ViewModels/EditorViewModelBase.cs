@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AttributeDatabaseEditor.ViewModels;
+namespace JoyConfig.ViewModels;
 
 public partial class EditorViewModelBase : ObservableObject
 {

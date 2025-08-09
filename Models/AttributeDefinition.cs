@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AttributeDatabaseEditor.Models;
+namespace JoyConfig.Models;
 
 public class AttributeDefinition
 {

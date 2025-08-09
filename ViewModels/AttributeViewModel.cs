@@ -1,7 +1,7 @@
-using AttributeDatabaseEditor.Models.AttributeDatabase;
+using JoyConfig.Models.AttributeDatabase;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AttributeDatabaseEditor.ViewModels;
+namespace JoyConfig.ViewModels;
 
 public partial class AttributeViewModel : EditorViewModelBase
 {

@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AttributeDatabaseEditor.Models.AttributeDatabase;
+using JoyConfig.Models.AttributeDatabase;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace AttributeDatabaseEditor.ViewModels;
+namespace JoyConfig.ViewModels;
 
 public enum DisplayMode
 {

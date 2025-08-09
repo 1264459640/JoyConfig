@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AttributeDatabaseEditor.Models.GameplayEffectDatabase;
+namespace JoyConfig.Models.GameplayEffectDatabase;
 
 public partial class GameplayEffectDatabaseContext : DbContext
 {

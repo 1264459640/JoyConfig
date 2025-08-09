@@ -4581,9 +4581,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.csproj",
-      "projectName": "AttributeDatabaseEditor",
-      "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.csproj",
+      "projectUniqueName": "D:\\GodotProjects\\AttributeDatabaseEditor\\JoyConfig.csproj",
+      "projectName": "JoyConfig",
+      "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\JoyConfig.csproj",
       "packagesPath": "C:\\Users\\BananaPeel\\.nuget\\packages\\",
       "outputPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\obj\\",
       "projectStyle": "PackageReference",

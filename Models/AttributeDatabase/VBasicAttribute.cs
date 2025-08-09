@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AttributeDatabaseEditor.Models.AttributeDatabase;
+namespace JoyConfig.Models.AttributeDatabase;
 
 public partial class VBasicAttribute
 {
