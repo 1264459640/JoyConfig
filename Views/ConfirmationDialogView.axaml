@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:material="using:Material.Styles.Controls"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+             x:Class="JoyConfig.Views.ConfirmationDialogView"
+             x:DataType="vm:ConfirmationDialogViewModel">
+    <Border Padding="20" MinWidth="350">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding Title}" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+            
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+                <Button Content="Confirm" Command="{Binding OkCommand}" Classes="Filled"/>
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Classes="Outlined"/>
+            </StackPanel>
+
+            <StackPanel Spacing="10">
+                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+                <material:Card Padding="10" MaxHeight="150">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Details}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </material:Card>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

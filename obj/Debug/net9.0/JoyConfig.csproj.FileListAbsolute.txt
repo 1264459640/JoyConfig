@@ -1,5 +1,3 @@
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Example\AttributeDatabase.db
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Example\GameplayEffectDatabase.db
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\JoyConfig.exe
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\JoyConfig.deps.json
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\JoyConfig.runtimeconfig.json

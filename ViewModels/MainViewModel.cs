@@ -1,11 +1,14 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using JoyConfig.Services;
 
 namespace JoyConfig.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
+    private readonly IDialogService _dialogService;
+
     [ObservableProperty]
     private object? _currentWorkspace;
 
@@ -21,19 +24,29 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string? _selectedWorkspace = "AttributeDatabase";
 
-    public MainViewModel()
+    public MainViewModel(IDialogService dialogService)
     {
+        _dialogService = dialogService;
+        
+        // Set database path
+        Models.AttributeDatabase.AttributeDatabaseContext.DbPath = "Example/AttributeDatabase.db";
+        
         // Set the default workspace
-        CurrentWorkspace = new AttributeDatabaseViewModel(this);
+        CurrentWorkspace = new AttributeDatabaseViewModel(this, _dialogService);
         
         // Set the default editor
         CurrentEditor = new WelcomeViewModel();
     }
 
+    public void OpenEditor(EditorViewModelBase newEditor)
+    {
+        CurrentEditor = newEditor;
+    }
+
     [RelayCommand]
     private void OpenAttributeDatabase()
     {
-        CurrentWorkspace = new AttributeDatabaseViewModel(this);
+        CurrentWorkspace = new AttributeDatabaseViewModel(this, _dialogService);
         SelectedWorkspace = "AttributeDatabase";
         IsSettingsVisible = false;
     }
@@ -50,15 +63,14 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void OpenSettings()
     {
-        SettingsViewModel = new SettingsViewModel();
-        SettingsViewModel.SaveAndClose += (s, e) => 
-        {
-            SettingsViewModel.SaveSettingsCommand.Execute(null);
-            IsSettingsVisible = false;
-        };
-        SettingsViewModel.Cancel += (s, e) => IsSettingsVisible = false;
+        SettingsViewModel = new SettingsViewModel(_dialogService, this);
         IsSettingsVisible = true;
         SelectedWorkspace = "Settings";
+    }
+
+    public void LoadAttributeDatabase()
+    {
+        OpenAttributeDatabase();
     }
 }
 

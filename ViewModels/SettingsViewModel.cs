@@ -4,16 +4,20 @@ using CommunityToolkit.Mvvm.Input;
 using System.Text.Json;
 using System.IO;
 using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
+using JoyConfig.Models.AttributeDatabase;
+using JoyConfig.Services;
 
 namespace JoyConfig.ViewModels
 {
     public partial class SettingsViewModel : EditorViewModelBase
     {
-        public event EventHandler? SaveAndClose;
-        public event EventHandler? Cancel;
-
         private readonly string _settingsFilePath;
         private AppSettings _appSettings;
+        private readonly IDialogService _dialogService;
+        private readonly MainViewModel _mainViewModel;
 
         [ObservableProperty]
         private string? _attributeDatabasePath;
@@ -36,9 +40,18 @@ namespace JoyConfig.ViewModels
         [ObservableProperty]
         private bool _loadLastDatabaseOnStartup;
 
-        public SettingsViewModel()
+        [ObservableProperty]
+        private ObservableCollection<string> _settingPages;
+
+        [ObservableProperty]
+        private string _selectedPage;
+
+        public SettingsViewModel(IDialogService dialogService, MainViewModel mainViewModel)
         {
             Title = "Settings";
+            _dialogService = dialogService;
+            _mainViewModel = mainViewModel;
+            
             // Define the path for the settings file
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var appFolderPath = Path.Combine(appDataPath, "JoyConfig");
@@ -47,6 +60,15 @@ namespace JoyConfig.ViewModels
             _appSettings = new AppSettings();
             _theme = _appSettings.Theme;
             _language = _appSettings.Language;
+
+            _settingPages = new ObservableCollection<string>
+            {
+                "Database",
+                "Appearance",
+                "Editor Behavior",
+                "About"
+            };
+            _selectedPage = _settingPages[0];
 
             LoadSettings();
         }
@@ -90,13 +112,14 @@ namespace JoyConfig.ViewModels
             File.WriteAllText(_settingsFilePath, json);
         }
 
-        // In a real implementation, you would use a file dialog service
         [RelayCommand]
-        private void BrowseForAttributeDatabase()
+        private async Task BrowseForAttributeDatabaseAsync()
         {
-            // Placeholder for file dialog logic
-            // For now, we'll just simulate setting a path
-            AttributeDatabasePath = "C:/path/to/your/AttributeDatabase.db";
+            var result = await _dialogService.ShowOpenFileDialogAsync("Open Attribute Database", new FilePickerFileType("Database Files") { Patterns = new[] { "*.db" } });
+            if (result != null)
+            {
+                AttributeDatabasePath = result;
+            }
         }
 
         [RelayCommand]
@@ -107,15 +130,29 @@ namespace JoyConfig.ViewModels
         }
 
         [RelayCommand]
-        private void TriggerSaveAndClose()
+        private async Task ApplyAttributeDatabasePathAsync()
         {
-            SaveAndClose?.Invoke(this, EventArgs.Empty);
-        }
+            if (string.IsNullOrWhiteSpace(AttributeDatabasePath) || !File.Exists(AttributeDatabasePath))
+            {
+                await _dialogService.ShowMessageBoxAsync("Error", "Invalid database file path.");
+                return;
+            }
 
-        [RelayCommand]
-        private void TriggerCancel()
-        {
-            Cancel?.Invoke(this, EventArgs.Empty);
+            var context = new AttributeDatabaseContext(AttributeDatabasePath);
+            var (isValid, errorMessage) = await context.ValidateDatabaseSchemaAsync();
+
+            if (!isValid)
+            {
+                await _dialogService.ShowMessageBoxAsync("Schema Validation Failed", errorMessage ?? "Unknown error");
+                return;
+            }
+
+            _appSettings.AttributeDatabasePath = AttributeDatabasePath;
+            SaveSettings();
+            
+            // Reload the main view
+            _mainViewModel.LoadAttributeDatabase();
+            await _dialogService.ShowMessageBoxAsync("Success", "Attribute database loaded successfully.");
         }
     }
 }

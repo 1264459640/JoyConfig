@@ -6,63 +6,91 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="JoyConfig.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
-    <Border Background="#AA333333" CornerRadius="10" Padding="20" BoxShadow="0 0 20 5 #111111">
-        <Grid RowDefinitions="*,Auto" Width="600">
-            <TabControl Grid.Row="0">
-                <TabItem Header="Database">
-                    <StackPanel Spacing="10" Margin="10">
-        <TextBlock Text="Attribute Database Path:"/>
-        <Grid ColumnDefinitions="*,Auto">
-          <TextBox Text="{Binding AttributeDatabasePath}" Grid.Column="0"/>
-          <Button Content="Browse..." Command="{Binding BrowseForAttributeDatabaseCommand}" Grid.Column="1"/>
-        </Grid>
 
-        <TextBlock Text="Gameplay Effect Database Path:"/>
-        <Grid ColumnDefinitions="*,Auto">
-          <TextBox Text="{Binding GameplayEffectDatabasePath}" Grid.Column="0"/>
-          <Button Content="Browse..." Command="{Binding BrowseForGameplayEffectDatabaseCommand}" Grid.Column="1"/>
-        </Grid>
-      </StackPanel>
-    </TabItem>
+    <UserControl.Resources>
+        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+        
+        <DataTemplate x:Key="DatabaseSettingsTemplate" x:DataType="vm:SettingsViewModel">
+            <StackPanel Spacing="10" Margin="10">
+                <TextBlock Text="Attribute Database Path:"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Text="{Binding AttributeDatabasePath}" Grid.Column="0"/>
+                    <Button Content="Browse..." Command="{Binding BrowseForAttributeDatabaseCommand}" Grid.Column="1"/>
+                </Grid>
 
-    <TabItem Header="Appearance">
-      <StackPanel Spacing="10" Margin="10">
-        <TextBlock Text="Theme:"/>
-        <ComboBox SelectedItem="{Binding Theme}">
-          <ComboBoxItem Content="Light"/>
-          <ComboBoxItem Content="Dark"/>
-        </ComboBox>
+                <TextBlock Text="Gameplay Effect Database Path:"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Text="{Binding GameplayEffectDatabasePath}" Grid.Column="0"/>
+                    <Button Content="Browse..." Command="{Binding BrowseForGameplayEffectDatabaseCommand}" Grid.Column="1"/>
+                </Grid>
 
-        <TextBlock Text="Language:"/>
-        <ComboBox SelectedItem="{Binding Language}">
-          <ComboBoxItem Content="en-US"/>
-          <ComboBoxItem Content="zh-CN"/>
-        </ComboBox>
-      </StackPanel>
-    </TabItem>
-
-    <TabItem Header="Editor Behavior">
-      <StackPanel Spacing="10" Margin="10">
-        <CheckBox IsChecked="{Binding IsAutosaveEnabled}" Content="Enable Autosave"/>
-        <StackPanel Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsAutosaveEnabled}">
-          <TextBlock Text="Autosave Interval (minutes):"/>
-          <NumericUpDown Value="{Binding AutosaveInterval}" Minimum="1"/>
-        </StackPanel>
-        <CheckBox IsChecked="{Binding LoadLastDatabaseOnStartup}" Content="Load last database on startup"/>
-      </StackPanel>
-    </TabItem>
-
-    <TabItem Header="About">
-      <StackPanel Spacing="10" Margin="10">
-        <TextBlock Text="Attribute Database Editor v1.0.0"/>
-        <TextBlock Text="Copyright © 2024 Your Name"/>
-      </StackPanel>
-    </TabItem>
-  </TabControl>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
-                <Button Content="Save &amp; Close" Command="{Binding TriggerSaveAndCloseCommand}"/>
-                <Button Content="Cancel" Command="{Binding TriggerCancelCommand}"/>
+                <Button Content="Apply" Command="{Binding ApplyAttributeDatabasePathCommand}" HorizontalAlignment="Right" Margin="0,10,0,0"/>
             </StackPanel>
-        </Grid>
-    </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AppearanceSettingsTemplate" x:DataType="vm:SettingsViewModel">
+            <StackPanel Spacing="10" Margin="10">
+                <TextBlock Text="Theme:"/>
+                <ComboBox SelectedItem="{Binding Theme}">
+                    <ComboBoxItem Content="Light"/>
+                    <ComboBoxItem Content="Dark"/>
+                </ComboBox>
+
+                <TextBlock Text="Language:"/>
+                <ComboBox SelectedItem="{Binding Language}">
+                    <ComboBoxItem Content="en-US"/>
+                    <ComboBoxItem Content="zh-CN"/>
+                </ComboBox>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditorBehaviorSettingsTemplate" x:DataType="vm:SettingsViewModel">
+            <StackPanel Spacing="10" Margin="10">
+                <CheckBox IsChecked="{Binding IsAutosaveEnabled}" Content="Enable Autosave"/>
+                <StackPanel Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsAutosaveEnabled}">
+                    <TextBlock Text="Autosave Interval (minutes):"/>
+                    <NumericUpDown Value="{Binding AutosaveInterval}" Minimum="1"/>
+                </StackPanel>
+                <CheckBox IsChecked="{Binding LoadLastDatabaseOnStartup}" Content="Load last database on startup"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AboutSettingsTemplate" x:DataType="vm:SettingsViewModel">
+            <StackPanel Spacing="10" Margin="10">
+                <TextBlock Text="Attribute Database Editor v1.0.0"/>
+                <TextBlock Text="Copyright &#xA9; 2024 Your Name"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="*,Auto">
+        <SplitView Grid.Row="0" IsPaneOpen="True" DisplayMode="Inline" OpenPaneLength="180">
+            <SplitView.Pane>
+                <ListBox ItemsSource="{Binding SettingPages}" SelectedItem="{Binding SelectedPage}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Padding="10"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource DatabaseSettingsTemplate}"
+                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Database'}"/>
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource AppearanceSettingsTemplate}"
+                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Appearance'}"/>
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource EditorBehaviorSettingsTemplate}"
+                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Editor Behavior'}"/>
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource AboutSettingsTemplate}"
+                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='About'}"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+
+    </Grid>
 </UserControl>

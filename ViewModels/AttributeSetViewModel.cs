@@ -57,14 +57,14 @@ public partial class AttributeSetViewModel : EditorViewModelBase
 
     private async Task InitializeAsync()
     {
-        var baseDirectory = AppContext.BaseDirectory;
-        var databasePath = Path.Combine(baseDirectory, "Example", "AttributeDatabase.db");
+        if (string.IsNullOrEmpty(Models.AttributeDatabase.AttributeDatabaseContext.DbPath))
+        {
+            // Handle the case where the database path is not set
+            Title = "Error: Database path not set";
+            return;
+        }
 
-        var options = new DbContextOptionsBuilder<Models.AttributeDatabase.AttributeDatabaseContext>()
-            .UseSqlite($"Data Source={databasePath}")
-            .Options;
-
-        await using var dbContext = new Models.AttributeDatabase.AttributeDatabaseContext(options);
+        await using var dbContext = new Models.AttributeDatabase.AttributeDatabaseContext();
 
         AttributeSet = await dbContext.AttributeSets.FindAsync(_attributeSetId);
         if (AttributeSet is null)

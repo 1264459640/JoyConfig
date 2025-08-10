@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:material="using:Material.Styles.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JoyConfig.Views.CategoryView"
+             x:DataType="vm:CategoryViewModel">
+    <DockPanel>
+        <material:Card DockPanel.Dock="Top" Margin="10,10,10,0">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="Save" Command="{Binding SaveCommand}" Classes="Filled"/>
+            </StackPanel>
+        </material:Card>
+
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   DockPanel.Dock="Top"
+                   Margin="10,5,10,0"/>
+
+        <Grid Margin="10" ColumnDefinitions="*" RowDefinitions="Auto,Auto,*">
+            <TextBlock Text="{Binding Title}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <material:Card Grid.Row="1" Padding="15">
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto" RowSpacing="10" ColumnSpacing="10">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Category Name:" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CategoryName, Mode=TwoWay}"/>
+                </Grid>
+            </material:Card>
+        </Grid>
+    </DockPanel>
+</UserControl>

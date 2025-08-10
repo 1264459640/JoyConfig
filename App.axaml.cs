@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using JoyConfig.Services;
 using JoyConfig.ViewModels;
 using System;
 using Material.Styles.Themes;
@@ -23,7 +24,13 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Console.WriteLine("ApplicationLifetime is IClassicDesktopStyleApplicationLifetime.");
-            var mainViewModel = new MainViewModel();
+            
+            // Create services
+            var dialogService = new DialogService();
+
+            // Create view models
+            var mainViewModel = new MainViewModel(dialogService);
+            
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainViewModel

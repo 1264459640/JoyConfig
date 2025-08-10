@@ -30,17 +30,49 @@
                 </Expander>
 
                 <!-- Attributes Section -->
-                <Expander Header="Attributes" IsExpanded="True">
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="Attributes" VerticalAlignment="Center"/>
+                            <Button DockPanel.Dock="Right"
+                                    Command="{Binding $parent[UserControl].DataContext.CreateNewCategoryCommand}"
+                                    ToolTip.Tip="New Category"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Width="20" Height="20">
+                                <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                            </Button>
+                        </DockPanel>
+                    </Expander.Header>
                     <ItemsControl ItemsSource="{Binding AttributeCategories}" Margin="5">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Expander Header="{Binding CategoryName}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Margin="15,0,0,0" Theme="{StaticResource SubExpanderTheme}">
+                                    <Expander.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Rename Category"
+                                                      Command="{Binding $parent[UserControl].DataContext.RenameCategoryCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                            <MenuItem Header="Delete Category"
+                                                      Command="{Binding $parent[UserControl].DataContext.DeleteCategoryCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                            <MenuItem Header="New Attribute Here"
+                                                      Command="{Binding $parent[UserControl].DataContext.CreateNewAttributeInCategoryCommand}"
+                                                      CommandParameter="{Binding CategoryName}"/>
+                                        </ContextMenu>
+                                    </Expander.ContextMenu>
                                     <ListBox ItemsSource="{Binding Attributes}"
                                              SelectedItem="{Binding $parent[UserControl].DataContext.SelectedAttribute, Mode=TwoWay}"
                                              Margin="15,0,0,0">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Id}"/>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource IdToSuffixConverter}">
+                                                            <Binding Path="Id"/>
+                                                            <Binding Path="Category"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
@@ -53,6 +85,7 @@
         </ScrollViewer>
     </DockPanel>
     <UserControl.Resources>
+        <vm:IdToSuffixConverter x:Key="IdToSuffixConverter"/>
         <ControlTheme x:Key="SubExpanderTheme" TargetType="Expander">
             <Setter Property="Template">
                 <ControlTemplate>

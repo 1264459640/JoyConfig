@@ -106,6 +106,9 @@
         <DataTemplate DataType="vm:AttributeSetViewModel">
             <views:AttributeSetView/>
         </DataTemplate>
+        <DataTemplate DataType="vm:CategoryViewModel">
+            <views:CategoryView/>
+        </DataTemplate>
         <DataTemplate DataType="vm:SettingsViewModel">
             <views:SettingsView/>
         </DataTemplate>
@@ -146,44 +149,69 @@
         </StackPanel>
 
         <Grid>
-            <!-- Main Content Card -->
-            <Border Background="#2d2d2d"
-                    CornerRadius="10,0,0,0"
-                    IsVisible="{Binding !IsSettingsVisible}">
-                <SplitView IsPaneOpen="True"
-                           DisplayMode="Inline"
-                           OpenPaneLength="250">
-                    <!-- Primary Sidebar -->
-                    <SplitView.Pane>
-                        <DockPanel>
-                            <TextBlock Text="Workspace"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       DockPanel.Dock="Top"
-                                       Margin="10"/>
-                            <ContentControl Content="{Binding CurrentWorkspace}"/>
-                        </DockPanel>
-                    </SplitView.Pane>
+            <!-- Main Content Card with Simulated Shadow -->
+            <Grid IsVisible="{Binding !IsSettingsVisible}">
+                <!-- Shadow Layer -->
+                <Border CornerRadius="10,0,0,0">
+                    <Border.Background>
+                        <SolidColorBrush Color="#1f1f1fff" />
+                    </Border.Background>
+                    <Border.Effect>
+                        <BlurEffect Radius="10" />
+                    </Border.Effect>
+                </Border>
 
-                    <!-- Editor Area -->
-                    <SplitView.Content>
-                        <DockPanel>
-                            <TextBlock Text="Editor"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       DockPanel.Dock="Top"
-                                       Margin="10"/>
-                            <ContentControl Content="{Binding CurrentEditor}"/>
-                        </DockPanel>
-                    </SplitView.Content>
-                </SplitView>
-            </Border>
-            
-            <!-- Settings Overlay -->
-            <ContentControl Content="{Binding SettingsViewModel}"
-                            IsVisible="{Binding IsSettingsVisible}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
+                <!-- Content Layer -->
+                <Border Background="#2d2d2d"
+                        CornerRadius="10,0,0,0">
+                    <SplitView IsPaneOpen="True"
+                               DisplayMode="Inline"
+                               OpenPaneLength="250">
+                        <!-- Primary Sidebar -->
+                        <SplitView.Pane>
+                            <DockPanel>
+                                <TextBlock Text="Workspace"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           DockPanel.Dock="Top"
+                                           Margin="10"/>
+                                <ContentControl Content="{Binding CurrentWorkspace}"/>
+                            </DockPanel>
+                        </SplitView.Pane>
+
+                        <!-- Editor Area -->
+                        <SplitView.Content>
+                            <DockPanel>
+                                <TextBlock Text="Editor"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           DockPanel.Dock="Top"
+                                           Margin="10"/>
+                                <ContentControl Content="{Binding CurrentEditor}"/>
+                            </DockPanel>
+                        </SplitView.Content>
+                    </SplitView>
+                </Border>
+            </Grid>
+
+            <!-- Settings Card -->
+            <Grid IsVisible="{Binding IsSettingsVisible}">
+                <!-- Shadow Layer -->
+                <Border CornerRadius="10,0,0,0">
+                    <Border.Background>
+                        <SolidColorBrush Color="#1f1f1fff" />
+                    </Border.Background>
+                    <Border.Effect>
+                        <BlurEffect Radius="10" />
+                    </Border.Effect>
+                </Border>
+
+                <!-- Content Layer -->
+                <Border Background="#2d2d2d"
+                        CornerRadius="10,0,0,0">
+                    <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
+                </Border>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>

@@ -11,9 +11,9 @@ public partial class AttributeValue
 
     public string AttributeType { get; set; } = null!;
 
-    public string AttributeCategory { get; set; } = null!;
+    public string AttributeCategory => AttributeTypeNavigation?.Category ?? "N/A";
 
-    public string? AttributeTypeComment { get; set; }
+    public string? AttributeTypeComment => AttributeTypeNavigation?.Description;
 
     public double BaseValue { get; set; }
 

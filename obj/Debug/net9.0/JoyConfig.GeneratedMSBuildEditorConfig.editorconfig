@@ -49,5 +49,14 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/GodotProjects/AttributeDatabaseEditor/Views/CategoryView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/ConfirmationDialogView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/InputDialogView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/GodotProjects/AttributeDatabaseEditor/Views/SettingsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
