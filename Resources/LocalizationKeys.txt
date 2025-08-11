@@ -1,0 +1,68 @@
+## Views/SettingsView.axaml
+- "Attribute Database Path:" -> Settings_AttributeDatabasePath
+- "Browse..." -> Common_Browse
+- "Gameplay Effect Database Path:" -> Settings_GameplayEffectDatabasePath
+- "Apply" -> Common_Apply
+- "Theme:" -> Settings_Theme
+- "Light" -> Settings_Theme_Light
+- "Dark" -> Settings_Theme_Dark
+- "Language:" -> Settings_Language
+- "Enable Autosave" -> Settings_EnableAutosave
+- "Autosave Interval (minutes):" -> Settings_AutosaveInterval
+- "Load last database on startup" -> Settings_LoadLastDatabaseOnStartup
+- "Attribute Database Editor v1.0.0" -> About_Version
+- "Copyright © 2024 Your Name" -> About_Copyright
+
+## Views/SelectAttributeView.axaml
+- "Select an Attribute" -> SelectAttribute_Title
+- "OK" -> Common_OK
+- "Cancel" -> Common_Cancel
+
+## Views/InputDialogView.axaml
+- "OK" -> Common_OK
+- "Cancel" -> Common_Cancel
+
+## Views/ConfirmationDialogView.axaml
+- "Confirm" -> Common_Confirm
+- "Cancel" -> Common_Cancel
+
+## Views/CategoryView.axaml
+- "Save" -> Common_Save
+- "Category Name:" -> Category_Name
+
+## Views/AttributeView.axaml
+- "Save" -> Common_Save
+- "Delete" -> Common_Delete
+- "ID:" -> Attribute_ID
+- "Category:" -> Attribute_Category
+- "Description:" -> Attribute_Description
+- "Referenced By" -> Attribute_ReferencedBy
+
+## Views/AttributeValueCardView.axaml
+- "Remove" -> Common_Remove
+- "Base Value:" -> AttributeValue_BaseValue
+- "Range:" -> AttributeValue_Range
+- "Min:" -> AttributeValue_Min
+- "Max:" -> AttributeValue_Max
+- "Comment:" -> AttributeValue_Comment
+
+## Views/AttributeSetView.axaml
+- "Save" -> Common_Save
+- "Add Attribute" -> AttributeSet_AddAttribute
+- "Remove Attribute" -> AttributeSet_RemoveAttribute
+- "Attribute Set Details" -> AttributeSet_Details
+- "ID:" -> AttributeSet_ID
+- "Name:" -> AttributeSet_Name
+- "Description:" -> AttributeSet_Description
+- "Attribute Values" -> AttributeSet_AttributeValues
+
+## Views/AttributeDatabaseView.axaml
+- "Attribute Sets" -> AttributeDatabase_AttributeSets
+- "New Attribute Set" -> AttributeDatabase_NewAttributeSet
+- "Attributes" -> AttributeDatabase_Attributes
+- "New Category" -> AttributeDatabase_NewCategory
+
+## MainWindow.axaml
+- "Welcome to the Editor!" -> Main_Welcome
+- "Workspace" -> Main_Workspace
+- "Editor" -> Main_Editor

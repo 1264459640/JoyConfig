@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Greeting" xml:space="preserve">
+    <value>你好，世界！</value>
+  </data>
+  <data name="AttributeDatabase" xml:space="preserve">
+    <value>属性数据库</value>
+  </data>
+  <data name="GameplayEffectDatabase" xml:space="preserve">
+    <value>游戏效果数据库</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Settings_AttributeDatabasePath" xml:space="preserve">
+    <value>属性数据库路径：</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>浏览...</value>
+  </data>
+  <data name="Settings_GameplayEffectDatabasePath" xml:space="preserve">
+    <value>游戏效果数据库路径：</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>主题：</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+  <data name="Settings_EnableAutosave" xml:space="preserve">
+    <value>启用自动保存</value>
+  </data>
+  <data name="Settings_AutosaveInterval" xml:space="preserve">
+    <value>自动保存间隔（分钟）：</value>
+  </data>
+  <data name="Settings_LoadLastDatabaseOnStartup" xml:space="preserve">
+    <value>启动时加载上一个数据库</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>属性数据库编辑器 v1.0.0</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>版权所有 © 2024 你的名字</value>
+  </data>
+  <data name="SelectAttribute_Title" xml:space="preserve">
+    <value>选择一个属性</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Category_Name" xml:space="preserve">
+    <value>类别名称：</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Attribute_ID" xml:space="preserve">
+    <value>ID：</value>
+  </data>
+  <data name="Attribute_Category" xml:space="preserve">
+    <value>类别：</value>
+  </data>
+  <data name="Attribute_Description" xml:space="preserve">
+    <value>描述：</value>
+  </data>
+  <data name="Attribute_ReferencedBy" xml:space="preserve">
+    <value>被引用：</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="AttributeValue_BaseValue" xml:space="preserve">
+    <value>基础值：</value>
+  </data>
+  <data name="AttributeValue_Range" xml:space="preserve">
+    <value>范围：</value>
+  </data>
+  <data name="AttributeValue_Min" xml:space="preserve">
+    <value>最小值：</value>
+  </data>
+  <data name="AttributeValue_Max" xml:space="preserve">
+    <value>最大值：</value>
+  </data>
+  <data name="AttributeValue_Comment" xml:space="preserve">
+    <value>注释：</value>
+  </data>
+  <data name="AttributeSet_AddAttribute" xml:space="preserve">
+    <value>添加属性</value>
+  </data>
+  <data name="AttributeSet_RemoveAttribute" xml:space="preserve">
+    <value>移除属性</value>
+  </data>
+  <data name="AttributeSet_Details" xml:space="preserve">
+    <value>属性集详情</value>
+  </data>
+  <data name="AttributeSet_ID" xml:space="preserve">
+    <value>ID：</value>
+  </data>
+  <data name="AttributeSet_Name" xml:space="preserve">
+    <value>名称：</value>
+  </data>
+  <data name="AttributeSet_Description" xml:space="preserve">
+    <value>描述：</value>
+  </data>
+  <data name="AttributeSet_AttributeValues" xml:space="preserve">
+    <value>属性值</value>
+  </data>
+  <data name="AttributeDatabase_AttributeSets" xml:space="preserve">
+    <value>属性集</value>
+  </data>
+  <data name="AttributeDatabase_NewAttributeSet" xml:space="preserve">
+    <value>新建属性集</value>
+  </data>
+  <data name="AttributeDatabase_Attributes" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="AttributeDatabase_NewCategory" xml:space="preserve">
+    <value>新建类别</value>
+  </data>
+  <data name="Main_Welcome" xml:space="preserve">
+    <value>欢迎使用编辑器！</value>
+  </data>
+  <data name="Main_Workspace" xml:space="preserve">
+    <value>工作区</value>
+  </data>
+  <data name="Main_Editor" xml:space="preserve">
+    <value>编辑器</value>
+  </data>
+  <data name="Settings_Database" xml:space="preserve">
+    <value>数据库</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="Settings_EditorBehavior" xml:space="preserve">
+    <value>编辑器行为</value>
+  </data>
+  <data name="Settings_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+</root>

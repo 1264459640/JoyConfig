@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JoyConfig.Views.AttributeValueCardView"
+             x:DataType="vm:AttributeValueViewModel">
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+            <!-- Row 0: ID and Category -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding AttributeValue.AttributeId}" FontWeight="Bold"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AttributeValue.Attribute.Category}" Foreground="Gray" HorizontalAlignment="Left"/>
+            <Button Grid.Row="0" Grid.Column="2" Content="{Binding LocalizationManager[Common_Remove]}" Classes="Outline"
+                    Command="{Binding RemoveCommand}"
+                    CommandParameter="{Binding}"/>
+            
+            <!-- Row 1: Base Value -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding LocalizationManager[AttributeValue_BaseValue]}" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AttributeValue.BaseValue, Mode=TwoWay}"/>
+            
+            <!-- Row 2: Min/Max Values -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding LocalizationManager[AttributeValue_Range]}" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="5">
+                <TextBlock Text="{Binding LocalizationManager[AttributeValue_Min]}" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding AttributeValue.MinValue, Mode=TwoWay}" Width="80"/>
+                <TextBlock Text="{Binding LocalizationManager[AttributeValue_Max]}" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding AttributeValue.MaxValue, Mode=TwoWay}" Width="80"/>
+            </StackPanel>
+            
+            <!-- Row 3: Comment -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding LocalizationManager[AttributeValue_Comment]}" VerticalAlignment="Top"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AttributeValue.Comment, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" Height="40"/>
+        </Grid>
+    </Border>
+</UserControl>

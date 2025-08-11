@@ -12,53 +12,52 @@
         
         <DataTemplate x:Key="DatabaseSettingsTemplate" x:DataType="vm:SettingsViewModel">
             <StackPanel Spacing="10" Margin="10">
-                <TextBlock Text="Attribute Database Path:"/>
+                <TextBlock Text="{Binding LocalizationManager[Settings_AttributeDatabasePath]}"/>
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBox Text="{Binding AttributeDatabasePath}" Grid.Column="0"/>
-                    <Button Content="Browse..." Command="{Binding BrowseForAttributeDatabaseCommand}" Grid.Column="1"/>
+                    <Button Content="{Binding LocalizationManager[Common_Browse]}" Command="{Binding BrowseForAttributeDatabaseCommand}" Grid.Column="1"/>
                 </Grid>
 
-                <TextBlock Text="Gameplay Effect Database Path:"/>
+                <TextBlock Text="{Binding LocalizationManager[Settings_GameplayEffectDatabasePath]}"/>
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBox Text="{Binding GameplayEffectDatabasePath}" Grid.Column="0"/>
-                    <Button Content="Browse..." Command="{Binding BrowseForGameplayEffectDatabaseCommand}" Grid.Column="1"/>
+                    <Button Content="{Binding LocalizationManager[Common_Browse]}" Command="{Binding BrowseForGameplayEffectDatabaseCommand}" Grid.Column="1"/>
                 </Grid>
 
-                <Button Content="Apply" Command="{Binding ApplyAttributeDatabasePathCommand}" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+                <Button Content="{Binding LocalizationManager[Common_Apply]}" Command="{Binding ApplyAttributeDatabasePathCommand}" HorizontalAlignment="Right" Margin="0,10,0,0"/>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="AppearanceSettingsTemplate" x:DataType="vm:SettingsViewModel">
             <StackPanel Spacing="10" Margin="10">
-                <TextBlock Text="Theme:"/>
+                <TextBlock Text="{Binding LocalizationManager[Settings_Theme]}"/>
                 <ComboBox SelectedItem="{Binding Theme}">
-                    <ComboBoxItem Content="Light"/>
-                    <ComboBoxItem Content="Dark"/>
+                    <ComboBoxItem Content="{Binding LocalizationManager[Settings_Theme_Light]}"/>
+                    <ComboBoxItem Content="{Binding LocalizationManager[Settings_Theme_Dark]}"/>
                 </ComboBox>
 
-                <TextBlock Text="Language:"/>
-                <ComboBox SelectedItem="{Binding Language}">
-                    <ComboBoxItem Content="en-US"/>
-                    <ComboBoxItem Content="zh-CN"/>
-                </ComboBox>
+                <TextBlock Text="{Binding LocalizationManager[Settings_Language]}"/>
+                <ComboBox ItemsSource="{Binding LocalizationManager.SupportedLanguages}"
+                            SelectedItem="{Binding SelectedLanguage}"
+                            DisplayMemberBinding="{Binding NativeName}"/>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="EditorBehaviorSettingsTemplate" x:DataType="vm:SettingsViewModel">
             <StackPanel Spacing="10" Margin="10">
-                <CheckBox IsChecked="{Binding IsAutosaveEnabled}" Content="Enable Autosave"/>
+                <CheckBox IsChecked="{Binding IsAutosaveEnabled}" Content="{Binding LocalizationManager[Settings_EnableAutosave]}"/>
                 <StackPanel Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsAutosaveEnabled}">
-                    <TextBlock Text="Autosave Interval (minutes):"/>
+                    <TextBlock Text="{Binding LocalizationManager[Settings_AutosaveInterval]}"/>
                     <NumericUpDown Value="{Binding AutosaveInterval}" Minimum="1"/>
                 </StackPanel>
-                <CheckBox IsChecked="{Binding LoadLastDatabaseOnStartup}" Content="Load last database on startup"/>
+                <CheckBox IsChecked="{Binding LoadLastDatabaseOnStartup}" Content="{Binding LocalizationManager[Settings_LoadLastDatabaseOnStartup]}"/>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="AboutSettingsTemplate" x:DataType="vm:SettingsViewModel">
             <StackPanel Spacing="10" Margin="10">
-                <TextBlock Text="Attribute Database Editor v1.0.0"/>
-                <TextBlock Text="Copyright &#xA9; 2024 Your Name"/>
+                <TextBlock Text="{Binding LocalizationManager[About_Version]}"/>
+                <TextBlock Text="{Binding LocalizationManager[About_Copyright]}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -69,7 +68,7 @@
                 <ListBox ItemsSource="{Binding SettingPages}" SelectedItem="{Binding SelectedPage}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" Padding="10"/>
+                            <TextBlock Text="{Binding DisplayName}" Padding="10"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -78,16 +77,16 @@
                 <Grid>
                     <ContentControl Content="{Binding}"
                                     ContentTemplate="{StaticResource DatabaseSettingsTemplate}"
-                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Database'}"/>
+                                    IsVisible="{Binding SelectedPage.Key, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Database'}"/>
                     <ContentControl Content="{Binding}"
                                     ContentTemplate="{StaticResource AppearanceSettingsTemplate}"
-                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Appearance'}"/>
+                                    IsVisible="{Binding SelectedPage.Key, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Appearance'}"/>
                     <ContentControl Content="{Binding}"
                                     ContentTemplate="{StaticResource EditorBehaviorSettingsTemplate}"
-                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Editor Behavior'}"/>
+                                    IsVisible="{Binding SelectedPage.Key, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Editor Behavior'}"/>
                     <ContentControl Content="{Binding}"
                                     ContentTemplate="{StaticResource AboutSettingsTemplate}"
-                                    IsVisible="{Binding SelectedPage, Converter={StaticResource StringEqualsConverter}, ConverterParameter='About'}"/>
+                                    IsVisible="{Binding SelectedPage.Key, Converter={StaticResource StringEqualsConverter}, ConverterParameter='About'}"/>
                 </Grid>
             </SplitView.Content>
         </SplitView>

@@ -21,6 +21,14 @@
         },
         "runtime": {
           "JoyConfig.dll": {}
+        },
+        "resources": {
+          "en-US/JoyConfig.resources.dll": {
+            "locale": "en-US"
+          },
+          "zh-CN/JoyConfig.resources.dll": {
+            "locale": "zh-CN"
+          }
         }
       },
       "Avalonia/11.3.3": {

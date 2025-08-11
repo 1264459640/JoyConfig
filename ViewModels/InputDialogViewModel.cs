@@ -1,11 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
+using JoyConfig.Services;
 
 namespace JoyConfig.ViewModels;
 
 public partial class InputDialogViewModel : ObservableObject
 {
+    public LocalizationManager LocalizationManager { get; }
+
     [ObservableProperty]
     private string _title = "Input";
 
@@ -18,13 +21,16 @@ public partial class InputDialogViewModel : ObservableObject
     public string? DialogResult { get; private set; }
 
     public ICommand? CloseCommand { get; set; }
-    
+
+    public InputDialogViewModel()
+    {
+        LocalizationManager = LocalizationManager.Instance;
+    }
+
     [RelayCommand]
     private void Ok()
     {
         DialogResult = InputText;
-        // The CloseCommand will be set by the DialogService to close the window.
-        // We pass a dummy parameter to indicate success.
         CloseCommand?.Execute("OK");
     }
 

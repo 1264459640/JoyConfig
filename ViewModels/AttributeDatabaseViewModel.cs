@@ -14,7 +14,7 @@ using Avalonia.Threading;
 
 namespace JoyConfig.ViewModels;
 
-public partial class AttributeDatabaseViewModel : ObservableObject
+public partial class AttributeDatabaseViewModel : EditorViewModelBase
 {
     private bool _isProgrammaticSelection;
     public MainViewModel MainViewModel { get; }
@@ -72,7 +72,7 @@ public partial class AttributeDatabaseViewModel : ObservableObject
                 MainViewModel.CurrentEditor = new AttributeViewModel(attribute, this, _dialogService);
                 break;
             case AttributeSet attributeSet:
-                MainViewModel.CurrentEditor = await AttributeSetViewModel.CreateAsync(attributeSet.Id);
+                MainViewModel.CurrentEditor = await AttributeSetViewModel.CreateAsync(attributeSet.Id, this, _dialogService);
                 break;
         }
     }
@@ -149,6 +149,91 @@ public partial class AttributeDatabaseViewModel : ObservableObject
         };
         
         MainViewModel.CurrentEditor = new AttributeViewModel(newAttribute, this, _dialogService);
+    }
+
+    [RelayCommand]
+    private async Task CreateNewAttributeSet()
+    {
+        var inputVm = new InputDialogViewModel
+        {
+            Title = "Create New Attribute Set",
+            Message = "Enter a unique ID for the new attribute set:",
+            InputText = "New.AttributeSet.Id"
+        };
+
+        var newId = await _dialogService.ShowInputDialogAsync(inputVm);
+
+        if (string.IsNullOrWhiteSpace(newId))
+        {
+            ErrorMessage = "Creation cancelled.";
+            return;
+        }
+
+        await using var dbContext = new AttributeDatabaseContext();
+        
+        // Check if the ID already exists
+        if (await dbContext.AttributeSets.AnyAsync(s => s.Id == newId))
+        {
+            ErrorMessage = $"Error: Attribute Set with ID '{newId}' already exists.";
+            return;
+        }
+
+        var newSet = new AttributeSet
+        {
+            Id = newId,
+            Name = "New Attribute Set", // Default name, can be changed in the editor
+            Description = "A new attribute set created from the editor."
+        };
+        
+        dbContext.AttributeSets.Add(newSet);
+        await dbContext.SaveChangesAsync();
+        
+        // Refresh the list in the UI
+        AttributeSets.Add(newSet);
+
+        // Select and open the new set for editing
+        SelectedAttributeSet = newSet;
+        MainViewModel.CurrentEditor = await AttributeSetViewModel.CreateAsync(newSet.Id, this, _dialogService);
+    }
+
+    [RelayCommand]
+    private async Task DeleteAttributeSetAsync(AttributeSet? attributeSet)
+    {
+        if (attributeSet is null) return;
+
+        var confirmVm = new ConfirmationDialogViewModel
+        {
+            Title = "Confirm Deletion",
+            Message = $"Are you sure you want to delete the attribute set '{attributeSet.Name}' ({attributeSet.Id})? This will also remove all associated attribute values. This action cannot be undone."
+        };
+
+        var confirmed = await _dialogService.ShowConfirmationDialogAsync(confirmVm);
+
+        if (confirmed)
+        {
+            try
+            {
+                await using var context = new AttributeDatabaseContext();
+                await context.DeleteAttributeSetAsync(attributeSet.Id);
+
+                // If the deleted set was being edited, close the editor
+                if (MainViewModel.CurrentEditor is AttributeSetViewModel vm && vm.AttributeSet.Id == attributeSet.Id)
+                {
+                    MainViewModel.CurrentEditor = null;
+                }
+                
+                await RefreshAttributeSetsAsync();
+                ErrorMessage = $"Attribute set '{attributeSet.Name}' deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Error deleting attribute set: {ex.Message}";
+            }
+        }
+        else
+        {
+            ErrorMessage = "Deletion cancelled.";
+        }
     }
 
     [RelayCommand]
@@ -294,6 +379,23 @@ public partial class AttributeDatabaseViewModel : ObservableObject
         MainViewModel.CurrentEditor = new WelcomeViewModel();
     }
 
+    public async Task RefreshAttributeSetsAsync()
+    {
+        try
+        {
+            using var context = new AttributeDatabaseContext();
+            var sets = await context.AttributeSets.AsNoTracking().ToListAsync();
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                AttributeSets = new ObservableCollection<AttributeSet>(sets);
+            });
+        }
+        catch (Exception ex)
+        {
+            await Dispatcher.UIThread.InvokeAsync(() => ErrorMessage = $"Failed to refresh sets: {ex.Message}");
+        }
+    }
+
     [RelayCommand]
     private async Task DeleteCategoryAsync(AttributeCategoryViewModel? categoryVm)
     {
@@ -313,7 +415,7 @@ public partial class AttributeDatabaseViewModel : ObservableObject
             {
                 affectedValuesCount = await context.AttributeValues
                     .AsNoTracking()
-                    .CountAsync(v => attributeIds.Contains(v.AttributeType));
+                    .CountAsync(v => attributeIds.Contains(v.AttributeId));
             }
         }
 

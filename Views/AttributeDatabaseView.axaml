@@ -17,7 +17,19 @@
         <ScrollViewer>
             <StackPanel>
                 <!-- Attribute Sets Section -->
-                <Expander Header="Attribute Sets" IsExpanded="True">
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="{Binding LocalizationManager[AttributeDatabase_AttributeSets]}" VerticalAlignment="Center"/>
+                            <Button DockPanel.Dock="Right"
+                                    Command="{Binding CreateNewAttributeSetCommand}"
+                                    ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase_NewAttributeSet]}"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Width="20" Height="20">
+                                <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                            </Button>
+                        </DockPanel>
+                    </Expander.Header>
                     <ListBox ItemsSource="{Binding AttributeSets}"
                              SelectedItem="{Binding SelectedAttributeSet, Mode=TwoWay}"
                              Margin="5">
@@ -26,6 +38,13 @@
                                 <TextBlock Text="{Binding Name}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete Attribute Set"
+                                          Command="{Binding $parent[UserControl].DataContext.DeleteAttributeSetCommand}"
+                                          CommandParameter="{Binding $parent[ListBox].SelectedItem}"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                     </ListBox>
                 </Expander>
 
@@ -33,10 +52,10 @@
                 <Expander IsExpanded="True">
                     <Expander.Header>
                         <DockPanel LastChildFill="False">
-                            <TextBlock Text="Attributes" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding LocalizationManager[AttributeDatabase_Attributes]}" VerticalAlignment="Center"/>
                             <Button DockPanel.Dock="Right"
                                     Command="{Binding $parent[UserControl].DataContext.CreateNewCategoryCommand}"
-                                    ToolTip.Tip="New Category"
+                                    ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase_NewCategory]}"
                                     Background="Transparent" BorderThickness="0" Padding="0"
                                     Width="20" Height="20">
                                 <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />

@@ -200,3 +200,12 @@ D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\refint\JoyConfig.dll
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.pdb
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.genruntimeconfig.cache
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\ref\JoyConfig.dll
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.Resources.Strings.en-US.resources
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.Resources.Strings.zh-CN.resources
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.GenerateResource.cache
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\en-US\JoyConfig.resources.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\zh-CN\JoyConfig.resources.dll
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\en-US\JoyConfig.resources.cs
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\en-US\JoyConfig.resources.dll
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\zh-CN\JoyConfig.resources.cs
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\zh-CN\JoyConfig.resources.dll

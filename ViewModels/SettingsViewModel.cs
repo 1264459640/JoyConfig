@@ -9,9 +9,18 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.Services;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace JoyConfig.ViewModels
 {
+    public class SettingsPage
+    {
+        public string Key { get; set; }
+        public string DisplayName { get; set; }
+    }
+
     public partial class SettingsViewModel : EditorViewModelBase
     {
         private readonly string _settingsFilePath;
@@ -29,7 +38,7 @@ namespace JoyConfig.ViewModels
         private string _theme;
 
         [ObservableProperty]
-        private string _language;
+        private CultureInfo _selectedLanguage;
 
         [ObservableProperty]
         private bool _isAutosaveEnabled;
@@ -41,10 +50,10 @@ namespace JoyConfig.ViewModels
         private bool _loadLastDatabaseOnStartup;
 
         [ObservableProperty]
-        private ObservableCollection<string> _settingPages;
+        private ObservableCollection<SettingsPage> _settingPages;
 
         [ObservableProperty]
-        private string _selectedPage;
+        private SettingsPage _selectedPage;
 
         public SettingsViewModel(IDialogService dialogService, MainViewModel mainViewModel)
         {
@@ -57,16 +66,20 @@ namespace JoyConfig.ViewModels
             var appFolderPath = Path.Combine(appDataPath, "JoyConfig");
             Directory.CreateDirectory(appFolderPath); // Ensure the directory exists
             _settingsFilePath = Path.Combine(appFolderPath, "settings.json");
+            
             _appSettings = new AppSettings();
-            _theme = _appSettings.Theme;
-            _language = _appSettings.Language;
+            _theme = string.Empty;
+            
+            LoadSettings();
+            
+            _selectedLanguage = LocalizationManager.CurrentCulture;
 
-            _settingPages = new ObservableCollection<string>
+            _settingPages = new ObservableCollection<SettingsPage>
             {
-                "Database",
-                "Appearance",
-                "Editor Behavior",
-                "About"
+                new() { Key = "Database", DisplayName = LocalizationManager.Instance["Settings_Database"] ?? "Database" },
+                new() { Key = "Appearance", DisplayName = LocalizationManager.Instance["Settings_Appearance"] ?? "Appearance" },
+                new() { Key = "Editor Behavior", DisplayName = LocalizationManager.Instance["Settings_EditorBehavior"] ?? "Editor Behavior" },
+                new() { Key = "About", DisplayName = LocalizationManager.Instance["Settings_About"] ?? "About" }
             };
             _selectedPage = _settingPages[0];
 
@@ -89,7 +102,7 @@ namespace JoyConfig.ViewModels
             AttributeDatabasePath = _appSettings.AttributeDatabasePath;
             GameplayEffectDatabasePath = _appSettings.GameplayEffectDatabasePath;
             Theme = _appSettings.Theme;
-            Language = _appSettings.Language;
+            LocalizationManager.Instance.CurrentCulture = new CultureInfo(_appSettings.Language);
             IsAutosaveEnabled = _appSettings.IsAutosaveEnabled;
             AutosaveInterval = _appSettings.AutosaveInterval;
             LoadLastDatabaseOnStartup = _appSettings.LoadLastDatabaseOnStartup;
@@ -102,7 +115,7 @@ namespace JoyConfig.ViewModels
             _appSettings.AttributeDatabasePath = AttributeDatabasePath;
             _appSettings.GameplayEffectDatabasePath = GameplayEffectDatabasePath;
             _appSettings.Theme = Theme;
-            _appSettings.Language = Language;
+            _appSettings.Language = SelectedLanguage.Name;
             _appSettings.IsAutosaveEnabled = IsAutosaveEnabled;
             _appSettings.AutosaveInterval = AutosaveInterval;
             _appSettings.LoadLastDatabaseOnStartup = LoadLastDatabaseOnStartup;
@@ -138,8 +151,7 @@ namespace JoyConfig.ViewModels
                 return;
             }
 
-            var context = new AttributeDatabaseContext(AttributeDatabasePath);
-            var (isValid, errorMessage) = await context.ValidateDatabaseSchemaAsync();
+            var (isValid, errorMessage) = await AttributeDatabaseContext.ValidateDatabaseSchemaAsync(AttributeDatabasePath);
 
             if (!isValid)
             {
@@ -153,6 +165,15 @@ namespace JoyConfig.ViewModels
             // Reload the main view
             _mainViewModel.LoadAttributeDatabase();
             await _dialogService.ShowMessageBoxAsync("Success", "Attribute database loaded successfully.");
+        }
+        
+        partial void OnSelectedLanguageChanged(CultureInfo value)
+        {
+            if (value != null)
+            {
+                LocalizationManager.Instance.CurrentCulture = value;
+                SaveSettings();
+            }
         }
     }
 }

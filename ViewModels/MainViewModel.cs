@@ -24,9 +24,12 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string? _selectedWorkspace = "AttributeDatabase";
 
+    public LocalizationManager LocalizationManager { get; }
+
     public MainViewModel(IDialogService dialogService)
     {
         _dialogService = dialogService;
+        LocalizationManager = LocalizationManager.Instance;
         
         // Set database path
         Models.AttributeDatabase.AttributeDatabaseContext.DbPath = "Example/AttributeDatabase.db";
@@ -66,6 +69,7 @@ public partial class MainViewModel : ObservableObject
         SettingsViewModel = new SettingsViewModel(_dialogService, this);
         IsSettingsVisible = true;
         SelectedWorkspace = "Settings";
+        CurrentWorkspace = null;
     }
 
     public void LoadAttributeDatabase()

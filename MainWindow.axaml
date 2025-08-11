@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="JoyConfig.MainWindow"
         x:DataType="vm:MainViewModel"
-        Title="JoyConfig"
+        Title="{Binding LocalizationManager[AttributeDatabase]}"
         Icon="/public/Icon.png"
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
@@ -24,6 +24,9 @@
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="ToolTip.Placement" Value="Right"/>
+            <Setter Property="ToolTip.HorizontalOffset" Value="5"/>
+            <Setter Property="ToolTip.VerticalOffset" Value="0"/>
             <Setter Property="Template">
                 <ControlTemplate>
                     <Border Background="{TemplateBinding Background}"
@@ -81,6 +84,26 @@
         <Style Selector="Button.SidebarButton.selected PathIcon">
             <Setter Property="Foreground" Value="Blue"/>
         </Style>
+
+        <Style Selector="ToolTip">
+            <Setter Property="Background" Value="#4a4a4a"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#5c5c5c"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
     </Window.Styles>
     
     <Window.Resources>
@@ -93,7 +116,7 @@
 
     <Window.DataTemplates>
         <DataTemplate DataType="vm:WelcomeViewModel">
-            <TextBlock Text="Welcome to the Editor!"
+            <TextBlock Text="{Binding LocalizationManager[Main_Welcome]}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
         </DataTemplate>
@@ -132,17 +155,17 @@
 
         <!-- Activity Bar -->
         <StackPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" Background="#333333" Spacing="10" Margin="5">
-            <Button ToolTip.Tip="Attribute Database" Classes="SidebarButton"
+            <Button ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenAttributeDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}">
                 <PathIcon Data="M12,3C7.58,3 4,4.79 4,7V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V7C20,4.79 16.42,3 12,3M12,5C15.31,5 18,6.34 18,8C18,9.66 15.31,11 12,11C8.69,11 6,9.66 6,8C6,6.34 8.69,5 12,5M12,13C15.31,13 18,14.34 18,16C18,17.66 15.31,19 12,19C8.69,19 6,17.66 6,16C6,14.34 8.69,13 12,13Z" />
             </Button>
-            <Button ToolTip.Tip="Gameplay Effect Database" Classes="SidebarButton"
+            <Button ToolTip.Tip="{Binding LocalizationManager[GameplayEffectDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenGameplayEffectDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}">
                 <PathIcon Data="M19.22,7.22L18,6L16.78,7.22L18,8.44L19.22,7.22M12,2L9.5,5.5L6,2L2,6L5.5,9.5L2,12L6,16L9.5,12.5L12,16L16,12L12.5,9.5L16,6L12,2M18,9.5L14,13.5L18,17.5L22,13.5L18,9.5Z" />
             </Button>
-            <Button ToolTip.Tip="Settings" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
+            <Button ToolTip.Tip="{Binding LocalizationManager[Settings]}" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}">
                 <PathIcon Data="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8M12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14M10,22H14V19H10V22M19.03,7.39L20.45,5.97C20,5.46 19.54,5 19.03,4.55L17.62,5.97C16.07,4.74 14.12,4 12,4C9.88,4 7.93,4.74 6.38,5.97L4.97,4.55C4.46,5 4,5.46 3.55,5.97L4.97,7.39C3.74,8.94 3,10.88 3,13H5C5,11.5 5.5,10.1 6.34,9.03L7.76,10.45C7.25,11 6.81,11.6 6.45,12.25L5.28,11.08L3.86,12.5L5.28,13.92C5.79,14.85 6.45,15.69 7.2,16.45L5.79,17.86L7.2,19.28L8.62,17.86C9.55,18.62 10.71,19.13 12,19.35V22H14V19.35C15.29,19.13 16.45,18.62 17.38,17.86L18.8,19.28L20.21,17.86L18.8,16.45C19.55,15.69 20.21,14.85 20.72,13.92L22.14,12.5L20.72,11.08L19.55,12.25C19.19,11.6 18.75,11 18.24,10.45L19.66,9.03C20.5,10.1 21,11.5 21,13H23C23,10.88 22.26,8.94 21.03,7.39Z" />
             </Button>
@@ -170,7 +193,7 @@
                         <!-- Primary Sidebar -->
                         <SplitView.Pane>
                             <DockPanel>
-                                <TextBlock Text="Workspace"
+                                <TextBlock Text="{Binding LocalizationManager[Main_Workspace]}"
                                            FontSize="18"
                                            FontWeight="Bold"
                                            DockPanel.Dock="Top"
@@ -182,7 +205,7 @@
                         <!-- Editor Area -->
                         <SplitView.Content>
                             <DockPanel>
-                                <TextBlock Text="Editor"
+                                <TextBlock Text="{Binding LocalizationManager[Main_Editor]}"
                                            FontSize="18"
                                            FontWeight="Bold"
                                            DockPanel.Dock="Top"

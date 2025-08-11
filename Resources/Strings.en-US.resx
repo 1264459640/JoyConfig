@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Greeting" xml:space="preserve">
+    <value>Hello, World!</value>
+  </data>
+  <data name="AttributeDatabase" xml:space="preserve">
+    <value>Attribute Database</value>
+  </data>
+  <data name="GameplayEffectDatabase" xml:space="preserve">
+    <value>Gameplay Effect Database</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_AttributeDatabasePath" xml:space="preserve">
+    <value>Attribute Database Path:</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="Settings_GameplayEffectDatabasePath" xml:space="preserve">
+    <value>Gameplay Effect Database Path:</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="Settings_EnableAutosave" xml:space="preserve">
+    <value>Enable Autosave</value>
+  </data>
+  <data name="Settings_AutosaveInterval" xml:space="preserve">
+    <value>Autosave Interval (minutes):</value>
+  </data>
+  <data name="Settings_LoadLastDatabaseOnStartup" xml:space="preserve">
+    <value>Load last database on startup</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Attribute Database Editor v1.0.0</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>Copyright © 2024 Your Name</value>
+  </data>
+  <data name="SelectAttribute_Title" xml:space="preserve">
+    <value>Select an Attribute</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Category_Name" xml:space="preserve">
+    <value>Category Name:</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Attribute_ID" xml:space="preserve">
+    <value>ID:</value>
+  </data>
+  <data name="Attribute_Category" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="Attribute_Description" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="Attribute_ReferencedBy" xml:space="preserve">
+    <value>Referenced By</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AttributeValue_BaseValue" xml:space="preserve">
+    <value>Base Value:</value>
+  </data>
+  <data name="AttributeValue_Range" xml:space="preserve">
+    <value>Range:</value>
+  </data>
+  <data name="AttributeValue_Min" xml:space="preserve">
+    <value>Min:</value>
+  </data>
+  <data name="AttributeValue_Max" xml:space="preserve">
+    <value>Max:</value>
+  </data>
+  <data name="AttributeValue_Comment" xml:space="preserve">
+    <value>Comment:</value>
+  </data>
+  <data name="AttributeSet_AddAttribute" xml:space="preserve">
+    <value>Add Attribute</value>
+  </data>
+  <data name="AttributeSet_RemoveAttribute" xml:space="preserve">
+    <value>Remove Attribute</value>
+  </data>
+  <data name="AttributeSet_Details" xml:space="preserve">
+    <value>Attribute Set Details</value>
+  </data>
+  <data name="AttributeSet_ID" xml:space="preserve">
+    <value>ID:</value>
+  </data>
+  <data name="AttributeSet_Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="AttributeSet_Description" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="AttributeSet_AttributeValues" xml:space="preserve">
+    <value>Attribute Values</value>
+  </data>
+  <data name="AttributeDatabase_AttributeSets" xml:space="preserve">
+    <value>Attribute Sets</value>
+  </data>
+  <data name="AttributeDatabase_NewAttributeSet" xml:space="preserve">
+    <value>New Attribute Set</value>
+  </data>
+  <data name="AttributeDatabase_Attributes" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
+  <data name="AttributeDatabase_NewCategory" xml:space="preserve">
+    <value>New Category</value>
+  </data>
+  <data name="Main_Welcome" xml:space="preserve">
+    <value>Welcome to the Editor!</value>
+  </data>
+  <data name="Main_Workspace" xml:space="preserve">
+    <value>Workspace</value>
+  </data>
+  <data name="Main_Editor" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="Settings_Database" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_EditorBehavior" xml:space="preserve">
+    <value>Editor Behavior</value>
+  </data>
+  <data name="Settings_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+</root>

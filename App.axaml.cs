@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using JoyConfig.Services;
 using JoyConfig.ViewModels;
 using System;
+using System.Globalization;
 using Material.Styles.Themes;
 using Material.Styles.Themes.Base;
 
@@ -25,6 +26,10 @@ public partial class App : Application
         {
             Console.WriteLine("ApplicationLifetime is IClassicDesktopStyleApplicationLifetime.");
             
+            // Ensure LocalizationManager instance is created and culture is set
+            var localizationManager = LocalizationManager.Instance;
+            localizationManager.CurrentCulture = CultureInfo.CurrentUICulture;
+
             // Create services
             var dialogService = new DialogService();
 

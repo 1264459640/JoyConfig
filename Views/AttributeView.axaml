@@ -10,8 +10,8 @@
     <DockPanel>
         <material:Card DockPanel.Dock="Top" Margin="10,10,10,0">
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="Save" Command="{Binding SaveCommand}" Classes="Filled"/>
-                <Button Content="Delete" Command="{Binding DeleteCommand}" Classes="Outlined" Foreground="Red" BorderBrush="Red"/>
+                <Button Content="{Binding LocalizationManager[Common_Save]}" Command="{Binding SaveCommand}" Classes="Filled"/>
+                <Button Content="{Binding LocalizationManager[Common_Delete]}" Command="{Binding DeleteCommand}" Classes="Outlined" Foreground="Red" BorderBrush="Red"/>
             </StackPanel>
         </material:Card>
 
@@ -32,16 +32,16 @@
 
                     <material:Card Padding="15">
                         <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10">
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ID:" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LocalizationManager[Attribute_ID]}" VerticalAlignment="Center"/>
                             <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,*">
                                 <TextBlock Grid.Column="0" Text="{Binding CategoryPrefix}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                                 <TextBox Grid.Column="1" Text="{Binding IdSuffix, Mode=TwoWay}"/>
                             </Grid>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Category:" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding LocalizationManager[Attribute_Category]}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Attribute.Category}" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Description:" VerticalAlignment="Top"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding LocalizationManager[Attribute_Description]}" VerticalAlignment="Top"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Attribute.Description}" 
                                      TextWrapping="Wrap" 
                                      AcceptsReturn="True" 
@@ -54,7 +54,7 @@
             <!-- Referencing AttributeSets -->
             <material:Card Grid.Column="1" Padding="10">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="Referenced By" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock DockPanel.Dock="Top" Text="{Binding LocalizationManager[Attribute_ReferencedBy]}" FontWeight="Bold" Margin="0,0,0,10"/>
                     <ListBox ItemsSource="{Binding ReferencingAttributeSets}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

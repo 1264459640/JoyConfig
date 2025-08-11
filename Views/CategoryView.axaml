@@ -10,7 +10,7 @@
     <DockPanel>
         <material:Card DockPanel.Dock="Top" Margin="10,10,10,0">
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="Save" Command="{Binding SaveCommand}" Classes="Filled"/>
+                <Button Content="{Binding LocalizationManager[Common_Save]}" Command="{Binding SaveCommand}" Classes="Filled"/>
             </StackPanel>
         </material:Card>
 
@@ -28,7 +28,7 @@
 
             <material:Card Grid.Row="1" Padding="15">
                 <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto" RowSpacing="10" ColumnSpacing="10">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Category Name:" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LocalizationManager[Category_Name]}" VerticalAlignment="Center"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CategoryName, Mode=TwoWay}"/>
                 </Grid>
             </material:Card>

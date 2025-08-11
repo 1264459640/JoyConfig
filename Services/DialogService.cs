@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
+using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.ViewModels;
 using JoyConfig.Views;
 
@@ -71,6 +72,32 @@ public class DialogService : IDialogService
             // After the dialog is closed, we return the result that the VM has stored.
             Console.WriteLine($"[DialogService] Input dialog closed. Result: '{viewModel.DialogResult}'");
             return viewModel.DialogResult;
+        }
+
+        return null;
+    }
+
+    public async Task<JoyConfig.Models.AttributeDatabase.Attribute?> ShowSelectAttributeDialogAsync(SelectAttributeViewModel viewModel)
+    {
+        var dialog = new Window
+        {
+            Title = "Select Attribute",
+            Content = new SelectAttributeView
+            {
+                DataContext = viewModel
+            },
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Width = 400,
+            Height = 500
+        };
+
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow is not null)
+        {
+            var result = await dialog.ShowDialog<bool>(desktop.MainWindow);
+            if (result)
+            {
+                return viewModel.SelectedAttribute;
+            }
         }
 
         return null;

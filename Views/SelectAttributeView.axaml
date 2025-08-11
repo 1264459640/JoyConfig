@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
+             x:Class="JoyConfig.Views.SelectAttributeView"
+             x:DataType="vm:SelectAttributeViewModel">
+    <DockPanel Margin="15">
+        <TextBlock DockPanel.Dock="Top" Text="{Binding LocalizationManager[SelectAttribute_Title]}" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+        
+        <ListBox ItemsSource="{Binding AvailableAttributes}"
+                 SelectedItem="{Binding SelectedAttribute, Mode=TwoWay}"
+                 Margin="0,0,0,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Id}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Category}" Foreground="Gray"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Content="{Binding LocalizationManager[Common_OK]}" IsDefault="True" Click="OkButton_OnClick"/>
+            <Button Content="{Binding LocalizationManager[Common_Cancel]}" IsCancel="True" Click="CancelButton_OnClick"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

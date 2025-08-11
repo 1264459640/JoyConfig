@@ -51,14 +51,16 @@ public partial class AttributeDatabaseContext : DbContext
     {
         modelBuilder.Entity<AttributeValue>(entity =>
         {
-            entity.HasIndex(e => new { e.AttributeSetId, e.AttributeType }, "IX_AttributeValues_AttributeSetId_AttributeType").IsUnique();
+            entity.Property(e => e.AttributeId).HasColumnName("AttributeType");
+            
+            entity.HasIndex(e => new { e.AttributeSetId, e.AttributeId }, "IX_AttributeValues_AttributeSetId_AttributeType").IsUnique();
 
             entity.Property(e => e.MaxValue).HasDefaultValue(999999.0);
             entity.Property(e => e.MinValue).HasDefaultValue(-999999.0);
 
             entity.HasOne(d => d.AttributeSet).WithMany(p => p.AttributeValues).HasForeignKey(d => d.AttributeSetId);
 
-            entity.HasOne(d => d.AttributeTypeNavigation).WithMany(p => p.AttributeValues).HasForeignKey(d => d.AttributeType);
+            entity.HasOne(d => d.Attribute).WithMany(p => p.AttributeValues).HasForeignKey(d => d.AttributeId);
         });
 
         modelBuilder.Entity<VBasicAttribute>(entity =>
@@ -108,7 +110,7 @@ public partial class AttributeDatabaseContext : DbContext
 
         var query = from attrValue in AttributeValues
             join attrSet in AttributeSets on attrValue.AttributeSetId equals attrSet.Id
-            where attributeIds.Contains(attrValue.AttributeType)
+            where attributeIds.Contains(attrValue.AttributeId)
             select attrSet;
 
         return await query.Distinct().ToListAsync();
@@ -156,7 +158,7 @@ public partial class AttributeDatabaseContext : DbContext
         Console.WriteLine($"[DB] Preview: Found {affectedIds.Count} affected attributes.");
 
         preview.AffectedAttributeSets = await GetReferencingAttributeSetsAsync(affectedIds);
-        preview.AffectedValueCount = await AttributeValues.AsNoTracking().CountAsync(v => affectedIds.Contains(v.AttributeType));
+        preview.AffectedValueCount = await AttributeValues.AsNoTracking().CountAsync(v => affectedIds.Contains(v.AttributeId));
         Console.WriteLine($"[DB] Preview: Found {preview.AffectedAttributeSets.Count} referencing sets and {preview.AffectedValueCount} values.");
 
         // Final validation: Check if any new IDs would conflict
@@ -214,10 +216,17 @@ public partial class AttributeDatabaseContext : DbContext
             foreach (var oldId in idMap.Keys)
             {
                 var newId = idMap[oldId];
+                // Use the correct column name 'AttributeType' in raw SQL
                 await Database.ExecuteSqlInterpolatedAsync(@$"
                     UPDATE AttributeValues 
                     SET AttributeType = {newId} 
                     WHERE AttributeType = {oldId};");
+                
+                // Also update the denormalized AttributeCategory
+                await Database.ExecuteSqlInterpolatedAsync(@$"
+                    UPDATE AttributeValues
+                    SET AttributeCategory = {preview.NewCategory}
+                    WHERE AttributeType = {newId};");
             }
 
             // Step 3: Delete old parent records (Attributes)
@@ -253,7 +262,7 @@ public partial class AttributeDatabaseContext : DbContext
 
                 // Find all referencing AttributeValues for these attributes
                 var valuesToDelete = await AttributeValues
-                    .Where(v => attributeIds.Contains(v.AttributeType))
+                    .Where(v => attributeIds.Contains(v.AttributeId))
                     .ToListAsync();
                 
                 // Remove children first
@@ -282,7 +291,8 @@ public partial class AttributeDatabaseContext : DbContext
         await using var transaction = await Database.BeginTransactionAsync();
         try
         {
-            // Step 1: Delete all referencing AttributeValues
+        // Step 1: Delete all referencing AttributeValues
+            // Use the correct column name 'AttributeType' in raw SQL
             await Database.ExecuteSqlInterpolatedAsync(@$"
                 DELETE FROM AttributeValues 
                 WHERE AttributeType = {attributeId};");
@@ -301,11 +311,41 @@ public partial class AttributeDatabaseContext : DbContext
         }
     }
 
-    public async Task<(bool IsValid, string? ErrorMessage)> ValidateDatabaseSchemaAsync()
+    public async Task DeleteAttributeSetAsync(string attributeSetId)
     {
+        await using var transaction = await Database.BeginTransactionAsync();
         try
         {
-            var connection = Database.GetDbConnection();
+            // Step 1: Delete all AttributeValues associated with the AttributeSet
+            await Database.ExecuteSqlInterpolatedAsync(@$"
+                DELETE FROM AttributeValues 
+                WHERE AttributeSetId = {attributeSetId};");
+
+            // Step 2: Delete the AttributeSet itself
+            await Database.ExecuteSqlInterpolatedAsync(@$"
+                DELETE FROM AttributeSets 
+                WHERE Id = {attributeSetId};");
+
+            await transaction.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception($"A transactional error occurred while deleting the attribute set. The operation was rolled back. Details: {ex.Message}", ex);
+        }
+    }
+
+    public static async Task<(bool IsValid, string? ErrorMessage)> ValidateDatabaseSchemaAsync(string? dbPath)
+    {
+        if (string.IsNullOrWhiteSpace(dbPath) || !System.IO.File.Exists(dbPath))
+        {
+            return (false, "Database file path is not valid.");
+        }
+
+        var context = new AttributeDatabaseContext(dbPath);
+        try
+        {
+            var connection = context.Database.GetDbConnection();
             await connection.OpenAsync();
 
             var requiredTables = new[] { "Attributes", "AttributeSets", "AttributeValues" };
@@ -344,7 +384,7 @@ public partial class AttributeDatabaseContext : DbContext
         }
         finally
         {
-            await Database.CloseConnectionAsync();
+            await context.Database.CloseConnectionAsync();
         }
     }
 }
