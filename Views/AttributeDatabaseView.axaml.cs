@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using JoyConfig.ViewModels;
+using JoyConfig.Application.ViewModels;
 
 namespace JoyConfig.Views;
 

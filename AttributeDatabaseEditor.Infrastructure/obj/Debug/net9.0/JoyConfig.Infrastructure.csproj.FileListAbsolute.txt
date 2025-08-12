@@ -1,0 +1,15 @@
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\bin\Debug\net9.0\JoyConfig.Infrastructure.deps.json
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\bin\Debug\net9.0\JoyConfig.Infrastructure.dll
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\bin\Debug\net9.0\JoyConfig.Infrastructure.pdb
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\bin\Debug\net9.0\JoyConfig.Core.dll
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\bin\Debug\net9.0\JoyConfig.Core.pdb
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.csproj.AssemblyReference.cache
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.csproj.CoreCompileInputs.cache
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.sourcelink.json
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfi.612E7F66.Up2Date
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.dll
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\refint\JoyConfig.Infrastructure.dll
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\JoyConfig.Infrastructure.pdb
+D:\GodotProjects\AttributeDatabaseEditor\AttributeDatabaseEditor.Infrastructure\obj\Debug\net9.0\ref\JoyConfig.Infrastructure.dll

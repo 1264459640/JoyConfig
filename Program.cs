@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
-using JoyConfig.Models.Settings;
+using JoyConfig.Core.Models.Settings;
 
 namespace JoyConfig;
 
@@ -15,6 +15,7 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        AppContainer.Configure();
         LoadAndSetLanguage();
         Console.WriteLine("Starting application...");
         try

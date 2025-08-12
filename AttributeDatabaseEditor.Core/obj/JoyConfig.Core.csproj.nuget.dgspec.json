@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.Core\\JoyConfig.Core.csproj": {}
+  },
+  "projects": {
+    "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.Core\\JoyConfig.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.Core\\JoyConfig.Core.csproj",
+        "projectName": "JoyConfig.Core",
+        "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.Core\\JoyConfig.Core.csproj",
+        "packagesPath": "C:\\Users\\BananaPeel\\.nuget\\packages\\",
+        "outputPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "C:\\Users\\BananaPeel\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Avalonia": {
+              "target": "Package",
+              "version": "[11.3.3, )"
+            },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

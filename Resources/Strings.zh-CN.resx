@@ -107,6 +107,9 @@
   <data name="Common_Save" xml:space="preserve">
     <value>保存</value>
   </data>
+  <data name="Common_ChangeID" xml:space="preserve">
+    <value>修改ID</value>
+  </data>
   <data name="Category_Name" xml:space="preserve">
     <value>类别名称：</value>
   </data>
@@ -143,6 +146,9 @@
   <data name="AttributeValue_Comment" xml:space="preserve">
     <value>注释：</value>
   </data>
+  <data name="AttributeSet_SaveAsTemplate" xml:space="preserve">
+    <value>另存为模板</value>
+  </data>
   <data name="AttributeSet_AddAttribute" xml:space="preserve">
     <value>添加属性</value>
   </data>
@@ -169,6 +175,9 @@
   </data>
   <data name="AttributeDatabase_NewAttributeSet" xml:space="preserve">
     <value>新建属性集</value>
+  </data>
+  <data name="AttributeDatabase_CreateFromTemplate" xml:space="preserve">
+    <value>从模板创建</value>
   </data>
   <data name="AttributeDatabase_Attributes" xml:space="preserve">
     <value>属性</value>

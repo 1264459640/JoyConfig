@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>JoyConfig.Application</RootNamespace>
+    <AssemblyName>JoyConfig.Application</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Avalonia" Version="11.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AttributeDatabaseEditor.Core\JoyConfig.Core.csproj" />
+    <ProjectReference Include="..\AttributeDatabaseEditor.Infrastructure\JoyConfig.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

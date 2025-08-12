@@ -48,6 +48,7 @@
 
 ## Views/AttributeSetView.axaml
 - "Save" -> Common_Save
+- "Save as Template" -> AttributeSet_SaveAsTemplate
 - "Add Attribute" -> AttributeSet_AddAttribute
 - "Remove Attribute" -> AttributeSet_RemoveAttribute
 - "Attribute Set Details" -> AttributeSet_Details
@@ -59,6 +60,7 @@
 ## Views/AttributeDatabaseView.axaml
 - "Attribute Sets" -> AttributeDatabase_AttributeSets
 - "New Attribute Set" -> AttributeDatabase_NewAttributeSet
+- "Create from Template" -> AttributeDatabase_CreateFromTemplate
 - "Attributes" -> AttributeDatabase_Attributes
 - "New Category" -> AttributeDatabase_NewCategory
 

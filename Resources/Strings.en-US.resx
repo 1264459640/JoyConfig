@@ -107,6 +107,9 @@
   <data name="Common_Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Common_ChangeID" xml:space="preserve">
+    <value>Change ID</value>
+  </data>
   <data name="Category_Name" xml:space="preserve">
     <value>Category Name:</value>
   </data>
@@ -143,6 +146,9 @@
   <data name="AttributeValue_Comment" xml:space="preserve">
     <value>Comment:</value>
   </data>
+  <data name="AttributeSet_SaveAsTemplate" xml:space="preserve">
+    <value>Save as Template</value>
+  </data>
   <data name="AttributeSet_AddAttribute" xml:space="preserve">
     <value>Add Attribute</value>
   </data>
@@ -169,6 +175,9 @@
   </data>
   <data name="AttributeDatabase_NewAttributeSet" xml:space="preserve">
     <value>New Attribute Set</value>
+  </data>
+  <data name="AttributeDatabase_CreateFromTemplate" xml:space="preserve">
+    <value>Create from Template</value>
   </data>
   <data name="AttributeDatabase_Attributes" xml:space="preserve">
     <value>Attributes</value>

@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:JoyConfig.Application.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="150"
+        x:Class="JoyConfig.Views.SelectTemplateDialog"
+        x:DataType="vm:SelectTemplateDialogViewModel"
+        Title="Select Template"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height">
+
+    <Design.DataContext>
+        <vm:SelectTemplateDialogViewModel/>
+    </Design.DataContext>
+
+    <StackPanel Spacing="15" Margin="20">
+        <TextBlock Text="Please select a template to create the new AttributeSet from:"/>
+        <ComboBox ItemsSource="{Binding Templates}"
+                  SelectedItem="{Binding SelectedTemplate}"
+                  HorizontalAlignment="Stretch"/>
+        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+            <Button Content="OK" Click="OkButton_OnClick" IsDefault="True"/>
+            <Button Content="Cancel" Click="CancelButton_OnClick" IsCancel="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
