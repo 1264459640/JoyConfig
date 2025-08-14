@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>Configuration\app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <RootNamespace>JoyConfig.UI</RootNamespace>
+    <AssemblyName>JoyConfig.UI</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.3" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Material.Avalonia" Version="3.7.2" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JoyConfig.Base\JoyConfig.Base.csproj" />
+    <ProjectReference Include="..\JoyConfig.Application\JoyConfig.Application.csproj" />
+    <ProjectReference Include="..\JoyConfig.Infrastructure\JoyConfig.Infrastructure.csproj" />
+    <ProjectReference Include="..\JoyConfig.Application.Abstract\JoyConfig.Application.Abstract.csproj" />
+    <ProjectReference Include="..\JoyConfig.UI.Abstract\JoyConfig.UI.Abstract.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.axaml" />
+    <AvaloniaResource Include="UI\**\*.axaml" />
+    <AvaloniaResource Include="Assets\**\*" />
+    <Compile Update="UI\**\*.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

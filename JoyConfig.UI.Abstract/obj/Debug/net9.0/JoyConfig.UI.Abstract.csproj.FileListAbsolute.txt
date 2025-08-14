@@ -1,0 +1,12 @@
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\bin\Debug\net9.0\JoyConfig.UI.Abstract.deps.json
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\bin\Debug\net9.0\JoyConfig.UI.Abstract.dll
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\bin\Debug\net9.0\JoyConfig.UI.Abstract.pdb
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.GeneratedMSBuildEditorConfig.editorconfig
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.AssemblyInfoInputs.cache
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.AssemblyInfo.cs
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.csproj.CoreCompileInputs.cache
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.sourcelink.json
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.dll
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\refint\JoyConfig.UI.Abstract.dll
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\JoyConfig.UI.Abstract.pdb
+D:\GodotProjects\AttributeDatabaseEditor\JoyConfig.UI.Abstract\obj\Debug\net9.0\ref\JoyConfig.UI.Abstract.dll

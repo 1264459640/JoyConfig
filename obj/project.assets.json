@@ -2,39 +2,6 @@
   "version": 3,
   "targets": {
     "net9.0": {
-      "Autofac/8.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Diagnostics.DiagnosticSource": "7.0.2"
-        },
-        "compile": {
-          "lib/net8.0/Autofac.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Autofac.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Autofac.Extensions.DependencyInjection/9.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Autofac": "8.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/Autofac.Extensions.DependencyInjection.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Autofac.Extensions.DependencyInjection.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "Avalonia/11.3.3": {
         "type": "package",
         "dependencies": {
@@ -460,6 +427,24 @@
             "assetType": "native",
             "rid": "win-x86"
           }
+        }
+      },
+      "Material.Avalonia/3.7.2": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.1.0"
+        },
+        "compile": {
+          "lib/net8.0/Material.Avalonia.dll": {},
+          "lib/net8.0/Material.Colors.dll": {},
+          "lib/net8.0/Material.Ripple.dll": {},
+          "lib/net8.0/Material.Styles.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Material.Avalonia.dll": {},
+          "lib/net8.0/Material.Colors.dll": {},
+          "lib/net8.0/Material.Ripple.dll": {},
+          "lib/net8.0/Material.Styles.dll": {}
         }
       },
       "MicroCom.Runtime/0.11.0": {
@@ -1007,22 +992,6 @@
           "lib/net6.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
       },
-      "System.Diagnostics.DiagnosticSource/7.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/net7.0/System.Diagnostics.DiagnosticSource.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net7.0/System.Diagnostics.DiagnosticSource.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
       "System.IO.Pipelines/8.0.0": {
         "type": "package",
         "compile": {
@@ -1079,52 +1048,6 @@
     }
   },
   "libraries": {
-    "Autofac/8.0.0": {
-      "sha512": "qxVqJcl3fixxa5aZc9TmIuYTwooI9GCL5RzfUiTZtTlbAF3NcWz7bPeEyJEAyS/0qGhSyGnXeku2eiu/7L+3qw==",
-      "type": "package",
-      "path": "autofac/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "autofac.8.0.0.nupkg.sha512",
-        "autofac.nuspec",
-        "icon.png",
-        "lib/net6.0/Autofac.dll",
-        "lib/net6.0/Autofac.xml",
-        "lib/net7.0/Autofac.dll",
-        "lib/net7.0/Autofac.xml",
-        "lib/net8.0/Autofac.dll",
-        "lib/net8.0/Autofac.xml",
-        "lib/netstandard2.0/Autofac.dll",
-        "lib/netstandard2.0/Autofac.xml",
-        "lib/netstandard2.1/Autofac.dll",
-        "lib/netstandard2.1/Autofac.xml"
-      ]
-    },
-    "Autofac.Extensions.DependencyInjection/9.0.0": {
-      "sha512": "tf+//4MBola256qaaVQqQ6tx2R57S8A8BFekRWNpHkpSFzRBPkU+/fEDUSrCjqldK/B2zRoDbsMcQmYy3PYGWg==",
-      "type": "package",
-      "path": "autofac.extensions.dependencyinjection/9.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "autofac.extensions.dependencyinjection.9.0.0.nupkg.sha512",
-        "autofac.extensions.dependencyinjection.nuspec",
-        "icon.png",
-        "lib/net6.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net6.0/Autofac.Extensions.DependencyInjection.xml",
-        "lib/net7.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net7.0/Autofac.Extensions.DependencyInjection.xml",
-        "lib/net8.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net8.0/Autofac.Extensions.DependencyInjection.xml",
-        "lib/netstandard2.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.0/Autofac.Extensions.DependencyInjection.xml",
-        "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.xml"
-      ]
-    },
     "Avalonia/11.3.3": {
       "sha512": "JEYVWn6wMtgfcF4EdwlENvmp9V2axpR3uJ/t4c9h4Xz0M/hvLQx5djp36peq8IA2LICjHrP7QMtVozmlC0aDWg==",
       "type": "package",
@@ -1714,6 +1637,27 @@
         "runtimes/win-arm64/native/libHarfBuzzSharp.dll",
         "runtimes/win-x64/native/libHarfBuzzSharp.dll",
         "runtimes/win-x86/native/libHarfBuzzSharp.dll"
+      ]
+    },
+    "Material.Avalonia/3.7.2": {
+      "sha512": "a3P7hL0YFJMf1oXtI4xQrCh9m8KlmdhBEZ+NG8vJNaS7vbqUWFlWcTmrDAgiXvoyHTHlqY/VkElzDjJ6FVzibg==",
+      "type": "package",
+      "path": "material.avalonia/3.7.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "FavIcon.png",
+        "README.md",
+        "lib/net8.0/Material.Avalonia.dll",
+        "lib/net8.0/Material.Colors.dll",
+        "lib/net8.0/Material.Ripple.dll",
+        "lib/net8.0/Material.Styles.dll",
+        "lib/netstandard2.0/Material.Avalonia.dll",
+        "lib/netstandard2.0/Material.Colors.dll",
+        "lib/netstandard2.0/Material.Ripple.dll",
+        "lib/netstandard2.0/Material.Styles.dll",
+        "material.avalonia.3.7.2.nupkg.sha512",
+        "material.avalonia.nuspec"
       ]
     },
     "MicroCom.Runtime/0.11.0": {
@@ -2453,33 +2397,6 @@
         "sqlitepclraw.provider.e_sqlite3.nuspec"
       ]
     },
-    "System.Diagnostics.DiagnosticSource/7.0.2": {
-      "sha512": "hYr3I9N9811e0Bjf2WNwAGGyTuAFbbTgX1RPLt/3Wbm68x3IGcX5Cl75CMmgT6WlNwLQ2tCCWfqYPpypjaf2xA==",
-      "type": "package",
-      "path": "system.diagnostics.diagnosticsource/7.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Diagnostics.DiagnosticSource.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Diagnostics.DiagnosticSource.targets",
-        "lib/net462/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net462/System.Diagnostics.DiagnosticSource.xml",
-        "lib/net6.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net6.0/System.Diagnostics.DiagnosticSource.xml",
-        "lib/net7.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/net7.0/System.Diagnostics.DiagnosticSource.xml",
-        "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
-        "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.xml",
-        "system.diagnostics.diagnosticsource.7.0.2.nupkg.sha512",
-        "system.diagnostics.diagnosticsource.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "System.IO.Pipelines/8.0.0": {
       "sha512": "FHNOatmUq0sqJOkTx+UF/9YK1f180cnW5FVqnQMvYUN0elp6wFzbtPSiqbo1/ru8ICp43JM1i7kKkk6GsNGHlA==",
       "type": "package",
@@ -2619,15 +2536,13 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Autofac.Extensions.DependencyInjection >= 9.0.0",
       "Avalonia >= 11.3.3",
       "Avalonia.Controls.DataGrid >= 11.3.3",
       "Avalonia.Desktop >= 11.3.3",
       "Avalonia.Fonts.Inter >= 11.3.3",
       "Avalonia.Themes.Fluent >= 11.3.3",
       "CommunityToolkit.Mvvm >= 8.4.0",
-      "D:\\GodotProjects\\AttributeDatabaseEditor.Application\\JoyConfig.Application.csproj",
-      "D:\\GodotProjects\\AttributeDatabaseEditor.Infrastructure\\JoyConfig.Infrastructure.csproj",
+      "Material.Avalonia >= 3.7.2",
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.8"
     ]
   },
@@ -2637,13 +2552,12 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GodotProjects\\AttributeDatabaseEditor\\JoyConfig.csproj",
-      "projectName": "JoyConfig",
-      "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\JoyConfig.csproj",
+      "projectUniqueName": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.csproj",
+      "projectName": "AttributeDatabaseEditor",
+      "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\AttributeDatabaseEditor.csproj",
       "packagesPath": "C:\\Users\\BananaPeel\\.nuget\\packages\\",
       "outputPath": "D:\\GodotProjects\\AttributeDatabaseEditor\\obj\\",
       "projectStyle": "PackageReference",
-      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
         "C:\\Users\\BananaPeel\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
@@ -2656,14 +2570,7 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {
-            "D:\\GodotProjects\\AttributeDatabaseEditor.Application\\JoyConfig.Application.csproj": {
-              "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor.Application\\JoyConfig.Application.csproj"
-            },
-            "D:\\GodotProjects\\AttributeDatabaseEditor.Infrastructure\\JoyConfig.Infrastructure.csproj": {
-              "projectPath": "D:\\GodotProjects\\AttributeDatabaseEditor.Infrastructure\\JoyConfig.Infrastructure.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -2675,16 +2582,13 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
-          "Autofac.Extensions.DependencyInjection": {
-            "target": "Package",
-            "version": "[9.0.0, )"
-          },
           "Avalonia": {
             "target": "Package",
             "version": "[11.3.3, )"
@@ -2708,6 +2612,10 @@
           "CommunityToolkit.Mvvm": {
             "target": "Package",
             "version": "[8.4.0, )"
+          },
+          "Material.Avalonia": {
+            "target": "Package",
+            "version": "[3.7.2, )"
           },
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
@@ -2733,25 +2641,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'D:\\GodotProjects\\AttributeDatabaseEditor.Application\\JoyConfig.Application.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "D:\\GodotProjects\\AttributeDatabaseEditor.Application\\JoyConfig.Application.csproj",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    },
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'D:\\GodotProjects\\AttributeDatabaseEditor.Infrastructure\\JoyConfig.Infrastructure.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "D:\\GodotProjects\\AttributeDatabaseEditor.Infrastructure\\JoyConfig.Infrastructure.csproj",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  }
 }

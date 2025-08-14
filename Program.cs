@@ -1,11 +1,7 @@
-﻿using Avalonia;
+using Avalonia;
 using System;
-using System.Globalization;
-using System.IO;
-using System.Text.Json;
-using JoyConfig.Core.Models.Settings;
 
-namespace JoyConfig;
+namespace AttributeDatabaseEditor;
 
 class Program
 {
@@ -15,9 +11,6 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        AppContainer.Configure();
-        LoadAndSetLanguage();
-        Console.WriteLine("Starting application...");
         try
         {
             BuildAvaloniaApp()
@@ -27,33 +20,6 @@ class Program
         {
             Console.WriteLine("Error starting application:");
             Console.WriteLine(e.ToString());
-        }
-        Console.WriteLine("Application stopped.");
-    }
-
-    private static void LoadAndSetLanguage()
-    {
-        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var appFolderPath = Path.Combine(appDataPath, "JoyConfig");
-        var settingsFilePath = Path.Combine(appFolderPath, "settings.json");
-
-        if (!File.Exists(settingsFilePath)) return;
-
-        var json = File.ReadAllText(settingsFilePath);
-        var appSettings = JsonSerializer.Deserialize<AppSettings>(json);
-        if (appSettings != null && !string.IsNullOrEmpty(appSettings.Language))
-        {
-            try
-            {
-                var culture = new CultureInfo(appSettings.Language);
-                CultureInfo.CurrentCulture = culture;
-                CultureInfo.CurrentUICulture = culture;
-            }
-            catch (CultureNotFoundException)
-            {
-                // Handle invalid language string in settings
-                Console.WriteLine($"Invalid language code in settings: {appSettings.Language}");
-            }
         }
     }
 

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>JoyConfig.Application</RootNamespace>
+    <AssemblyName>JoyConfig.Application</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Avalonia" Version="11.3.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JoyConfig.Base\JoyConfig.Base.csproj" />
+    <ProjectReference Include="..\JoyConfig.Infrastructure\JoyConfig.Infrastructure.csproj" />
+    <ProjectReference Include="..\JoyConfig.Application.Abstract\JoyConfig.Application.Abstract.csproj" />
+
+  </ItemGroup>
+
+</Project>

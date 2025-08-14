@@ -1,0 +1,230 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:JoyConfig.Application.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:JoyConfig.Views"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="JoyConfig.UI.MainWindow"
+        Title="JoyConfig - 属性数据库编辑器">
+    
+    <Design.DataContext>
+        <vm:MainViewModel/>
+    </Design.DataContext>
+    
+    <!-- 主布局：活动栏 + 内容区域 -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- 活动栏 -->
+            <ColumnDefinition Width="60"/>
+            <!-- 侧边栏 + 主编辑区 -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- 活动栏 (Activity Bar) -->
+        <Border Grid.Column="0" Background="#2D2D30" BorderBrush="#3E3E42" BorderThickness="0,0,1,0">
+            <StackPanel Orientation="Vertical" Margin="8">
+                <!-- 属性数据库按钮 -->
+                <Button Name="AttributeDatabaseButton" 
+                        Width="44" Height="44" 
+                        Margin="0,4"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="属性数据库">
+                    <TextBlock Text="📊" FontSize="20" HorizontalAlignment="Center"/>
+                </Button>
+                
+                <!-- 游戏效果数据库按钮 -->
+                <Button Name="GameplayEffectButton" 
+                        Width="44" Height="44" 
+                        Margin="0,4"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="游戏效果数据库">
+                    <TextBlock Text="⚡" FontSize="20" HorizontalAlignment="Center"/>
+                </Button>
+                
+                <!-- 分隔线 -->
+                <Separator Margin="0,8" Background="#3E3E42"/>
+                
+                <!-- 设置按钮 -->
+                <Button Name="SettingsButton" 
+                        Width="44" Height="44" 
+                        Margin="0,4"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="设置">
+                    <TextBlock Text="⚙️" FontSize="20" HorizontalAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Border>
+        
+        <!-- 主内容区域：侧边栏 + 编辑区 -->
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <!-- 侧边栏 -->
+                <ColumnDefinition Width="300" MinWidth="200"/>
+                <!-- 分隔器 -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- 主编辑区 -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- 侧边栏 -->
+            <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- 侧边栏标题 -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 侧边栏内容 -->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- 侧边栏标题 -->
+                    <Border Grid.Row="0" Background="#2D2D30" Padding="12,8">
+                        <TextBlock Text="属性数据库" FontWeight="Bold" Foreground="White"/>
+                    </Border>
+                    
+                    <!-- 侧边栏内容 -->
+                    <ScrollViewer Grid.Row="1" Padding="8">
+                        <StackPanel>
+                            <!-- 属性分类树 -->
+                            <TextBlock Text="属性分类" FontWeight="Bold" Margin="0,0,0,8" Foreground="#CCCCCC"/>
+                            <TreeView Name="CategoryTreeView" 
+                                      Background="Transparent"
+                                      Margin="0,0,0,16">
+                                <!-- 示例分类节点 -->
+                                <TreeViewItem Header="基础属性" IsExpanded="True">
+                                    <TreeViewItem Header="生命值"/>
+                                    <TreeViewItem Header="魔法值"/>
+                                    <TreeViewItem Header="体力值"/>
+                                </TreeViewItem>
+                                <TreeViewItem Header="战斗属性" IsExpanded="True">
+                                    <TreeViewItem Header="攻击力"/>
+                                    <TreeViewItem Header="防御力"/>
+                                    <TreeViewItem Header="暴击率"/>
+                                </TreeViewItem>
+                            </TreeView>
+                            
+                            <!-- 属性集列表 -->
+                            <TextBlock Text="属性集" FontWeight="Bold" Margin="0,0,0,8" Foreground="#CCCCCC"/>
+                            <ListBox Name="AttributeSetListBox" 
+                                     Background="Transparent"
+                                     SelectionMode="Single">
+                                <!-- 示例属性集 -->
+                                <ListBoxItem Content="战士基础属性"/>
+                                <ListBoxItem Content="法师基础属性"/>
+                                <ListBoxItem Content="盗贼基础属性"/>
+                                <ListBoxItem Content="BOSS属性模板"/>
+                            </ListBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+            
+            <!-- 分隔器 -->
+            <GridSplitter Grid.Column="1" 
+                          Width="4" 
+                          Background="#3E3E42" 
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch"/>
+            
+            <!-- 主编辑区 -->
+            <Grid Grid.Column="2" Background="#1E1E1E">
+                <Grid.RowDefinitions>
+                    <!-- 选项卡栏 -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- 编辑器内容 -->
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- 选项卡控件 -->
+                <TabControl Grid.Row="0" Grid.RowSpan="2" 
+                            Name="EditorTabControl"
+                            Background="#1E1E1E"
+                            TabStripPlacement="Top">
+                    
+                    <!-- 欢迎选项卡 -->
+                    <TabItem Header="欢迎">
+                        <Grid Background="#1E1E1E">
+                            <StackPanel HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Spacing="20">
+                                <TextBlock Text="JoyConfig 属性数据库编辑器" 
+                                           FontSize="28" 
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Foreground="White"/>
+                                <TextBlock Text="选择左侧的属性或属性集开始编辑" 
+                                           FontSize="16" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="#CCCCCC"/>
+                                
+                                <!-- 快速操作按钮 -->
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Center" 
+                                            Spacing="12">
+                                    <Button Content="新建属性" 
+                                            Padding="16,8" 
+                                            Background="#0E639C" 
+                                            Foreground="White"/>
+                                    <Button Content="新建属性集" 
+                                            Padding="16,8" 
+                                            Background="#0E639C" 
+                                            Foreground="White"/>
+                                    <Button Content="导入数据" 
+                                            Padding="16,8" 
+                                            Background="#0E639C" 
+                                            Foreground="White"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    
+                    <!-- 示例编辑器选项卡 -->
+                    <TabItem Header="生命值 (属性)">
+                        <ScrollViewer Padding="20">
+                            <StackPanel Spacing="16">
+                                <TextBlock Text="属性定义编辑器" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="ID:" VerticalAlignment="Center" Foreground="#CCCCCC"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Text="health" Margin="8,4"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="显示名称:" VerticalAlignment="Center" Foreground="#CCCCCC"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="生命值" Margin="8,4"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="分类:" VerticalAlignment="Center" Foreground="#CCCCCC"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="8,4">
+                                        <ComboBoxItem Content="基础属性" IsSelected="True"/>
+                                        <ComboBoxItem Content="战斗属性"/>
+                                        <ComboBoxItem Content="特殊属性"/>
+                                    </ComboBox>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="描述:" VerticalAlignment="Top" Foreground="#CCCCCC"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" 
+                                             Text="角色的生命值，决定角色能承受多少伤害" 
+                                             AcceptsReturn="True" 
+                                             TextWrapping="Wrap" 
+                                             Height="80" 
+                                             Margin="8,4"/>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

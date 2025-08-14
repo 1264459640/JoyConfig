@@ -1,0 +1,268 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.Application.ViewModels"
+             xmlns:views="clr-namespace:JoyConfig.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.MainView"
+             x:DataType="vm:MainViewModel">
+    
+    <!-- 传统的简单布局 -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- 菜单栏 -->
+            <RowDefinition Height="Auto"/>
+            <!-- 工具栏 -->
+            <RowDefinition Height="Auto"/>
+            <!-- 主内容区 -->
+            <RowDefinition Height="*"/>
+            <!-- 状态栏 -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- 菜单栏 -->
+        <Menu Grid.Row="0" Background="#F0F0F0">
+            <MenuItem Header="文件">
+                <MenuItem Header="新建" />
+                <MenuItem Header="打开" />
+                <MenuItem Header="保存" />
+                <Separator />
+                <MenuItem Header="退出" />
+            </MenuItem>
+            <MenuItem Header="编辑">
+                <MenuItem Header="撤销" />
+                <MenuItem Header="重做" />
+                <Separator />
+                <MenuItem Header="复制" />
+                <MenuItem Header="粘贴" />
+            </MenuItem>
+            <MenuItem Header="视图">
+                <MenuItem Header="属性数据库" />
+                <MenuItem Header="游戏效果数据库" />
+            </MenuItem>
+            <MenuItem Header="工具">
+                <MenuItem Header="设置" />
+            </MenuItem>
+            <MenuItem Header="帮助">
+                <MenuItem Header="关于" />
+            </MenuItem>
+        </Menu>
+        
+        <!-- 工具栏 -->
+         <Border Grid.Row="1" Background="#E0E0E0" BorderBrush="#D0D0D0" BorderThickness="0,0,0,1" Padding="5">
+             <StackPanel Orientation="Horizontal" Spacing="5">
+                 <Button Content="新建" Padding="8,4" Margin="2" />
+                 <Button Content="打开" Padding="8,4" Margin="2" />
+                 <Button Content="保存" Padding="8,4" Margin="2" />
+                 <Separator Width="1" Height="20" Background="#D0D0D0" Margin="5,0"/>
+                 <Button Content="撤销" Padding="8,4" Margin="2" />
+                 <Button Content="重做" Padding="8,4" Margin="2" />
+                 <Separator Width="1" Height="20" Background="#D0D0D0" Margin="5,0"/>
+                 <Button Content="设置" Padding="8,4" Margin="2" />
+             </StackPanel>
+         </Border>
+        
+        <!-- 主内容区 -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <!-- 左侧导航面板 -->
+                <ColumnDefinition Width="250" MinWidth="200"/>
+                <!-- 分隔器 -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- 右侧内容区域 -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- 左侧导航面板 -->
+            <Border Grid.Column="0" Background="#F8F8F8" BorderBrush="#D0D0D0" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- 导航标题 -->
+                    <Border Grid.Row="0" Background="#E8E8E8" Padding="10,8" BorderBrush="#D0D0D0" BorderThickness="0,0,0,1">
+                        <TextBlock Text="数据库浏览器" FontWeight="Bold" FontSize="14"/>
+                    </Border>
+                    
+                    <!-- 导航内容 -->
+                    <ScrollViewer Grid.Row="1" Padding="10">
+                        <StackPanel>
+                            <!-- 属性分类 -->
+                            <Expander Header="属性分类" IsExpanded="True" Margin="0,0,0,10">
+                                <TreeView Background="Transparent" Margin="10,5">
+                                    <TreeViewItem Header="基础属性" IsExpanded="True">
+                                        <TreeViewItem Header="生命值"/>
+                                        <TreeViewItem Header="魔法值"/>
+                                        <TreeViewItem Header="体力值"/>
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="战斗属性" IsExpanded="True">
+                                        <TreeViewItem Header="攻击力"/>
+                                        <TreeViewItem Header="防御力"/>
+                                        <TreeViewItem Header="暴击率"/>
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="特殊属性">
+                                        <TreeViewItem Header="经验值"/>
+                                        <TreeViewItem Header="金币"/>
+                                    </TreeViewItem>
+                                </TreeView>
+                            </Expander>
+                            
+                            <!-- 属性集 -->
+                            <Expander Header="属性集" IsExpanded="True">
+                                <ListBox Background="Transparent" Margin="10,5" SelectionMode="Single">
+                                    <ListBoxItem Content="战士基础属性"/>
+                                    <ListBoxItem Content="法师基础属性"/>
+                                    <ListBoxItem Content="盗贼基础属性"/>
+                                    <ListBoxItem Content="BOSS属性模板"/>
+                                    <ListBoxItem Content="NPC基础属性"/>
+                                </ListBox>
+                            </Expander>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+            
+            <!-- 分隔器 -->
+            <GridSplitter Grid.Column="1" 
+                          Width="3" 
+                          Background="#D0D0D0" 
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch"/>
+            
+            <!-- 右侧内容区域 -->
+            <Border Grid.Column="2" Background="White">
+                <TabControl Background="White" TabStripPlacement="Top">
+                    <!-- 欢迎页面 -->
+                    <TabItem Header="开始">
+                        <Grid Background="White">
+                            <StackPanel HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Spacing="20">
+                                <Image Width="64" Height="64" Source="/Assets/Icons/database.png" />
+                                <TextBlock Text="属性数据库编辑器" 
+                                           FontSize="24" 
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="管理游戏属性和属性集的专业工具" 
+                                           FontSize="14" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="Gray"/>
+                                
+                                <!-- 快速操作 -->
+                                <StackPanel Orientation="Vertical" 
+                                            HorizontalAlignment="Center" 
+                                            Spacing="10">
+                                    <Button Content="创建新属性" 
+                                            Padding="20,10" 
+                                            MinWidth="150"
+                                            Background="#4CAF50" 
+                                            Foreground="White"/>
+                                    <Button Content="创建新属性集" 
+                                            Padding="20,10" 
+                                            MinWidth="150"
+                                            Background="#2196F3" 
+                                            Foreground="White"/>
+                                    <Button Content="导入现有数据" 
+                                            Padding="20,10" 
+                                            MinWidth="150"
+                                            Background="#FF9800" 
+                                            Foreground="White"/>
+                                </StackPanel>
+                                
+                                <!-- 最近使用 -->
+                                <Border Background="#F5F5F5" 
+                                        Padding="15" 
+                                        CornerRadius="5" 
+                                        Margin="0,20,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="最近使用" FontWeight="Bold" Margin="0,0,0,10"/>
+                                        <TextBlock Text="• 战士基础属性.json" Foreground="Blue" Cursor="Hand"/>
+                                        <TextBlock Text="• 法师技能属性.json" Foreground="Blue" Cursor="Hand"/>
+                                        <TextBlock Text="• BOSS属性模板.json" Foreground="Blue" Cursor="Hand"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    
+                    <!-- 属性编辑器示例 -->
+                    <TabItem Header="属性编辑">
+                        <ScrollViewer Padding="20">
+                            <StackPanel Spacing="15">
+                                <TextBlock Text="属性定义" FontSize="18" FontWeight="Bold"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="属性ID:" VerticalAlignment="Center" Margin="0,5"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Text="health" Margin="10,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="显示名称:" VerticalAlignment="Center" Margin="0,5"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="生命值" Margin="10,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="属性分类:" VerticalAlignment="Center" Margin="0,5"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="10,5">
+                                        <ComboBoxItem Content="基础属性" IsSelected="True"/>
+                                        <ComboBoxItem Content="战斗属性"/>
+                                        <ComboBoxItem Content="特殊属性"/>
+                                    </ComboBox>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="默认值:" VerticalAlignment="Center" Margin="0,5"/>
+                                    <NumericUpDown Grid.Row="3" Grid.Column="1" Value="100" Margin="10,5"/>
+                                    
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="描述:" VerticalAlignment="Top" Margin="0,5"/>
+                                    <TextBox Grid.Row="4" Grid.Column="1" 
+                                             Text="角色的生命值，决定角色能承受多少伤害" 
+                                             AcceptsReturn="True" 
+                                             TextWrapping="Wrap" 
+                                             Height="60" 
+                                             Margin="10,5"/>
+                                </Grid>
+                                
+                                <!-- 操作按钮 -->
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Right" 
+                                            Spacing="10" 
+                                            Margin="0,20,0,0">
+                                    <Button Content="保存" Padding="15,8" Background="#4CAF50" Foreground="White"/>
+                                    <Button Content="取消" Padding="15,8" Background="#F44336" Foreground="White"/>
+                                    <Button Content="重置" Padding="15,8" Background="#FF9800" Foreground="White"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </Grid>
+        
+        <!-- 状态栏 -->
+        <Border Grid.Row="3" Background="#E8E8E8" BorderBrush="#D0D0D0" BorderThickness="0,1,0,0" Padding="10,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="就绪" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15">
+                    <TextBlock Text="属性: 12" VerticalAlignment="Center"/>
+                    <TextBlock Text="属性集: 4" VerticalAlignment="Center"/>
+                    <TextBlock Text="已保存" VerticalAlignment="Center" Foreground="Green"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

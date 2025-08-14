@@ -1,12 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using JoyConfig.Application.ViewModels;
-using JoyConfig.Views;
 
-namespace JoyConfig;
+namespace AttributeDatabaseEditor;
 
-public partial class App : Avalonia.Application
+public partial class App : Application
 {
     public override void Initialize()
     {
@@ -17,10 +15,7 @@ public partial class App : Avalonia.Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = JoyConfig.AppContainer.Resolve<MainViewModel>()
-            };
+            desktop.MainWindow = new MainWindow();
         }
 
         base.OnFrameworkInitializationCompleted();

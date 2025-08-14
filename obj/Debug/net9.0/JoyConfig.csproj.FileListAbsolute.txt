@@ -1,9 +1,2 @@
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.AssemblyReference.cache
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\Avalonia\resources
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.Resources.Strings.en-US.resources
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.Resources.Strings.zh-CN.resources
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.GenerateResource.cache
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.GeneratedMSBuildEditorConfig.editorconfig
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.CoreCompileInputs.cache
-D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.sourcelink.json

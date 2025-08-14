@@ -1,0 +1,2 @@
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\AttributeDatabaseEditor.csproj.AssemblyReference.cache
+D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache

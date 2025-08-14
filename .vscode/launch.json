@@ -2,11 +2,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "JoyConfig (Console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net9.0/JoyConfig.dll",
+            "program": "${workspaceFolder}/JoyConfig/bin/Debug/net9.0/JoyConfig.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "JoyConfig.UI (Desktop)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/JoyConfig.UI/bin/Debug/net9.0/JoyConfig.UI.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
