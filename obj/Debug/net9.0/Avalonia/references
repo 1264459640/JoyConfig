@@ -18,6 +18,7 @@ C:\Users\BananaPeel\.nuget\packages\avalonia.native\11.3.3\lib\net8.0\Avalonia.N
 C:\Users\BananaPeel\.nuget\packages\avalonia\11.3.3\ref\net8.0\Avalonia.OpenGL.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia.remote.protocol\11.3.3\lib\net8.0\Avalonia.Remote.Protocol.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia.skia\11.3.3\lib\net8.0\Avalonia.Skia.dll
+C:\Users\BananaPeel\.nuget\packages\avalonia.svg\11.3.0\lib\net8.0\Avalonia.Svg.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia.themes.fluent\11.3.3\lib\net8.0\Avalonia.Themes.Fluent.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia.themes.simple\11.3.3\lib\net8.0\Avalonia.Themes.Simple.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia\11.3.3\ref\net8.0\Avalonia.Vulkan.dll
@@ -25,6 +26,7 @@ C:\Users\BananaPeel\.nuget\packages\avalonia.win32\11.3.3\lib\net8.0\Avalonia.Wi
 C:\Users\BananaPeel\.nuget\packages\avalonia.win32\11.3.3\lib\net8.0\Avalonia.Win32.dll
 C:\Users\BananaPeel\.nuget\packages\avalonia.x11\11.3.3\lib\net8.0\Avalonia.X11.dll
 C:\Users\BananaPeel\.nuget\packages\communitytoolkit.mvvm\8.4.0\lib\net8.0\CommunityToolkit.Mvvm.dll
+C:\Users\BananaPeel\.nuget\packages\excss\4.3.0\lib\net8.0\ExCSS.dll
 C:\Users\BananaPeel\.nuget\packages\harfbuzzsharp\8.3.1.1\lib\net8.0\HarfBuzzSharp.dll
 C:\Users\BananaPeel\.nuget\packages\material.avalonia\3.13.0\lib\net8.0\Material.Avalonia.dll
 C:\Users\BananaPeel\.nuget\packages\material.avalonia\3.13.0\lib\net8.0\Material.Colors.dll
@@ -53,10 +55,13 @@ C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\Microso
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\Microsoft.Win32.Registry.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\mscorlib.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\netstandard.dll
+C:\Users\BananaPeel\.nuget\packages\shimskiasharp\3.0.2\lib\net8.0\ShimSkiaSharp.dll
 C:\Users\BananaPeel\.nuget\packages\skiasharp\2.88.9\lib\net6.0\SkiaSharp.dll
 C:\Users\BananaPeel\.nuget\packages\sqlitepclraw.bundle_e_sqlite3\2.1.10\lib\netstandard2.0\SQLitePCLRaw.batteries_v2.dll
 C:\Users\BananaPeel\.nuget\packages\sqlitepclraw.core\2.1.10\lib\netstandard2.0\SQLitePCLRaw.core.dll
 C:\Users\BananaPeel\.nuget\packages\sqlitepclraw.provider.e_sqlite3\2.1.10\lib\net6.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\BananaPeel\.nuget\packages\svg.custom\3.0.2\lib\net8.0\Svg.Custom.dll
+C:\Users\BananaPeel\.nuget\packages\svg.model\3.0.2\lib\net8.0\Svg.Model.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\System.AppContext.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\System.Buffers.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.6\ref\net9.0\System.Collections.Concurrent.dll

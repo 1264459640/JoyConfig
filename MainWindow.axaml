@@ -173,28 +173,28 @@
                     <Button ToolTip.Tip="切换主侧栏显示" 
                             Command="{Binding TogglePrimarysidebarCommand}"
                             Classes="TitleBarButton">
-                                <TextBlock Text="☰" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/menu.svg" Width="20" Height="20"/>
                             </Button>
                     <!-- Panel Toggle Button -->
                     <Button ToolTip.Tip="切换面板显示" 
                             Command="{Binding TogglePanelCommand}"
                             Classes="TitleBarButton">
-                                <TextBlock Text="⊞" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/panel.svg" Width="20" Height="20"/>
                             </Button>
                     <!-- Secondary Sidebar Toggle Button -->
                     <Button ToolTip.Tip="切换副侧栏显示" 
                             Command="{Binding ToggleSecondarySidebarCommand}"
                             Classes="TitleBarButton">
-                                <TextBlock Text="⊟" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/sidebar.svg" Width="20" Height="20"/>
                             </Button>
                     <Button Name="MinimizeButton" Classes="TitleBarButton">
-                                <TextBlock Text="−" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/minimize.svg" Width="20" Height="20"/>
                             </Button>
                     <Button Name="MaximizeButton" Classes="TitleBarButton">
-                                <TextBlock Text="□" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/maximize.svg" Width="20" Height="20"/>
                             </Button>
                     <Button Name="CloseButton" Classes="TitleBarButton CloseButton">
-                                <TextBlock Text="×" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="20" Height="20"/>
                             </Button>
                 </StackPanel>
             </Grid>
@@ -205,20 +205,20 @@
             <Button ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenAttributeDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}">
-                <TextBlock Text="🗃" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <svg:Svg Path="avares://JoyConfig/Icons/database.svg" Width="24" Height="24"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[GameplayEffectDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenGameplayEffectDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}">
-                <TextBlock Text="⚡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <svg:Svg Path="avares://JoyConfig/Icons/effect.svg" Width="24" Height="24"/>
             </Button>
             <Button ToolTip.Tip="模板管理" Classes="SidebarButton" Command="{Binding OpenTemplateManagerCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}">
-                <TextBlock Text="📋" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <svg:Svg Path="avares://JoyConfig/Icons/template.svg" Width="24" Height="24"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[Settings]}" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}">
-                <TextBlock Text="⚙" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <svg:Svg Path="avares://JoyConfig/Icons/settings.svg" Width="24" Height="24"/>
             </Button>
         </StackPanel>
 

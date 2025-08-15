@@ -211,3 +211,8 @@ D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\zh-CN\JoyConfig.resour
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.Up2Date
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.genruntimeconfig.cache
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\ref\JoyConfig.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Svg.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ExCSS.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ShimSkiaSharp.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Custom.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Model.dll
