@@ -1,0 +1,88 @@
+id: template_20250815_180207_d5e46245
+name: 玩家1_Template
+description: 基于属性集 '玩家1' 创建的模板
+created_at: 2025-08-15T18:02:07.7480355+08:00
+updated_at: 2025-08-15T18:02:07.7480369+08:00
+version: 1.0.0
+tags:
+- auto-generated
+- 玩家1
+attributes:
+- id: Character.Core.Agility
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Agility
+- id: Character.Core.Charisma
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Charisma
+- id: Character.Core.Constitution
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Constitution
+- id: Character.Core.Intelligence
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Intelligence
+- id: Character.Core.Perception
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Perception
+- id: Character.Core.Will
+  category: Character
+  base_value: 10
+  min_value: 0
+  max_value: 999999
+  comment: Will
+- id: Character.Derived.DD.LifeValue
+  category: Character.Derived.DD
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: LifeValue
+- id: Character.Derived.DD.MentalValue
+  category: Character.Derived.DD
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: MentalValue
+- id: Character.Derived.DD.MovementSpeed
+  category: Character.Derived.DD
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: MovementSpeed
+- id: Character.Energy
+  category: Character
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: Energy
+- id: Character.Health
+  category: Character
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: Health
+- id: Character.MaxHealth
+  category: Character
+  base_value: 100
+  min_value: 0
+  max_value: 999999
+  comment: MaxHealth
+- id: Character.Speed
+  category: Character
+  base_value: 1000
+  min_value: 0
+  max_value: 999999
+  comment: Speed

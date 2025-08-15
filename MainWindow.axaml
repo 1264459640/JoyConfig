@@ -162,11 +162,83 @@
             <Setter Property="Margin" Value="4"/>
         </Style>
         
+        <!-- 底部面板特殊样式 - 顶部圆角 -->
+        <Style Selector="Border.BottomPanel">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="BorderBrush" Value="#3c3c3c"/>
+            <Setter Property="BorderThickness" Value="1,1,1,0"/>
+            <Setter Property="CornerRadius" Value="12,12,0,0"/>
+            <Setter Property="Margin" Value="4,0,4,4"/>
+            <Setter Property="BoxShadow" Value="0 -2 8 0 #20000000"/>
+        </Style>
+        
         <!-- 分割器样式 -->
         <Style Selector="GridSplitter">
             <Setter Property="Background" Value="#3c3c3c"/>
             <Setter Property="Width" Value="1"/>
             <Setter Property="Height" Value="1"/>
+        </Style>
+        
+        <!-- 底部面板分割器样式 - 可拖拽扩展 -->
+        <Style Selector="GridSplitter.BottomPanelSplitter">
+            <Setter Property="Background" Value="#4a4a4a"/>
+            <Setter Property="Height" Value="6"/>
+            <Setter Property="Cursor" Value="SizeNorthSouth"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="3,3,0,0"
+                            BorderBrush="#5a5a5a"
+                            BorderThickness="0,1,0,0">
+                        <!-- 拖拽指示器 -->
+                        <Border Width="40" Height="3" 
+                                Background="#6a6a6a" 
+                                CornerRadius="1.5"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        
+        <!-- 分割器悬停效果 -->
+        <Style Selector="GridSplitter.BottomPanelSplitter:pointerover">
+            <Setter Property="Background" Value="#5a5a5a"/>
+        </Style>
+        
+        <Style Selector="GridSplitter.BottomPanelSplitter:pointerover /template/ Border">
+            <Setter Property="BorderBrush" Value="#6a6a6a"/>
+        </Style>
+        
+        <Style Selector="GridSplitter.BottomPanelSplitter:pointerover /template/ Border Border">
+            <Setter Property="Background" Value="#7a7a7a"/>
+        </Style>
+        
+        <!-- 面板标签页样式 -->
+        <Style Selector="Border.PanelTab">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="CornerRadius" Value="4,4,0,0"/>
+            <Setter Property="Padding" Value="12,6,12,8"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Border.PanelTab:pointerover">
+            <Setter Property="Background" Value="#3a3a3a"/>
+        </Style>
+        
+        <Style Selector="Border.PanelTab.active">
+            <Setter Property="Background" Value="#0078d4"/>
+        </Style>
+        
+        <Style Selector="Border.PanelTab.active:pointerover">
+            <Setter Property="Background" Value="#106ebe"/>
         </Style>
     </Window.Styles>
     
@@ -345,7 +417,7 @@
                         IsVisible="{Binding IsPrimarySidebarVisible}">
                     <DockPanel>
                         <!-- 侧栏标题栏 -->
-                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35" CornerRadius="8,8,0,0">
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Grid.Column="0" Text="{Binding LocalizationManager[Main_Workspace]}"
                                            VerticalAlignment="Center"
@@ -374,7 +446,7 @@
                 <Border Grid.Column="2" Grid.Row="0" Classes="ContentPanel">
                     <DockPanel>
                         <!-- 编辑器标题栏 -->
-                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35" CornerRadius="8,8,0,0">
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Grid.Column="0" Text="{Binding LocalizationManager[Main_Editor]}"
                                            VerticalAlignment="Center"
@@ -401,7 +473,7 @@
                         IsVisible="{Binding IsSecondarySidebarVisible}">
                     <DockPanel>
                         <!-- 副侧栏标题栏 -->
-                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35" CornerRadius="8,8,0,0">
                             <Grid ColumnDefinitions="*,Auto">
                                 <TextBlock Grid.Column="0" Text="属性面板"
                                            VerticalAlignment="Center"
@@ -422,27 +494,65 @@
                     </DockPanel>
                 </Border>
 
-                <!-- 底部面板分割器 -->
+                <!-- 底部面板分割器 - 可拖拽扩展 -->
                 <GridSplitter Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1"
-                              IsVisible="{Binding IsPanelVisible}"/>
+                              Classes="BottomPanelSplitter"
+                              IsVisible="{Binding IsPanelVisible}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Bottom"/>
 
                 <!-- 底部面板 - 输出、终端等 -->
                 <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"
-                        Classes="ContentPanel"
+                        Classes="BottomPanel"
                         IsVisible="{Binding IsPanelVisible}">
                     <DockPanel>
-                        <!-- 面板标题栏 -->
-                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
-                                    <TextBlock Text="输出" FontSize="13" FontWeight="Medium" Foreground="#f0f0f0" Margin="0,0,16,0"/>
-                                    <!-- 可以添加标签页切换按钮 -->
+                        <!-- 面板标题栏 - 圆角顶部设计 -->
+                        <Border DockPanel.Dock="Top" 
+                                Background="#2a2a2b" 
+                                BorderBrush="#3c3c3c" 
+                                BorderThickness="0,0,0,1" 
+                                Height="40"
+                                CornerRadius="12,12,0,0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <!-- 左侧标签页区域 -->
+                                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                                     <Border Classes="PanelTab active">
+                                         <TextBlock Text="输出" 
+                                                    FontSize="12" 
+                                                    FontWeight="Medium" 
+                                                    Foreground="White"/>
+                                     </Border>
+                                     <Border Classes="PanelTab">
+                                         <TextBlock Text="终端" 
+                                                    FontSize="12" 
+                                                    FontWeight="Medium" 
+                                                    Foreground="#a0a0a0"/>
+                                     </Border>
+                                     <Border Classes="PanelTab">
+                                         <TextBlock Text="调试" 
+                                                    FontSize="12" 
+                                                    FontWeight="Medium" 
+                                                    Foreground="#a0a0a0"/>
+                                     </Border>
+                                 </StackPanel>
+                                
+                                <!-- 中央区域 -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <!-- 可以添加面板相关的状态信息 -->
                                 </StackPanel>
-                                <Button Grid.Column="1" Classes="TitleBarButton" Width="30" Height="30" Margin="2"
-                                        Command="{Binding TogglePanelCommand}"
-                                        ToolTip.Tip="隐藏面板">
-                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="12" Height="12"/>
-                                </Button>
+                                
+                                <!-- 右侧操作按钮 -->
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
+                                    <Button Classes="TitleBarButton" Width="28" Height="28" Margin="2"
+                                            ToolTip.Tip="清空输出">
+                                        <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="10" Height="10"/>
+                                    </Button>
+                                    <Button Classes="TitleBarButton" Width="28" Height="28" Margin="2"
+                                            Command="{Binding TogglePanelCommand}"
+                                            ToolTip.Tip="隐藏面板 (Ctrl+J)">
+                                        <svg:Svg Path="avares://JoyConfig/Icons/minimize.svg" Width="10" Height="10"/>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </Border>
                         
