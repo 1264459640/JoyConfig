@@ -105,19 +105,19 @@
                                   Classes="TitleBarLayoutButton menu-button"
                                   Width="32" Height="32"
                                   ToolTip.Tip="切换主侧栏显示 (Ctrl+B)">
-                              <svg:Svg Path="avares://JoyConfig/Icons/menu/menu-default.svg" Width="16" Height="16"/>
+                              <svg:Svg Width="16" Height="16"/>
                           </Button>
                          <Button Command="{Binding TogglePanelCommand}"
                                   Classes="TitleBarLayoutButton panel-button"
                                   Width="32" Height="32"
                                   ToolTip.Tip="切换面板显示 (Ctrl+J)">
-                              <svg:Svg Path="avares://JoyConfig/Icons/panel/panel-default.svg" Width="16" Height="16"/>
+                              <svg:Svg Width="16" Height="16"/>
                           </Button>
                           <Button Command="{Binding ToggleSecondarySidebarCommand}"
                                   Classes="TitleBarLayoutButton sidebar-button"
                                   Width="32" Height="32"
                                   ToolTip.Tip="切换副侧栏显示 (Ctrl+Shift+B)">
-                              <svg:Svg Path="avares://JoyConfig/Icons/sidebar/sidebar-default.svg" Width="16" Height="16"/>
+                              <svg:Svg Width="16" Height="16"/>
                           </Button>
                      </StackPanel>
                     
@@ -152,21 +152,21 @@
                               Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}"
                               Command="{Binding OpenAttributeDatabaseCommand}"
                               ToolTip.Tip="属性数据库 (Ctrl+1)">
-                          <svg:Svg Path="avares://JoyConfig/Icons/database/database-default.svg" Width="24" Height="24"/>
+                          <svg:Svg Width="24" Height="24"/>
                       </Button>
                      
                      <Button Classes="NavigationButton effect-button"
                               Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}"
                               Command="{Binding OpenGameplayEffectDatabaseCommand}"
                               ToolTip.Tip="游戏效果数据库 (Ctrl+2)">
-                          <svg:Svg Path="avares://JoyConfig/Icons/effect/effect-default.svg" Width="24" Height="24"/>
+                          <svg:Svg Width="24" Height="24"/>
                       </Button>
                       
                       <Button Classes="NavigationButton template-button"
                               Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}"
                               Command="{Binding OpenTemplateManagerCommand}"
                               ToolTip.Tip="模板管理 (Ctrl+3)">
-                          <svg:Svg Path="avares://JoyConfig/Icons/template/template-default.svg" Width="24" Height="24"/>
+                          <svg:Svg Width="24" Height="24"/>
                       </Button>
                     
                     <!-- 分隔线 -->
@@ -177,7 +177,7 @@
                               Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}"
                               Command="{Binding OpenSettingsCommand}"
                               ToolTip.Tip="设置 (Ctrl+Shift+S)">
-                          <svg:Svg Path="avares://JoyConfig/Icons/settings/settings-default.svg" Width="24" Height="24"/>
+                          <svg:Svg Width="24" Height="24"/>
                       </Button>
                 </StackPanel>
             </Border>
@@ -432,7 +432,7 @@
                 <!-- 状态指示器 -->
                  <Ellipse Grid.Column="0" Width="8" Height="8" Margin="0,0,8,0" VerticalAlignment="Center">
                      <Ellipse.Fill>
-                         <SolidColorBrush Color="{Binding IsLoading, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=#00ff00}"/>
+                         <SolidColorBrush Color="#00ff00"/>
                      </Ellipse.Fill>
                  </Ellipse>
                 

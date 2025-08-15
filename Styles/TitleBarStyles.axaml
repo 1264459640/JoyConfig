@@ -26,12 +26,24 @@
     </Style>
     
     <!-- 标题栏布局按钮SVG图标状态切换 -->
+    <Style Selector="Button.TitleBarLayoutButton.menu-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/menu/menu-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.TitleBarLayoutButton.menu-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/menu/menu-hover.svg"/>
     </Style>
     
+    <Style Selector="Button.TitleBarLayoutButton.panel-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/panel/panel-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.TitleBarLayoutButton.panel-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/panel/panel-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.TitleBarLayoutButton.sidebar-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/sidebar/sidebar-default.svg"/>
     </Style>
     
     <Style Selector="Button.TitleBarLayoutButton.sidebar-button:pointerover svg|Svg">

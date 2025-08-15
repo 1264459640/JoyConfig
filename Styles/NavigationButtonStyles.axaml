@@ -84,6 +84,10 @@
     </Style>
     
     <!-- SVG图标状态切换 - 数据库按钮 -->
+    <Style Selector="Button.NavigationButton.database-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/database/database-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.NavigationButton.database-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/database/database-hover.svg"/>
     </Style>
@@ -97,6 +101,10 @@
     </Style>
     
     <!-- SVG图标状态切换 - 效果按钮 -->
+    <Style Selector="Button.NavigationButton.effect-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/effect/effect-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.NavigationButton.effect-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/effect/effect-hover.svg"/>
     </Style>
@@ -110,6 +118,10 @@
     </Style>
     
     <!-- SVG图标状态切换 - 模板按钮 -->
+    <Style Selector="Button.NavigationButton.template-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/template/template-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.NavigationButton.template-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/template/template-hover.svg"/>
     </Style>
@@ -123,6 +135,10 @@
     </Style>
     
     <!-- SVG图标状态切换 - 设置按钮 -->
+    <Style Selector="Button.NavigationButton.settings-button svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/settings/settings-default.svg"/>
+    </Style>
+    
     <Style Selector="Button.NavigationButton.settings-button:pointerover svg|Svg">
         <Setter Property="Path" Value="avares://JoyConfig/Icons/settings/settings-hover.svg"/>
     </Style>
