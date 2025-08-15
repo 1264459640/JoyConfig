@@ -11,6 +11,7 @@ namespace JoyConfig.ViewModels;
 
 public partial class SelectAttributeViewModel : ObservableObject
 {
+    private readonly IAttributeRepository _attributeRepository;
     public LocalizationManager LocalizationManager { get; }
     
     [ObservableProperty]
@@ -19,19 +20,19 @@ public partial class SelectAttributeViewModel : ObservableObject
     [ObservableProperty]
     private Attribute? _selectedAttribute;
 
-    public SelectAttributeViewModel(IEnumerable<string> excludedAttributeIds)
+    public SelectAttributeViewModel(IAttributeRepository attributeRepository, IEnumerable<string> excludedAttributeIds)
     {
+        _attributeRepository = attributeRepository;
         LocalizationManager = LocalizationManager.Instance;
         _ = LoadAttributesAsync(excludedAttributeIds);
     }
 
     private async Task LoadAttributesAsync(IEnumerable<string> excludedAttributeIds)
     {
-        await using var dbContext = new AttributeDatabaseContext();
-        var attributes = await dbContext.Attributes
-            .AsNoTracking()
+        var attributes = await _attributeRepository.GetAllAttributesAsync();
+        var filteredAttributes = attributes
             .Where(a => !excludedAttributeIds.Contains(a.Id))
-            .ToListAsync();
-        AvailableAttributes = new ObservableCollection<Attribute>(attributes);
+            .ToList();
+        AvailableAttributes = new ObservableCollection<Attribute>(filteredAttributes);
     }
 }

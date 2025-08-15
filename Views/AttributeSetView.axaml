@@ -12,6 +12,7 @@
         <Border DockPanel.Dock="Top" Padding="0,0,0,10" Margin="0,0,0,10" BorderBrush="Gray" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <Button Content="{Binding LocalizationManager[Common_Save]}" Command="{Binding SaveCommand}" Classes="Filled"/>
+                <Button Content="另存为模板" Command="{Binding SaveAsTemplateCommand}" Classes="Outline"/>
                 <Button Content="{Binding LocalizationManager[AttributeSet_AddAttribute]}" Command="{Binding AddAttributeValueCommand}" Classes="Outline"/>
                 <Button Content="{Binding LocalizationManager[AttributeSet_RemoveAttribute]}" Command="{Binding RemoveAttributeValueCommand}" Classes="Outline"/>
             </StackPanel>
@@ -22,7 +23,10 @@
             <TextBlock Text="{Binding LocalizationManager[AttributeSet_Details]}" FontSize="18" FontWeight="Bold"/>
             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10">
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LocalizationManager[AttributeSet_ID]}" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AttributeSet.Id}" IsReadOnly="True" Watermark="Unique Identifier"/>
+                <DockPanel Grid.Row="0" Grid.Column="1">
+                    <Button DockPanel.Dock="Right" Content="修改" Command="{Binding ChangeIdCommand}" Classes="Outline" Margin="5,0,0,0"/>
+                    <TextBox Text="{Binding AttributeSet.Id}" IsReadOnly="True" Watermark="Unique Identifier"/>
+                </DockPanel>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding LocalizationManager[AttributeSet_Name]}" VerticalAlignment="Center"/>
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AttributeSet.Name, Mode=TwoWay}" Watermark="Display Name"/>

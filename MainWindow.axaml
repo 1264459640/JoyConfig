@@ -40,6 +40,20 @@
                     </Border>
                 </ControlTemplate>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsPointerOver" Value="True">
+                    <Setter Property="Background" Value="#2a2a2aff"/>
+                    <Setter Property="BorderBrush" Value="#454545ff"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#3a3a3aff"/>
+                    <Setter Property="BorderBrush" Value="#555555ff"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="0.95"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="0.95"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         
         <Style Selector="Button.TitleBarButton">
@@ -61,6 +75,18 @@
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </ControlTemplate>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsPointerOver" Value="True">
+                    <Setter Property="Background" Value="#444444"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#666666"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="0.95"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="0.95"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style Selector="Button.TitleBarButton:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="#444444"/>
@@ -140,15 +166,42 @@
     <DockPanel Background="#333333">
         <!-- Title Bar -->
         <Border Name="TitleBar" Height="40" DockPanel.Dock="Top" Background="Transparent">
+            <Border.RenderTransform>
+                <ScaleTransform/>
+            </Border.RenderTransform>
             <Grid ColumnDefinitions="*,Auto">
                 <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Margin="10,0,0,0"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="0" VerticalAlignment="Stretch">
-                    <Button Name="MinimizeButton" Content="&#xE921;" FontFamily="Segoe MDL2 Assets" Classes="TitleBarButton"/>
-                    <Button Name="MaximizeButton" Content="&#xE922;" FontFamily="Segoe MDL2 Assets" Classes="TitleBarButton"/>
-                    <Button Name="CloseButton" Content="&#xE8BB;" FontFamily="Segoe MDL2 Assets" Classes="TitleBarButton CloseButton"/>
+                    <!-- Primary Sidebar Toggle Button -->
+                    <Button ToolTip.Tip="切换主侧栏显示" 
+                            Command="{Binding TogglePrimarysidebarCommand}"
+                            Classes="TitleBarButton">
+                                <Image Source="/Icons/menu.svg" Width="20" Height="20"/>
+                            </Button>
+                    <!-- Panel Toggle Button -->
+                    <Button ToolTip.Tip="切换面板显示" 
+                            Command="{Binding TogglePanelCommand}"
+                            Classes="TitleBarButton">
+                                <Image Source="/Icons/panel.svg" Width="20" Height="20"/>
+                            </Button>
+                    <!-- Secondary Sidebar Toggle Button -->
+                    <Button ToolTip.Tip="切换副侧栏显示" 
+                            Command="{Binding ToggleSecondarySidebarCommand}"
+                            Classes="TitleBarButton">
+                                <Image Source="/Icons/sidebar.svg" Width="20" Height="20"/>
+                            </Button>
+                    <Button Name="MinimizeButton" Classes="TitleBarButton">
+                                <Image Source="/Icons/minimize.svg" Width="20" Height="20"/>
+                            </Button>
+                    <Button Name="MaximizeButton" Classes="TitleBarButton">
+                                <Image Source="/Icons/maximize.svg" Width="20" Height="20"/>
+                            </Button>
+                    <Button Name="CloseButton" Classes="TitleBarButton CloseButton">
+                                <Image Source="/Icons/close.svg" Width="20" Height="20"/>
+                            </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -158,83 +211,196 @@
             <Button ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenAttributeDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}">
-                <PathIcon Data="M12,3C7.58,3 4,4.79 4,7V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V7C20,4.79 16.42,3 12,3M12,5C15.31,5 18,6.34 18,8C18,9.66 15.31,11 12,11C8.69,11 6,9.66 6,8C6,6.34 8.69,5 12,5M12,13C15.31,13 18,14.34 18,16C18,17.66 15.31,19 12,19C8.69,19 6,17.66 6,16C6,14.34 8.69,13 12,13Z" />
+                <Image Source="/Icons/database.svg" Width="24" Height="24"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[GameplayEffectDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenGameplayEffectDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}">
-                <PathIcon Data="M19.22,7.22L18,6L16.78,7.22L18,8.44L19.22,7.22M12,2L9.5,5.5L6,2L2,6L5.5,9.5L2,12L6,16L9.5,12.5L12,16L16,12L12.5,9.5L16,6L12,2M18,9.5L14,13.5L18,17.5L22,13.5L18,9.5Z" />
+                <Image Source="/Icons/effect.svg" Width="24" Height="24"/>
+            </Button>
+            <Button ToolTip.Tip="模板管理" Classes="SidebarButton" Command="{Binding OpenTemplateManagerCommand}"
+                    Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}">
+                <Image Source="/Icons/template.svg" Width="24" Height="24"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[Settings]}" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}">
-                <PathIcon Data="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8M12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14M10,22H14V19H10V22M19.03,7.39L20.45,5.97C20,5.46 19.54,5 19.03,4.55L17.62,5.97C16.07,4.74 14.12,4 12,4C9.88,4 7.93,4.74 6.38,5.97L4.97,4.55C4.46,5 4,5.46 3.55,5.97L4.97,7.39C3.74,8.94 3,10.88 3,13H5C5,11.5 5.5,10.1 6.34,9.03L7.76,10.45C7.25,11 6.81,11.6 6.45,12.25L5.28,11.08L3.86,12.5L5.28,13.92C5.79,14.85 6.45,15.69 7.2,16.45L5.79,17.86L7.2,19.28L8.62,17.86C9.55,18.62 10.71,19.13 12,19.35V22H14V19.35C15.29,19.13 16.45,18.62 17.38,17.86L18.8,19.28L20.21,17.86L18.8,16.45C19.55,15.69 20.21,14.85 20.72,13.92L22.14,12.5L20.72,11.08L19.55,12.25C19.19,11.6 18.75,11 18.24,10.45L19.66,9.03C20.5,10.1 21,11.5 21,13H23C23,10.88 22.26,8.94 21.03,7.39Z" />
+                <Image Source="/Icons/settings.svg" Width="24" Height="24"/>
             </Button>
         </StackPanel>
 
-        <Grid>
-            <!-- Main Content Card with Simulated Shadow -->
-            <Grid IsVisible="{Binding !IsSettingsVisible}">
-                <!-- Shadow Layer -->
-                <Border CornerRadius="10,0,0,0">
-                    <Border.Background>
-                        <SolidColorBrush Color="#1f1f1fff" />
-                    </Border.Background>
-                    <Border.Effect>
-                        <BlurEffect Radius="10" />
-                    </Border.Effect>
-                </Border>
+        <!-- IDE Layout Grid -->
+        <Grid IsVisible="{Binding IsMainContentVisible}">
+            <Grid.ColumnDefinitions>
+                <!-- Primary Sidebar -->
+                <ColumnDefinition Width="{Binding PrimarySidebarWidth}" MinWidth="200"/>
+                <ColumnDefinition Width="5"/> <!-- Splitter -->
+                <!-- Main Editor Area -->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/> <!-- Splitter -->
+                <!-- Secondary Sidebar -->
+                <ColumnDefinition Width="{Binding SecondarySidebarWidth}" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <!-- Main Content Area -->
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/> <!-- Splitter -->
+                <!-- Panel Area -->
+                <RowDefinition Height="{Binding PanelHeight}" MinHeight="150"/>
+            </Grid.RowDefinitions>
 
-                <!-- Content Layer -->
-                <Border Background="#2d2d2d"
-                        CornerRadius="10,0,0,0">
-                    <SplitView IsPaneOpen="True"
-                               DisplayMode="Inline"
-                               OpenPaneLength="250">
-                        <!-- Primary Sidebar -->
-                        <SplitView.Pane>
-                            <DockPanel>
-                                <TextBlock Text="{Binding LocalizationManager[Main_Workspace]}"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           DockPanel.Dock="Top"
-                                           Margin="10"/>
-                                <ContentControl Content="{Binding CurrentWorkspace}"/>
-                            </DockPanel>
-                        </SplitView.Pane>
+            <!-- Primary Sidebar Card -->
+            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                    Background="#2d2d2d"
+                    BorderBrush="#404040"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Margin="5"
+                    IsVisible="{Binding IsPrimarySidebarVisible}">
+                <DockPanel Margin="10">
+                    <TextBlock Text="{Binding LocalizationManager[Main_Workspace]}"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               DockPanel.Dock="Top"
+                               Margin="0,0,0,10"/>
+                    <ContentControl Content="{Binding CurrentWorkspace}"/>
+                </DockPanel>
+            </Border>
 
-                        <!-- Editor Area -->
-                        <SplitView.Content>
-                            <DockPanel>
-                                <TextBlock Text="{Binding LocalizationManager[Main_Editor]}"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           DockPanel.Dock="Top"
-                                           Margin="10"/>
-                                <ContentControl Content="{Binding CurrentEditor}"/>
-                            </DockPanel>
-                        </SplitView.Content>
-                    </SplitView>
-                </Border>
-            </Grid>
+            <!-- Primary Sidebar Splitter -->
+            <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                          Background="#404040"
+                          IsVisible="{Binding IsPrimarySidebarVisible}"/>
 
-            <!-- Settings Card -->
-            <Grid IsVisible="{Binding IsSettingsVisible}">
-                <!-- Shadow Layer -->
-                <Border CornerRadius="10,0,0,0">
-                    <Border.Background>
-                        <SolidColorBrush Color="#1f1f1fff" />
-                    </Border.Background>
-                    <Border.Effect>
-                        <BlurEffect Radius="10" />
-                    </Border.Effect>
-                </Border>
+            <!-- Main Editor Area Card -->
+            <Border Grid.Column="2" Grid.Row="0"
+                    Background="#2d2d2d"
+                    BorderBrush="#404040"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Margin="5">
+                <DockPanel Margin="10">
+                    <TextBlock Text="{Binding LocalizationManager[Main_Editor]}"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               DockPanel.Dock="Top"
+                               Margin="0,0,0,10"/>
+                    <ContentControl Content="{Binding CurrentEditor}"/>
+                </DockPanel>
+            </Border>
 
-                <!-- Content Layer -->
-                <Border Background="#2d2d2d"
-                        CornerRadius="10,0,0,0">
-                    <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
-                </Border>
-            </Grid>
+            <!-- Secondary Sidebar Splitter -->
+            <GridSplitter Grid.Column="3" Grid.Row="0" Grid.RowSpan="3"
+                          Background="#404040"
+                          IsVisible="{Binding IsSecondarySidebarVisible}"/>
+
+            <!-- Secondary Sidebar Card -->
+            <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="3"
+                    Background="#2d2d2d"
+                    BorderBrush="#404040"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Margin="5"
+                    IsVisible="{Binding IsSecondarySidebarVisible}">
+                <DockPanel Margin="10">
+                    <TextBlock Text="副侧栏"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               DockPanel.Dock="Top"
+                               Margin="0,0,0,10"/>
+                    <ContentControl Content="{Binding SecondaryContent}"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Panel Splitter -->
+            <GridSplitter Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1"
+                          Background="#404040"
+                          IsVisible="{Binding IsPanelVisible}"/>
+
+            <!-- Panel Card -->
+            <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"
+                    Background="#2d2d2d"
+                    BorderBrush="#404040"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Margin="5"
+                    IsVisible="{Binding IsPanelVisible}">
+                <DockPanel Margin="10">
+                    <TextBlock Text="面板"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               DockPanel.Dock="Top"
+                               Margin="0,0,0,10"/>
+                    <ContentControl Content="{Binding PanelContent}"/>
+                </DockPanel>
+            </Border>
         </Grid>
+
+        <!-- Template Manager Card -->
+        <Grid IsVisible="{Binding IsTemplateManagerVisible}">
+            <!-- Shadow Layer -->
+            <Border CornerRadius="10,0,0,0">
+                <Border.Background>
+                    <SolidColorBrush Color="#1f1f1fff" />
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="10" />
+                </Border.Effect>
+            </Border>
+
+            <!-- Content Layer -->
+            <Border Background="#2d2d2d"
+                    CornerRadius="10,0,0,0">
+                <views:TemplateManagerView DataContext="{Binding TemplateManagerViewModel}"/>
+            </Border>
+        </Grid>
+
+        <!-- Settings Card -->
+        <Grid IsVisible="{Binding IsSettingsVisible}">
+            <!-- Shadow Layer -->
+            <Border CornerRadius="10,0,0,0">
+                <Border.Background>
+                    <SolidColorBrush Color="#1f1f1fff" />
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="10" />
+                </Border.Effect>
+            </Border>
+
+            <!-- Content Layer -->
+            <Border Background="#2d2d2d"
+                    CornerRadius="10,0,0,0">
+                <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
+            </Border>
+        </Grid>
+        
+        <!-- Status Bar -->
+        <Border DockPanel.Dock="Bottom" Background="#1e1e1e" Height="22" BorderBrush="#3c3c3c" BorderThickness="0,1,0,0" Opacity="0.9">
+            <Grid Margin="5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding StatusMessage}" 
+                           Foreground="#cccccc" 
+                           VerticalAlignment="Center" 
+                           Margin="5,0"
+                           FontSize="11"/>
+                            
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0">
+                    <TextBlock Text="{Binding ProgressText}" 
+                               Foreground="#cccccc" 
+                               VerticalAlignment="Center" 
+                               FontSize="11" 
+                               Margin="0,0,5,0"
+                               IsVisible="{Binding IsLoading}"/>
+                    <ProgressBar Width="80" 
+                                 Height="10" 
+                                 IsIndeterminate="True" 
+                                 IsVisible="{Binding IsLoading}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </DockPanel>
 </Window>

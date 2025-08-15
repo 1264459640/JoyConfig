@@ -21,13 +21,20 @@
                     <Expander.Header>
                         <DockPanel LastChildFill="False">
                             <TextBlock Text="{Binding LocalizationManager[AttributeDatabase_AttributeSets]}" VerticalAlignment="Center"/>
-                            <Button DockPanel.Dock="Right"
-                                    Command="{Binding CreateNewAttributeSetCommand}"
-                                    ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase_NewAttributeSet]}"
-                                    Background="Transparent" BorderThickness="0" Padding="0"
-                                    Width="20" Height="20">
-                                <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                            </Button>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="5">
+                                <Button Command="{Binding CreateFromTemplateCommand}"
+                                        ToolTip.Tip="从模板创建属性集"
+                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                        Width="20" Height="20">
+                                    <PathIcon Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                                </Button>
+                                <Button Command="{Binding CreateNewAttributeSetCommand}"
+                                        ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase_NewAttributeSet]}"
+                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                        Width="20" Height="20">
+                                    <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                                </Button>
+                            </StackPanel>
                         </DockPanel>
                     </Expander.Header>
                     <ListBox ItemsSource="{Binding AttributeSets}"

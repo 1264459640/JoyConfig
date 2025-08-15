@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:material="using:Material.Styles.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.TemplateManagerView"
+             x:DataType="vm:TemplateManagerViewModel">
+    <DockPanel>
+        <!-- Header -->
+        <material:Card DockPanel.Dock="Top" Margin="10,10,10,0">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="创建模板" Command="{Binding CreateTemplateCommand}" Classes="Filled"/>
+                <Button Content="从模板创建属性集" Command="{Binding CreateFromTemplateCommand}" Classes="Outline"/>
+                <Button Content="刷新" Command="{Binding RefreshCommand}" Classes="Outline"/>
+            </StackPanel>
+        </material:Card>
+
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   DockPanel.Dock="Top"
+                   Margin="10,5,10,0"/>
+
+        <Grid Margin="10" ColumnDefinitions="*" RowDefinitions="Auto,*">
+            <TextBlock Text="模板管理"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Templates}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <material:Card Padding="15">
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+                                    <!-- Template Name -->
+                                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                                               Text="{Binding Name}" 
+                                               FontWeight="Bold" 
+                                               FontSize="16"/>
+                                    
+                                    <!-- Actions -->
+                                    <Button Grid.Row="0" Grid.Column="1" 
+                                            Content="使用模板" 
+                                            Command="{Binding $parent[UserControl].DataContext.UseTemplateCommand}" 
+                                            CommandParameter="{Binding}"
+                                            Classes="Outline"/>
+                                    <Button Grid.Row="0" Grid.Column="2" 
+                                            Content="编辑" 
+                                            Command="{Binding $parent[UserControl].DataContext.EditTemplateCommand}" 
+                                            CommandParameter="{Binding}"
+                                            Classes="Outline"/>
+                                    <Button Grid.Row="0" Grid.Column="3" 
+                                            Content="删除" 
+                                            Command="{Binding $parent[UserControl].DataContext.DeleteTemplateCommand}" 
+                                            CommandParameter="{Binding}"
+                                            Classes="Outline"
+                                            Foreground="Red"/>
+                                    
+                                    <!-- Template ID -->
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                                               Text="{Binding Id}" 
+                                               Foreground="Gray" 
+                                               FontSize="12"/>
+                                    
+                                    <!-- Version and Attributes Count -->
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,2,0,0">
+                                        <TextBlock Text="版本: " FontSize="12" Opacity="0.7"/>
+                                        <TextBlock Text="{Binding Version}" FontSize="12" Opacity="0.7"/>
+                                        <TextBlock Text=" | 属性数量: " FontSize="12" Opacity="0.7" Margin="8,0,0,0"/>
+                                        <TextBlock Text="{Binding Attributes.Count}" FontSize="12" Opacity="0.7"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Template Description -->
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+                                               Text="{Binding Description}" 
+                                               TextWrapping="Wrap" 
+                                               Margin="0,5,0,0"/>
+                                    
+                                    <!-- Created Time -->
+                                    <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,5,0,0">
+                                        <TextBlock Text="创建时间: " FontSize="11" Opacity="0.6"/>
+                                        <TextBlock Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" FontSize="11" Opacity="0.6"/>
+                                    </StackPanel>
+                                </Grid>
+                            </material:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</UserControl>

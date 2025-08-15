@@ -1,0 +1,42 @@
+# 示例属性集模板
+id: template_example_20250101_120000_abcd1234
+name: 示例模板
+description: 这是一个示例模板，展示了YAML格式的模板结构
+created_at: 2025-01-01T12:00:00
+updated_at: 2025-01-01T12:00:00
+version: 1.0.0
+tags:
+  - example
+  - demo
+  - character
+attributes:
+  - id: Character.Core.Health
+    category: Character.Core
+    base_value: 100.0
+    min_value: 0.0
+    max_value: 1000.0
+    comment: 角色生命值
+  - id: Character.Core.Mana
+    category: Character.Core
+    base_value: 50.0
+    min_value: 0.0
+    max_value: 500.0
+    comment: 角色魔法值
+  - id: Character.Core.Strength
+    category: Character.Core
+    base_value: 10.0
+    min_value: 1.0
+    max_value: 100.0
+    comment: 角色力量属性
+  - id: Character.Core.Agility
+    category: Character.Core
+    base_value: 10.0
+    min_value: 1.0
+    max_value: 100.0
+    comment: 角色敏捷属性
+  - id: Character.Core.Intelligence
+    category: Character.Core
+    base_value: 10.0
+    min_value: 1.0
+    max_value: 100.0
+    comment: 角色智力属性

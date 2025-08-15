@@ -11,6 +11,12 @@ public partial class AttributeValueViewModel : ObservableObject
     
     [ObservableProperty]
     private AttributeValue _attributeValue;
+    
+    [ObservableProperty]
+    private string _attributeName = string.Empty;
+    
+    [ObservableProperty]
+    private string _attributeCategory = string.Empty;
 
     public ICommand? RemoveCommand { get; }
 

@@ -7,10 +7,17 @@
              x:Class="JoyConfig.Views.AttributeValueCardView"
              x:DataType="vm:AttributeValueViewModel">
     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,10">
-        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+        <Grid ColumnDefinitions="150,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
             <!-- Row 0: ID and Category -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding AttributeValue.AttributeId}" FontWeight="Bold"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AttributeValue.Attribute.Category}" Foreground="Gray" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" 
+                       Text="{Binding AttributeValue.AttributeId}" 
+                       FontWeight="Bold" 
+                       TextTrimming="CharacterEllipsis" 
+                       ToolTip.Tip="{Binding AttributeValue.AttributeId}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" 
+                       Text="{Binding AttributeValue.AttributeCategory}" 
+                       Foreground="Gray" 
+                       HorizontalAlignment="Left"/>
             <Button Grid.Row="0" Grid.Column="2" Content="{Binding LocalizationManager[Common_Remove]}" Classes="Outline"
                     Command="{Binding RemoveCommand}"
                     CommandParameter="{Binding}"/>

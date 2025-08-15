@@ -18,6 +18,7 @@ public partial class AttributeViewModel : EditorViewModelBase
 {
     private readonly AttributeDatabaseViewModel _parentViewModel;
     private readonly IDialogService _dialogService;
+    private readonly IAttributeRepository _attributeRepository;
 
     [ObservableProperty]
     private Attribute _attribute;
@@ -38,11 +39,16 @@ public partial class AttributeViewModel : EditorViewModelBase
 
     public ObservableCollection<AttributeSet> ReferencingAttributeSets { get; } = new();
 
-    public AttributeViewModel(Attribute attribute, AttributeDatabaseViewModel parentViewModel, IDialogService dialogService)
+    public AttributeViewModel(
+        Attribute attribute, 
+        AttributeDatabaseViewModel parentViewModel, 
+        IDialogService dialogService,
+        IAttributeRepository attributeRepository)
     {
         _attribute = attribute;
         _parentViewModel = parentViewModel;
         _dialogService = dialogService;
+        _attributeRepository = attributeRepository;
         Title = $"Attribute: {attribute.Id}";
 
         // Initialize Suffix
@@ -56,7 +62,6 @@ public partial class AttributeViewModel : EditorViewModelBase
             _idSuffix = "NewId";
         }
 
-
         // Fire and forget
         _ = InitializeAsync();
 
@@ -65,8 +70,7 @@ public partial class AttributeViewModel : EditorViewModelBase
 
     private async Task InitializeAsync()
     {
-        using var context = new AttributeDatabaseContext();
-        var existing = await context.Attributes.AsNoTracking().FirstOrDefaultAsync(a => a.Id == Attribute.Id);
+        var existing = await _attributeRepository.GetAttributeByIdAsync(Attribute.Id);
         IsNew = existing == null;
         
         if (!IsNew)
@@ -90,8 +94,7 @@ public partial class AttributeViewModel : EditorViewModelBase
                 return;
             }
             
-            using var context = new AttributeDatabaseContext();
-            var existing = await context.Attributes.AsNoTracking().FirstOrDefaultAsync(a => a.Id == newFullId);
+            var existing = await _attributeRepository.GetAttributeByIdAsync(newFullId);
             if (existing != null)
             {
                 ErrorMessage = $"ID '{newFullId}' already exists.";
@@ -99,8 +102,7 @@ public partial class AttributeViewModel : EditorViewModelBase
             }
             
             Attribute.Id = newFullId;
-            context.Attributes.Add(Attribute);
-            await context.SaveChangesAsync();
+            await _attributeRepository.CreateAttributeAsync(Attribute);
             
             Title = $"Attribute: {Attribute.Id}";
             IsNew = false;
@@ -114,8 +116,7 @@ public partial class AttributeViewModel : EditorViewModelBase
             if (_originalId != newFullId)
             {
                 // --- ID has changed, perform guided update ---
-                using var context = new AttributeDatabaseContext();
-                var preview = await context.PreviewAttributeChangeAsync(_originalId, newFullId, Attribute.Category, Attribute.Category);
+                var preview = await _attributeRepository.PreviewAttributeChangeAsync(_originalId, newFullId, Attribute.Category, Attribute.Category);
 
                 if (!preview.IsValid)
                 {
@@ -142,10 +143,7 @@ public partial class AttributeViewModel : EditorViewModelBase
                 {
                     try
                     {
-                        using (var writeContext = new AttributeDatabaseContext())
-                        {
-                            await writeContext.ExecuteAttributeChangeAsync(preview);
-                        }
+                        await _attributeRepository.ExecuteAttributeChangeAsync(preview);
 
                         ErrorMessage = "Update successful. Reloading editor...";
                         await _parentViewModel.ReloadAndSelectAttributeAsync(newFullId);
@@ -167,9 +165,7 @@ public partial class AttributeViewModel : EditorViewModelBase
             else
             {
                 // --- ID has not changed, just save other properties ---
-                using var context = new AttributeDatabaseContext();
-                context.Attributes.Update(Attribute);
-                await context.SaveChangesAsync();
+                await _attributeRepository.UpdateAttributeAsync(Attribute);
                 ErrorMessage = "Attribute saved successfully.";
             }
         }
@@ -177,8 +173,7 @@ public partial class AttributeViewModel : EditorViewModelBase
 
     private async Task LoadReferencingAttributeSetsAsync()
     {
-        using var context = new AttributeDatabaseContext();
-        var sets = await context.GetReferencingAttributeSetsAsync(Attribute.Id);
+        var sets = await _attributeRepository.GetReferencingAttributeSetsAsync(Attribute.Id);
         
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -218,8 +213,7 @@ public partial class AttributeViewModel : EditorViewModelBase
         {
             try
             {
-                using var context = new AttributeDatabaseContext();
-                await context.DeleteAttributeAsync(Attribute.Id);
+                await _attributeRepository.DeleteAttributeAsync(Attribute.Id);
                 await _parentViewModel.ReloadAndCloseEditorAsync();
             }
             catch (Exception ex)
