@@ -44,9 +44,9 @@
             <Setter Property="ToolTip.Placement" Value="Right"/>
             <Setter Property="ToolTip.HorizontalOffset" Value="8"/>
             <Setter Property="ToolTip.VerticalOffset" Value="0"/>
+            <!-- 移除背景过渡效果以避免聚焦状态背景消失 -->
             <Setter Property="Transitions">
                 <Transitions>
-                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
                     <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
                 </Transitions>
             </Setter>
@@ -64,7 +64,19 @@
             </Setter>
         </Style>
         
+        <!-- 鼠标悬停和聚焦状态样式 -->
         <Style Selector="Button.NavigationButton:pointerover">
+            <Setter Property="Background" Value="#2d2d2d"/>
+            <Setter Property="RenderTransform" Value="scale(1.15)"/>
+        </Style>
+        
+        <Style Selector="Button.NavigationButton:focus:not(.active)">
+            <Setter Property="Background" Value="#2d2d2d"/>
+            <Setter Property="RenderTransform" Value="scale(1.05)"/>
+        </Style>
+        
+        <!-- 聚焦且鼠标悬停状态样式 -->
+        <Style Selector="Button.NavigationButton:focus:not(.active):pointerover">
             <Setter Property="Background" Value="#2d2d2d"/>
             <Setter Property="RenderTransform" Value="scale(1.05)"/>
         </Style>
@@ -79,7 +91,7 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
         
-        <Style Selector="Button.NavigationButton.active:pointerover">
+        <Style Selector="Button.NavigationButton:active:pointerover">
             <Setter Property="Background" Value="#106ebe"/>
         </Style>
         
