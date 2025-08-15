@@ -258,16 +258,27 @@ public class AttributeSetRepository : IAttributeSetRepository
                 throw new InvalidOperationException($"属性集ID '{newId}' 已存在");
             }
             
-            // 更新AttributeValues表中的外键引用
+            // 获取原始属性集信息
+            var originalSet = await context.AttributeSets.FindAsync(oldId);
+            if (originalSet == null)
+            {
+                throw new InvalidOperationException($"属性集ID '{oldId}' 不存在");
+            }
+            
+            // 步骤1: 创建新的属性集记录
+            await context.Database.ExecuteSqlInterpolatedAsync($@"
+                INSERT INTO AttributeSets (Id, Name, Description) 
+                VALUES ({newId}, {originalSet.Name}, {originalSet.Description})");
+            
+            // 步骤2: 更新AttributeValues表中的外键引用
             await context.Database.ExecuteSqlInterpolatedAsync($@"
                 UPDATE AttributeValues 
                 SET AttributeSetId = {newId}
                 WHERE AttributeSetId = {oldId}");
             
-            // 更新AttributeSets表中的主键
+            // 步骤3: 删除旧的属性集记录
             await context.Database.ExecuteSqlInterpolatedAsync($@"
-                UPDATE AttributeSets 
-                SET Id = {newId}
+                DELETE FROM AttributeSets 
                 WHERE Id = {oldId}");
             
             await transaction.CommitAsync();
