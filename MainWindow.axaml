@@ -14,28 +14,48 @@
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"
-        SystemDecorations="None">
+        SystemDecorations="None"
+        Background="#1e1e1e"
+        MinWidth="800"
+        MinHeight="600">
+    
+    <!-- 键盘快捷键定义 -->
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+1" Command="{Binding OpenAttributeDatabaseCommand}"/>
+        <KeyBinding Gesture="Ctrl+2" Command="{Binding OpenGameplayEffectDatabaseCommand}"/>
+        <KeyBinding Gesture="Ctrl+3" Command="{Binding OpenTemplateManagerCommand}"/>
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding OpenSettingsCommand}"/>
+        <KeyBinding Gesture="Ctrl+B" Command="{Binding TogglePrimarysidebarCommand}"/>
+        <KeyBinding Gesture="Ctrl+Shift+B" Command="{Binding ToggleSecondarySidebarCommand}"/>
+        <KeyBinding Gesture="Ctrl+J" Command="{Binding TogglePanelCommand}"/>
+    </Window.KeyBindings>
 
     <Window.Styles>
-        <Style Selector="Button.SidebarButton">
+        <!-- 导航按钮样式 - 更现代化的设计 -->
+        <Style Selector="Button.NavigationButton">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="4"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="ToolTip.Placement" Value="Right"/>
-            <Setter Property="ToolTip.HorizontalOffset" Value="5"/>
+            <Setter Property="ToolTip.HorizontalOffset" Value="8"/>
             <Setter Property="ToolTip.VerticalOffset" Value="0"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+                </Transitions>
+            </Setter>
             <Setter Property="Template">
                 <ControlTemplate>
                     <Border Background="{TemplateBinding Background}"
-                            CornerRadius="20"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            UseLayoutRounding="False">
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
@@ -44,85 +64,109 @@
             </Setter>
         </Style>
         
-        <Style Selector="Button.SidebarButton:pointerover">
-            <Setter Property="Background" Value="#2a2a2aff"/>
-            <Setter Property="BorderBrush" Value="#454545ff"/>
+        <Style Selector="Button.NavigationButton:pointerover">
+            <Setter Property="Background" Value="#2d2d2d"/>
+            <Setter Property="RenderTransform" Value="scale(1.05)"/>
         </Style>
         
-        <Style Selector="Button.SidebarButton:pressed">
-            <Setter Property="Background" Value="#3a3a3aff"/>
-            <Setter Property="BorderBrush" Value="#555555ff"/>
+        <Style Selector="Button.NavigationButton:pressed">
+            <Setter Property="Background" Value="#404040"/>
+            <Setter Property="RenderTransform" Value="scale(0.95)"/>
         </Style>
         
+        <Style Selector="Button.NavigationButton.active">
+            <Setter Property="Background" Value="#0078d4"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+        <Style Selector="Button.NavigationButton.active:pointerover">
+            <Setter Property="Background" Value="#106ebe"/>
+        </Style>
+        
+        <!-- 标题栏按钮样式 - 现代化设计 -->
         <Style Selector="Button.TitleBarButton">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Width" Value="50"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="CornerRadius" Value="0"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
             <Setter Property="Template">
                 <ControlTemplate>
-                    <ContentPresenter Background="{TemplateBinding Background}"
-                                      Content="{TemplateBinding Content}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
                 </ControlTemplate>
             </Setter>
         </Style>
         
         <Style Selector="Button.TitleBarButton:pointerover">
-            <Setter Property="Background" Value="#444444"/>
+            <Setter Property="Background" Value="#3a3a3a"/>
         </Style>
         
         <Style Selector="Button.TitleBarButton:pressed">
-            <Setter Property="Background" Value="#666666"/>
-        </Style>
-        <Style Selector="Button.TitleBarButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#444444"/>
-        </Style>
-        <Style Selector="Button.TitleBarButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="#666666"/>
+            <Setter Property="Background" Value="#4a4a4a"/>
         </Style>
         
-        <Style Selector="Button.CloseButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="Red"/>
-        </Style>
-        <Style Selector="Button.CloseButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="#E04343"/>
-        </Style>
-
-        <Style Selector="Button.SidebarButton.selected">
-            <Setter Property="Background" Value="#1a1a1aff"/>
-            <Setter Property="BorderBrush" Value="#353535ff"/>
-        </Style>
-
-        <Style Selector="Button.SidebarButton.selected PathIcon">
-            <Setter Property="Foreground" Value="Blue"/>
-        </Style>
-
-        <Style Selector="ToolTip">
-            <Setter Property="Background" Value="#4a4a4a"/>
+        <!-- 关闭按钮特殊样式 -->
+        <Style Selector="Button.CloseButton:pointerover">
+            <Setter Property="Background" Value="#e81123"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#5c5c5c"/>
+        </Style>
+        
+        <Style Selector="Button.CloseButton:pressed">
+            <Setter Property="Background" Value="#c50e1f"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- 工具提示样式 - 现代化设计 -->
+        <Style Selector="ToolTip">
+            <Setter Property="Background" Value="#2d2d2d"/>
+            <Setter Property="Foreground" Value="#f0f0f0"/>
+            <Setter Property="BorderBrush" Value="#404040"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Padding" Value="10"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
                 <ControlTemplate>
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding CornerRadius}"
-                            Padding="{TemplateBinding Padding}">
+                            Padding="{TemplateBinding Padding}"
+                            BoxShadow="0 4 8 0 #40000000">
                         <ContentPresenter Content="{TemplateBinding Content}"/>
                     </Border>
                 </ControlTemplate>
             </Setter>
+        </Style>
+        
+        <!-- 内容区域样式 -->
+        <Style Selector="Border.ContentPanel">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="BorderBrush" Value="#3c3c3c"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        
+        <!-- 分割器样式 -->
+        <Style Selector="GridSplitter">
+            <Setter Property="Background" Value="#3c3c3c"/>
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Height" Value="1"/>
         </Style>
     </Window.Styles>
     
@@ -157,244 +201,382 @@
         </DataTemplate>
     </Window.DataTemplates>
 
-    <DockPanel Background="#333333">
-        <!-- Title Bar -->
-        <Border Name="TitleBar" Height="40" DockPanel.Dock="Top" Background="Transparent">
-            <Border.RenderTransform>
-                <ScaleTransform/>
-            </Border.RenderTransform>
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Margin="10,0,0,0"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="0" VerticalAlignment="Stretch">
-                    <!-- Primary Sidebar Toggle Button -->
-                    <Button ToolTip.Tip="切换主侧栏显示" 
-                            Command="{Binding TogglePrimarysidebarCommand}"
-                            Classes="TitleBarButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/menu.svg" Width="20" Height="20"/>
-                            </Button>
-                    <!-- Panel Toggle Button -->
-                    <Button ToolTip.Tip="切换面板显示" 
-                            Command="{Binding TogglePanelCommand}"
-                            Classes="TitleBarButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/panel.svg" Width="20" Height="20"/>
-                            </Button>
-                    <!-- Secondary Sidebar Toggle Button -->
-                    <Button ToolTip.Tip="切换副侧栏显示" 
-                            Command="{Binding ToggleSecondarySidebarCommand}"
-                            Classes="TitleBarButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/sidebar.svg" Width="20" Height="20"/>
-                            </Button>
-                    <Button Name="MinimizeButton" Classes="TitleBarButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/minimize.svg" Width="20" Height="20"/>
-                            </Button>
-                    <Button Name="MaximizeButton" Classes="TitleBarButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/maximize.svg" Width="20" Height="20"/>
-                            </Button>
-                    <Button Name="CloseButton" Classes="TitleBarButton CloseButton">
-                                <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="20" Height="20"/>
-                            </Button>
+    <!-- 主容器 - 使用Grid布局实现更好的结构 -->
+    <!-- 行定义：
+         1. 标题栏区域 - 负责窗口控制和全局导航
+         2. 主内容区域 - 包含工作区和编辑器
+         3. 状态栏区域 - 显示应用状态和进度信息
+    -->
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- 标题栏区域 -->
+        <Border Name="TitleBar" Grid.Row="0" Height="40" Background="#2d2d2d" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- 应用图标和标题 -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                    <Image Source="/public/Icon.png" Width="16" Height="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                               VerticalAlignment="Center"
+                               Foreground="#f0f0f0"
+                               FontSize="13"
+                               FontWeight="Medium"/>
+                </StackPanel>
+                
+                <!-- 中央区域 - 可用于显示当前工作区信息 -->
+                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                     <TextBlock Text="{Binding SelectedWorkspace}"
+                                Foreground="#a0a0a0"
+                                FontSize="12"/>
+                 </StackPanel>
+                
+                <!-- 窗口控制按钮组 -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- 布局控制按钮组 -->
+                     <Border Background="#404040" CornerRadius="4" Margin="0,0,8,0">
+                         <StackPanel Orientation="Horizontal">
+                             <Button Command="{Binding TogglePrimarysidebarCommand}"
+                                      Classes="TitleBarButton"
+                                      ToolTip.Tip="切换主侧栏显示 (Ctrl+B)">
+                                  <svg:Svg Path="avares://JoyConfig/Icons/menu.svg" Width="16" Height="16"/>
+                              </Button>
+                             <Button Command="{Binding TogglePanelCommand}"
+                                      Classes="TitleBarButton"
+                                      ToolTip.Tip="切换面板显示 (Ctrl+J)">
+                                  <svg:Svg Path="avares://JoyConfig/Icons/panel.svg" Width="16" Height="16"/>
+                              </Button>
+                              <Button Command="{Binding ToggleSecondarySidebarCommand}"
+                                      Classes="TitleBarButton"
+                                      ToolTip.Tip="切换副侧栏显示 (Ctrl+Shift+B)">
+                                  <svg:Svg Path="avares://JoyConfig/Icons/sidebar.svg" Width="16" Height="16"/>
+                              </Button>
+                         </StackPanel>
+                     </Border>
+                    
+                    <!-- 窗口控制按钮组 -->
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="MinimizeButton" Classes="TitleBarButton">
+                            <svg:Svg Path="avares://JoyConfig/Icons/minimize.svg" Width="16" Height="16"/>
+                        </Button>
+                        <Button Name="MaximizeButton" Classes="TitleBarButton">
+                            <svg:Svg Path="avares://JoyConfig/Icons/maximize.svg" Width="16" Height="16"/>
+                        </Button>
+                        <Button Name="CloseButton" Classes="TitleBarButton CloseButton">
+                            <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="16" Height="16"/>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Activity Bar -->
-        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Stretch" Background="#333333" Spacing="10" Margin="5">
-            <Button ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase]}" Classes="SidebarButton"
-                    Command="{Binding OpenAttributeDatabaseCommand}"
-                    Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}">
-                <svg:Svg Path="avares://JoyConfig/Icons/database.svg" Width="24" Height="24"/>
-            </Button>
-            <Button ToolTip.Tip="{Binding LocalizationManager[GameplayEffectDatabase]}" Classes="SidebarButton"
-                    Command="{Binding OpenGameplayEffectDatabaseCommand}"
-                    Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}">
-                <svg:Svg Path="avares://JoyConfig/Icons/effect.svg" Width="24" Height="24"/>
-            </Button>
-            <Button ToolTip.Tip="模板管理" Classes="SidebarButton" Command="{Binding OpenTemplateManagerCommand}"
-                    Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}">
-                <svg:Svg Path="avares://JoyConfig/Icons/template.svg" Width="24" Height="24"/>
-            </Button>
-            <Button ToolTip.Tip="{Binding LocalizationManager[Settings]}" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
-                    Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}">
-                <svg:Svg Path="avares://JoyConfig/Icons/settings.svg" Width="24" Height="24"/>
-            </Button>
-        </StackPanel>
-
-        <!-- IDE Layout Grid -->
-        <Grid IsVisible="{Binding IsMainContentVisible}">
-            <Grid.ColumnDefinitions>
-                <!-- Primary Sidebar -->
-                <ColumnDefinition Width="{Binding PrimarySidebarWidth}" MinWidth="200"/>
-                <ColumnDefinition Width="5"/> <!-- Splitter -->
-                <!-- Main Editor Area -->
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5"/> <!-- Splitter -->
-                <!-- Secondary Sidebar -->
-                <ColumnDefinition Width="{Binding SecondarySidebarWidth}" MinWidth="200"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <!-- Main Content Area -->
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5"/> <!-- Splitter -->
-                <!-- Panel Area -->
-                <RowDefinition Height="{Binding PanelHeight}" MinHeight="150"/>
-            </Grid.RowDefinitions>
-
-            <!-- Primary Sidebar Card -->
-            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
-                    Background="#2d2d2d"
-                    BorderBrush="#404040"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="5"
-                    IsVisible="{Binding IsPrimarySidebarVisible}">
-                <DockPanel Margin="10">
-                    <TextBlock Text="{Binding LocalizationManager[Main_Workspace]}"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               DockPanel.Dock="Top"
-                               Margin="0,0,0,10"/>
-                    <ContentControl Content="{Binding CurrentWorkspace}"/>
-                </DockPanel>
+        <!-- 主内容区域 - 功能模块划分 -->
+        <!-- 列定义：
+             1. 导航栏 - 主要功能模块切换（60px固定宽度）
+             2. 工作区域 - 动态内容展示区域（自适应宽度）
+        -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+            <!-- 导航栏 - 左侧活动栏 -->
+            <!-- 职责：提供主要功能模块的快速访问入口 -->
+            <Border Grid.Column="0" Background="#2d2d2d" BorderBrush="#3c3c3c" BorderThickness="0,0,1,0" Width="60">
+                <StackPanel VerticalAlignment="Top" Margin="0,8">
+                    <!-- 主要功能按钮 -->
+                     <Button Classes="NavigationButton"
+                              Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}"
+                              Command="{Binding OpenAttributeDatabaseCommand}"
+                              ToolTip.Tip="属性数据库 (Ctrl+1)">
+                          <svg:Svg Path="avares://JoyConfig/Icons/database.svg" Width="24" Height="24"/>
+                      </Button>
+                     
+                     <Button Classes="NavigationButton"
+                              Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}"
+                              Command="{Binding OpenGameplayEffectDatabaseCommand}"
+                              ToolTip.Tip="游戏效果数据库 (Ctrl+2)">
+                          <svg:Svg Path="avares://JoyConfig/Icons/effect.svg" Width="24" Height="24"/>
+                      </Button>
+                      
+                      <Button Classes="NavigationButton"
+                              Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}"
+                              Command="{Binding OpenTemplateManagerCommand}"
+                              ToolTip.Tip="模板管理 (Ctrl+3)">
+                          <svg:Svg Path="avares://JoyConfig/Icons/template.svg" Width="24" Height="24"/>
+                      </Button>
+                    
+                    <!-- 分隔线 -->
+                    <Separator Height="1" Background="#404040" Margin="8,12"/>
+                    
+                    <!-- 设置按钮 - 放在底部 -->
+                     <Button Classes="NavigationButton"
+                              Classes.active="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}"
+                              Command="{Binding OpenSettingsCommand}"
+                              ToolTip.Tip="设置 (Ctrl+Shift+S)">
+                          <svg:Svg Path="avares://JoyConfig/Icons/settings.svg" Width="24" Height="24"/>
+                      </Button>
+                </StackPanel>
             </Border>
 
-            <!-- Primary Sidebar Splitter -->
-            <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
-                          Background="#404040"
-                          IsVisible="{Binding IsPrimarySidebarVisible}"/>
-
-            <!-- Main Editor Area Card -->
-            <Border Grid.Column="2" Grid.Row="0"
-                    Background="#2d2d2d"
-                    BorderBrush="#404040"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="5">
-                <DockPanel Margin="10">
-                    <TextBlock Text="{Binding LocalizationManager[Main_Editor]}"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               DockPanel.Dock="Top"
-                               Margin="0,0,0,10"/>
-                    <ContentControl Content="{Binding CurrentEditor}"/>
-                </DockPanel>
-            </Border>
-
-            <!-- Secondary Sidebar Splitter -->
-            <GridSplitter Grid.Column="3" Grid.Row="0" Grid.RowSpan="3"
-                          Background="#404040"
-                          IsVisible="{Binding IsSecondarySidebarVisible}"/>
-
-            <!-- Secondary Sidebar Card -->
-            <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="3"
-                    Background="#2d2d2d"
-                    BorderBrush="#404040"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="5"
-                    IsVisible="{Binding IsSecondarySidebarVisible}">
-                <DockPanel Margin="10">
-                    <TextBlock Text="副侧栏"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               DockPanel.Dock="Top"
-                               Margin="0,0,0,10"/>
-                    <ContentControl Content="{Binding SecondaryContent}"/>
-                </DockPanel>
-            </Border>
-
-            <!-- Panel Splitter -->
-            <GridSplitter Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1"
-                          Background="#404040"
-                          IsVisible="{Binding IsPanelVisible}"/>
-
-            <!-- Panel Card -->
-            <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"
-                    Background="#2d2d2d"
-                    BorderBrush="#404040"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Margin="5"
-                    IsVisible="{Binding IsPanelVisible}">
-                <DockPanel Margin="10">
-                    <TextBlock Text="面板"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               DockPanel.Dock="Top"
-                               Margin="0,0,0,10"/>
-                    <ContentControl Content="{Binding PanelContent}"/>
-                </DockPanel>
-            </Border>
-        </Grid>
-
-        <!-- Template Manager Card -->
-        <Grid IsVisible="{Binding IsTemplateManagerVisible}">
-            <!-- Shadow Layer -->
-            <Border CornerRadius="10,0,0,0">
-                <Border.Background>
-                    <SolidColorBrush Color="#1f1f1fff" />
-                </Border.Background>
-                <Border.Effect>
-                    <BlurEffect Radius="10" />
-                </Border.Effect>
-            </Border>
-
-            <!-- Content Layer -->
-            <Border Background="#2d2d2d"
-                    CornerRadius="10,0,0,0">
-                <views:TemplateManagerView DataContext="{Binding TemplateManagerViewModel}"/>
-            </Border>
-        </Grid>
-
-        <!-- Settings Card -->
-        <Grid IsVisible="{Binding IsSettingsVisible}">
-            <!-- Shadow Layer -->
-            <Border CornerRadius="10,0,0,0">
-                <Border.Background>
-                    <SolidColorBrush Color="#1f1f1fff" />
-                </Border.Background>
-                <Border.Effect>
-                    <BlurEffect Radius="10" />
-                </Border.Effect>
-            </Border>
-
-            <!-- Content Layer -->
-            <Border Background="#2d2d2d"
-                    CornerRadius="10,0,0,0">
-                <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
-            </Border>
-        </Grid>
-        
-        <!-- Status Bar -->
-        <Border DockPanel.Dock="Bottom" Background="#1e1e1e" Height="22" BorderBrush="#3c3c3c" BorderThickness="0,1,0,0" Opacity="0.9">
-            <Grid Margin="5,0">
+            <!-- 主工作区域 -->
+            <!-- 职责：根据用户选择的功能模块显示相应的工作界面 -->
+            <!-- 支持的布局模式：
+                 1. 三栏布局：主侧栏 + 编辑器 + 副侧栏
+                 2. 两栏布局：编辑器 + 侧栏（可选左右）
+                 3. 单栏布局：仅编辑器
+                 4. 底部面板：可选的输出/调试面板
+            -->
+            <Grid Grid.Column="1" IsVisible="{Binding IsMainContentVisible}">
                 <Grid.ColumnDefinitions>
+                    <!-- 主侧栏 -->
+                    <ColumnDefinition Width="{Binding PrimarySidebarWidth}" MinWidth="200"/>
+                    <ColumnDefinition Width="Auto"/> <!-- 分割器 -->
+                    <!-- 编辑器区域 -->
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/> <!-- 分割器 -->
+                    <!-- 副侧栏 -->
+                    <ColumnDefinition Width="{Binding SecondarySidebarWidth}" MinWidth="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <!-- 主内容区域 -->
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/> <!-- 分割器 -->
+                    <!-- 底部面板 -->
+                    <RowDefinition Height="{Binding PanelHeight}" MinHeight="150"/>
+                </Grid.RowDefinitions>
+
+                <!-- 主侧栏 - 工作区浏览器 -->
+                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                        Classes="ContentPanel"
+                        IsVisible="{Binding IsPrimarySidebarVisible}">
+                    <DockPanel>
+                        <!-- 侧栏标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0" Text="{Binding LocalizationManager[Main_Workspace]}"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0"
+                                           FontSize="13"
+                                           FontWeight="Medium"
+                                           Foreground="#f0f0f0"/>
+                                <Button Grid.Column="1" Classes="TitleBarButton" Width="30" Height="30" Margin="2"
+                                        Command="{Binding TogglePrimarysidebarCommand}"
+                                        ToolTip.Tip="隐藏侧栏">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="12" Height="12"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 侧栏内容 -->
+                        <ContentControl Content="{Binding CurrentWorkspace}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- 主侧栏分割器 -->
+                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                              IsVisible="{Binding IsPrimarySidebarVisible}"/>
+
+                <!-- 主编辑器区域 -->
+                <Border Grid.Column="2" Grid.Row="0" Classes="ContentPanel">
+                    <DockPanel>
+                        <!-- 编辑器标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0" Text="{Binding LocalizationManager[Main_Editor]}"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0"
+                                           FontSize="13"
+                                           FontWeight="Medium"
+                                           Foreground="#f0f0f0"/>
+                                <!-- 可以在这里添加编辑器相关的操作按钮 -->
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 编辑器内容 -->
+                        <ContentControl Content="{Binding CurrentEditor}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- 副侧栏分割器 -->
+                <GridSplitter Grid.Column="3" Grid.Row="0" Grid.RowSpan="3"
+                              IsVisible="{Binding IsSecondarySidebarVisible}"/>
+
+                <!-- 副侧栏 - 属性面板等 -->
+                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="3"
+                        Classes="ContentPanel"
+                        IsVisible="{Binding IsSecondarySidebarVisible}">
+                    <DockPanel>
+                        <!-- 副侧栏标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0" Text="属性面板"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0"
+                                           FontSize="13"
+                                           FontWeight="Medium"
+                                           Foreground="#f0f0f0"/>
+                                <Button Grid.Column="1" Classes="TitleBarButton" Width="30" Height="30" Margin="2"
+                                        Command="{Binding ToggleSecondarySidebarCommand}"
+                                        ToolTip.Tip="隐藏属性面板">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="12" Height="12"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 副侧栏内容 -->
+                        <ContentControl Content="{Binding SecondaryContent}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- 底部面板分割器 -->
+                <GridSplitter Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1"
+                              IsVisible="{Binding IsPanelVisible}"/>
+
+                <!-- 底部面板 - 输出、终端等 -->
+                <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"
+                        Classes="ContentPanel"
+                        IsVisible="{Binding IsPanelVisible}">
+                    <DockPanel>
+                        <!-- 面板标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="35">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                                    <TextBlock Text="输出" FontSize="13" FontWeight="Medium" Foreground="#f0f0f0" Margin="0,0,16,0"/>
+                                    <!-- 可以添加标签页切换按钮 -->
+                                </StackPanel>
+                                <Button Grid.Column="1" Classes="TitleBarButton" Width="30" Height="30" Margin="2"
+                                        Command="{Binding TogglePanelCommand}"
+                                        ToolTip.Tip="隐藏面板">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="12" Height="12"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 面板内容 -->
+                        <ContentControl Content="{Binding PanelContent}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+            <!-- 模板管理器视图 -->
+            <Grid Grid.Column="1" IsVisible="{Binding IsTemplateManagerVisible}">
+                <Border Classes="ContentPanel" Margin="0">
+                    <DockPanel>
+                        <!-- 模板管理器标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="40">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/template.svg" Width="16" Height="16" Margin="0,0,8,0"/>
+                                    <TextBlock Text="模板管理器"
+                                               FontSize="14"
+                                               FontWeight="Medium"
+                                               Foreground="#f0f0f0"/>
+                                </StackPanel>
+                                
+                                <TextBlock Grid.Column="1" Text="管理和编辑属性模板"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           FontSize="12"
+                                           Foreground="#a0a0a0"/>
+                                
+                                <Button Grid.Column="2" Classes="TitleBarButton" Width="32" Height="32" Margin="4"
+                                        Command="{Binding OpenAttributeDatabaseCommand}"
+                                        ToolTip.Tip="返回属性数据库">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="14" Height="14"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 模板管理器内容 -->
+                        <views:TemplateManagerView DataContext="{Binding TemplateManagerViewModel}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- 设置视图 -->
+            <Grid Grid.Column="1" IsVisible="{Binding IsSettingsVisible}">
+                <Border Classes="ContentPanel" Margin="0">
+                    <DockPanel>
+                        <!-- 设置标题栏 -->
+                        <Border DockPanel.Dock="Top" Background="#323233" BorderBrush="#3c3c3c" BorderThickness="0,0,0,1" Height="40">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/settings.svg" Width="16" Height="16" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding LocalizationManager[Settings]}"
+                                               FontSize="14"
+                                               FontWeight="Medium"
+                                               Foreground="#f0f0f0"/>
+                                </StackPanel>
+                                
+                                <TextBlock Grid.Column="1" Text="应用程序设置和首选项"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           FontSize="12"
+                                           Foreground="#a0a0a0"/>
+                                
+                                <Button Grid.Column="2" Classes="TitleBarButton" Width="32" Height="32" Margin="4"
+                                        Command="{Binding OpenAttributeDatabaseCommand}"
+                                        ToolTip.Tip="返回属性数据库">
+                                    <svg:Svg Path="avares://JoyConfig/Icons/close.svg" Width="14" Height="14"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 设置内容 -->
+                        <views:SettingsView DataContext="{Binding SettingsViewModel}" Margin="8"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        
+        <!-- 状态栏 -->
+        <Border Grid.Row="2" Background="#2d2d2d" BorderBrush="#3c3c3c" BorderThickness="0,1,0,0" Height="24">
+            <Grid Margin="8,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBlock Grid.Column="0" 
+                <!-- 状态指示器 -->
+                 <Ellipse Grid.Column="0" Width="8" Height="8" Margin="0,0,8,0" VerticalAlignment="Center">
+                     <Ellipse.Fill>
+                         <SolidColorBrush Color="{Binding IsLoading, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=#00ff00}"/>
+                     </Ellipse.Fill>
+                 </Ellipse>
+                
+                <!-- 状态消息 -->
+                <TextBlock Grid.Column="1" 
                            Text="{Binding StatusMessage}" 
-                           Foreground="#cccccc" 
+                           Foreground="#e0e0e0" 
                            VerticalAlignment="Center" 
-                           Margin="5,0"
-                           FontSize="11"/>
-                            
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0">
+                           FontSize="12"/>
+                
+                <!-- 进度信息 -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="16,0" IsVisible="{Binding IsLoading}">
                     <TextBlock Text="{Binding ProgressText}" 
-                               Foreground="#cccccc" 
+                               Foreground="#a0a0a0" 
                                VerticalAlignment="Center" 
                                FontSize="11" 
-                               Margin="0,0,5,0"
-                               IsVisible="{Binding IsLoading}"/>
-                    <ProgressBar Width="80" 
-                                 Height="10" 
-                                 IsIndeterminate="True" 
-                                 IsVisible="{Binding IsLoading}"/>
+                               Margin="0,0,8,0"/>
+                    <ProgressBar Width="100" 
+                                 Height="4" 
+                                 VerticalAlignment="Center"
+                                 IsIndeterminate="True"
+                                 Foreground="#0078d4"
+                                 Background="#404040"/>
+                </StackPanel>
+                
+                <!-- 右侧信息区域 -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="12">
+                    <!-- 当前工作区信息 -->
+                     <TextBlock Text="{Binding SelectedWorkspace}" 
+                                Foreground="#a0a0a0" 
+                                VerticalAlignment="Center" 
+                                FontSize="11"/>
+                    
+                    <!-- 版本信息或其他状态 -->
+                    <TextBlock Text="v1.0.0" 
+                               Foreground="#808080" 
+                               VerticalAlignment="Center" 
+                               FontSize="10"/>
                 </StackPanel>
             </Grid>
         </Border>
-    </DockPanel>
+    </Grid>
 </Window>
