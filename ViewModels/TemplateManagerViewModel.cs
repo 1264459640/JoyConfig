@@ -90,7 +90,7 @@ public partial class TemplateManagerViewModel : ObservableObject
             // 创建空模板
             var template = new AttributeSetTemplate
             {
-                Id = $"template_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid():N[..8]}",
+                Id = $"template_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid().ToString("N")[..8]}",
                 Name = templateName,
                 Description = string.IsNullOrWhiteSpace(templateDescription) ? "手动创建的模板" : templateDescription,
                 CreatedAt = DateTime.Now,

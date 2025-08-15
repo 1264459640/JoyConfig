@@ -284,6 +284,19 @@
           }
         }
       },
+      "Avalonia.Svg/11.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.3.0",
+          "Svg.Model": "3.0.2"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Svg.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Svg.dll": {}
+        }
+      },
       "Avalonia.Themes.Fluent/11.3.3": {
         "type": "package",
         "dependencies": {
@@ -371,6 +384,15 @@
         },
         "build": {
           "buildTransitive/CommunityToolkit.Mvvm.targets": {}
+        }
+      },
+      "ExCSS/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/ExCSS.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/ExCSS.dll": {}
         }
       },
       "HarfBuzzSharp/8.3.1.1": {
@@ -1232,6 +1254,15 @@
           "buildTransitive/Mono.TextTemplating.targets": {}
         }
       },
+      "ShimSkiaSharp/3.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/ShimSkiaSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/ShimSkiaSharp.dll": {}
+        }
+      },
       "SkiaSharp/2.88.9": {
         "type": "package",
         "dependencies": {
@@ -1463,6 +1494,31 @@
         },
         "runtime": {
           "lib/net6.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
+        }
+      },
+      "Svg.Custom/3.0.2": {
+        "type": "package",
+        "dependencies": {
+          "ExCSS": "4.3.0"
+        },
+        "compile": {
+          "lib/net8.0/Svg.Custom.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Svg.Custom.dll": {}
+        }
+      },
+      "Svg.Model/3.0.2": {
+        "type": "package",
+        "dependencies": {
+          "ShimSkiaSharp": "3.0.2",
+          "Svg.Custom": "3.0.2"
+        },
+        "compile": {
+          "lib/net8.0/Svg.Model.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Svg.Model.dll": {}
         }
       },
       "System.CodeDom/6.0.0": {
@@ -2133,6 +2189,21 @@
         "lib/netstandard2.0/Avalonia.Skia.xml"
       ]
     },
+    "Avalonia.Svg/11.3.0": {
+      "sha512": "hlTTpPDpaS78QD5neVSfaE+l7p38Vp2A8eTtm8WVfh7/04cWDQGGjIGLzJMzNk9Lss9ah7LaxnkWC5ThLhC1Sw==",
+      "type": "package",
+      "path": "avalonia.svg/11.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "avalonia.svg.11.3.0.nupkg.sha512",
+        "avalonia.svg.nuspec",
+        "lib/net461/Avalonia.Svg.dll",
+        "lib/net6.0/Avalonia.Svg.dll",
+        "lib/net8.0/Avalonia.Svg.dll",
+        "lib/netstandard2.0/Avalonia.Svg.dll"
+      ]
+    },
     "Avalonia.Themes.Fluent/11.3.3": {
       "sha512": "v+l4lXmkwSjynVinwycIFRTLpiSxnlalQNB0hCTJcxVd2kngKdhsXNpI0Ciz1aeSGhThYDTIqyajIY7EC7W7jQ==",
       "type": "package",
@@ -2251,6 +2322,25 @@
         "lib/netstandard2.1/CommunityToolkit.Mvvm.dll",
         "lib/netstandard2.1/CommunityToolkit.Mvvm.pdb",
         "lib/netstandard2.1/CommunityToolkit.Mvvm.xml"
+      ]
+    },
+    "ExCSS/4.3.0": {
+      "sha512": "LyVZ925Cl6Z4TJrbogt3+DkvanYWZcJs0tzKg8lWHAY9PgniVMluNy+l5vXDMmvt5gBgekULasEnUqVAavPuZw==",
+      "type": "package",
+      "path": "excss/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "excss.4.3.0.nupkg.sha512",
+        "excss.nuspec",
+        "lib/net48/ExCSS.dll",
+        "lib/net6.0/ExCSS.dll",
+        "lib/net7.0/ExCSS.dll",
+        "lib/net8.0/ExCSS.dll",
+        "lib/netcoreapp3.1/ExCSS.dll",
+        "lib/netstandard2.0/ExCSS.dll",
+        "lib/netstandard2.1/ExCSS.dll",
+        "readme.md"
       ]
     },
     "HarfBuzzSharp/8.3.1.1": {
@@ -3932,6 +4022,21 @@
         "readme.md"
       ]
     },
+    "ShimSkiaSharp/3.0.2": {
+      "sha512": "VRLaZRQ7llIgQXf6H6Bjpt47RG/9UQvWZdJz97ReFlb4PHwjoId6HkoO84ETyqS/8J2GNT2fDnzmdVBMr5YXOg==",
+      "type": "package",
+      "path": "shimskiasharp/3.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/ShimSkiaSharp.dll",
+        "lib/net6.0/ShimSkiaSharp.dll",
+        "lib/net8.0/ShimSkiaSharp.dll",
+        "lib/netstandard2.0/ShimSkiaSharp.dll",
+        "shimskiasharp.3.0.2.nupkg.sha512",
+        "shimskiasharp.nuspec"
+      ]
+    },
     "SkiaSharp/2.88.9": {
       "sha512": "3MD5VHjXXieSHCleRLuaTXmL2pD0mB7CcOB1x2kA1I4bhptf4e3R27iM93264ZYuAq6mkUyX5XbcxnZvMJYc1Q==",
       "type": "package",
@@ -4200,6 +4305,35 @@
         "lib/netstandard2.0/SQLitePCLRaw.provider.e_sqlite3.dll",
         "sqlitepclraw.provider.e_sqlite3.2.1.10.nupkg.sha512",
         "sqlitepclraw.provider.e_sqlite3.nuspec"
+      ]
+    },
+    "Svg.Custom/3.0.2": {
+      "sha512": "I5QtMsOPdZpR2YsKc3WcLsW2S1YptyGr0MqyXTD4gotZIQtGinY8ZICMrNRTtJBRWeVn352Xdf7lYUtQQABodg==",
+      "type": "package",
+      "path": "svg.custom/3.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Svg.Custom.dll",
+        "lib/net8.0/Svg.Custom.dll",
+        "lib/netstandard2.0/Svg.Custom.dll",
+        "svg.custom.3.0.2.nupkg.sha512",
+        "svg.custom.nuspec"
+      ]
+    },
+    "Svg.Model/3.0.2": {
+      "sha512": "a/EfBT3WGPgEnKybHl2B6pqKkxL64I25k+ozY+zF7YvQp/0v0vqR/KVGacpcv8hFGMINXIGDccxR8boqXJj5Zw==",
+      "type": "package",
+      "path": "svg.model/3.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Svg.Model.dll",
+        "lib/net6.0/Svg.Model.dll",
+        "lib/net8.0/Svg.Model.dll",
+        "lib/netstandard2.0/Svg.Model.dll",
+        "svg.model.3.0.2.nupkg.sha512",
+        "svg.model.nuspec"
       ]
     },
     "System.CodeDom/6.0.0": {
@@ -4687,6 +4821,7 @@
       "Avalonia.Desktop >= 11.3.3",
       "Avalonia.Diagnostics >= 11.3.3",
       "Avalonia.Fonts.Inter >= 11.3.3",
+      "Avalonia.Svg >= 11.3.0",
       "Avalonia.Themes.Fluent >= 11.3.3",
       "CommunityToolkit.Mvvm >= 8.4.0",
       "Material.Avalonia >= 3.13.0",
@@ -4761,6 +4896,10 @@
           "Avalonia.Fonts.Inter": {
             "target": "Package",
             "version": "[11.3.3, )"
+          },
+          "Avalonia.Svg": {
+            "target": "Package",
+            "version": "[11.3.0, )"
           },
           "Avalonia.Themes.Fluent": {
             "target": "Package",

@@ -4,6 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:JoyConfig.ViewModels"
         xmlns:views="using:JoyConfig.Views"
+        xmlns:svg="using:Avalonia.Svg"
+
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="JoyConfig.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -40,20 +42,16 @@
                     </Border>
                 </ControlTemplate>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsPointerOver" Value="True">
-                    <Setter Property="Background" Value="#2a2a2aff"/>
-                    <Setter Property="BorderBrush" Value="#454545ff"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#3a3a3aff"/>
-                    <Setter Property="BorderBrush" Value="#555555ff"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="0.95"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="0.95"/>
-                </Trigger>
-            </Style.Triggers>
+        </Style>
+        
+        <Style Selector="Button.SidebarButton:pointerover">
+            <Setter Property="Background" Value="#2a2a2aff"/>
+            <Setter Property="BorderBrush" Value="#454545ff"/>
+        </Style>
+        
+        <Style Selector="Button.SidebarButton:pressed">
+            <Setter Property="Background" Value="#3a3a3aff"/>
+            <Setter Property="BorderBrush" Value="#555555ff"/>
         </Style>
         
         <Style Selector="Button.TitleBarButton">
@@ -75,18 +73,14 @@
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </ControlTemplate>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsPointerOver" Value="True">
-                    <Setter Property="Background" Value="#444444"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#666666"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="0.95"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="0.95"/>
-                </Trigger>
-            </Style.Triggers>
+        </Style>
+        
+        <Style Selector="Button.TitleBarButton:pointerover">
+            <Setter Property="Background" Value="#444444"/>
+        </Style>
+        
+        <Style Selector="Button.TitleBarButton:pressed">
+            <Setter Property="Background" Value="#666666"/>
         </Style>
         <Style Selector="Button.TitleBarButton:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="#444444"/>
@@ -179,28 +173,28 @@
                     <Button ToolTip.Tip="切换主侧栏显示" 
                             Command="{Binding TogglePrimarysidebarCommand}"
                             Classes="TitleBarButton">
-                                <Image Source="/Icons/menu.svg" Width="20" Height="20"/>
+                                <TextBlock Text="☰" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                     <!-- Panel Toggle Button -->
                     <Button ToolTip.Tip="切换面板显示" 
                             Command="{Binding TogglePanelCommand}"
                             Classes="TitleBarButton">
-                                <Image Source="/Icons/panel.svg" Width="20" Height="20"/>
+                                <TextBlock Text="⊞" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                     <!-- Secondary Sidebar Toggle Button -->
                     <Button ToolTip.Tip="切换副侧栏显示" 
                             Command="{Binding ToggleSecondarySidebarCommand}"
                             Classes="TitleBarButton">
-                                <Image Source="/Icons/sidebar.svg" Width="20" Height="20"/>
+                                <TextBlock Text="⊟" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                     <Button Name="MinimizeButton" Classes="TitleBarButton">
-                                <Image Source="/Icons/minimize.svg" Width="20" Height="20"/>
+                                <TextBlock Text="−" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                     <Button Name="MaximizeButton" Classes="TitleBarButton">
-                                <Image Source="/Icons/maximize.svg" Width="20" Height="20"/>
+                                <TextBlock Text="□" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                     <Button Name="CloseButton" Classes="TitleBarButton CloseButton">
-                                <Image Source="/Icons/close.svg" Width="20" Height="20"/>
+                                <TextBlock Text="×" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                 </StackPanel>
             </Grid>
@@ -211,20 +205,20 @@
             <Button ToolTip.Tip="{Binding LocalizationManager[AttributeDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenAttributeDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='AttributeDatabase'}">
-                <Image Source="/Icons/database.svg" Width="24" Height="24"/>
+                <TextBlock Text="🗃" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[GameplayEffectDatabase]}" Classes="SidebarButton"
                     Command="{Binding OpenGameplayEffectDatabaseCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='GameplayEffectDatabase'}">
-                <Image Source="/Icons/effect.svg" Width="24" Height="24"/>
+                <TextBlock Text="⚡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
             <Button ToolTip.Tip="模板管理" Classes="SidebarButton" Command="{Binding OpenTemplateManagerCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='TemplateManager'}">
-                <Image Source="/Icons/template.svg" Width="24" Height="24"/>
+                <TextBlock Text="📋" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
             <Button ToolTip.Tip="{Binding LocalizationManager[Settings]}" Classes="SidebarButton" Command="{Binding OpenSettingsCommand}"
                     Classes.selected="{Binding SelectedWorkspace, Converter={StaticResource StringEqualsConverter}, ConverterParameter='Settings'}">
-                <Image Source="/Icons/settings.svg" Width="24" Height="24"/>
+                <TextBlock Text="⚙" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
         </StackPanel>
 
