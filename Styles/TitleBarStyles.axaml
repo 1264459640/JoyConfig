@@ -1,0 +1,88 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svg="using:Avalonia.Svg">
+    
+    <!-- 标题栏布局按钮样式 -->
+    <Style Selector="Button.TitleBarLayoutButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Foreground" Value="#a0a0a0"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.TitleBarLayoutButton:pointerover">
+        <Setter Property="Background" Value="#2a2a2a"/>
+        <Setter Property="BorderBrush" Value="#4a4a4a"/>
+        <Setter Property="Foreground" Value="#d0d0d0"/>
+    </Style>
+    
+    <!-- 标题栏布局按钮SVG图标状态切换 -->
+    <Style Selector="Button.TitleBarLayoutButton.menu-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/menu/menu-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.TitleBarLayoutButton.panel-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/panel/panel-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.TitleBarLayoutButton.sidebar-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/sidebar/sidebar-hover.svg"/>
+    </Style>
+    
+    <!-- 标题栏按钮样式 - 现代化设计 -->
+    <Style Selector="Button.TitleBarButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#e0e0e0"/>
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.TitleBarButton:pointerover">
+        <Setter Property="Background" Value="#3a3a3a"/>
+    </Style>
+    
+    <Style Selector="Button.TitleBarButton:pressed">
+        <Setter Property="Background" Value="#4a4a4a"/>
+    </Style>
+    
+    <!-- 关闭按钮特殊样式 -->
+    <Style Selector="Button.CloseButton:pointerover">
+        <Setter Property="Background" Value="#e81123"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style Selector="Button.CloseButton:pressed">
+        <Setter Property="Background" Value="#c50e1f"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+</Styles>

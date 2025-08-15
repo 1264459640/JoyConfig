@@ -40,12 +40,14 @@ D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.FreeDesktop.d
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Native.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Remote.Protocol.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Skia.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Svg.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Themes.Fluent.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Themes.Simple.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Win32.Automation.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Win32.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.X11.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\CommunityToolkit.Mvvm.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ExCSS.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\HarfBuzzSharp.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Humanizer.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Material.Avalonia.dll
@@ -78,10 +80,13 @@ D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Microsoft.Extensions.L
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Mono.TextTemplating.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ShimSkiaSharp.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\SkiaSharp.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\SQLitePCLRaw.core.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Custom.dll
+D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Model.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\System.CodeDom.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\System.Composition.AttributedModel.dll
 D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\System.Composition.Convention.dll
@@ -211,8 +216,3 @@ D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\zh-CN\JoyConfig.resour
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.csproj.Up2Date
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\JoyConfig.genruntimeconfig.cache
 D:\GodotProjects\AttributeDatabaseEditor\obj\Debug\net9.0\ref\JoyConfig.dll
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Avalonia.Svg.dll
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ExCSS.dll
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\ShimSkiaSharp.dll
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Custom.dll
-D:\GodotProjects\AttributeDatabaseEditor\bin\Debug\net9.0\Svg.Model.dll

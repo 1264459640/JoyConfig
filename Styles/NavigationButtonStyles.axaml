@@ -1,0 +1,138 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svg="using:Avalonia.Svg">
+    
+    <!-- 导航按钮样式 - 圆形带边框设计 -->
+    <Style Selector="Button.NavigationButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#a0a0a0"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="ToolTip.Placement" Value="Right"/>
+        <Setter Property="ToolTip.HorizontalOffset" Value="8"/>
+        <Setter Property="ToolTip.VerticalOffset" Value="0"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                        <ContentPresenter.Transitions>
+                            <Transitions>
+                                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+                            </Transitions>
+                        </ContentPresenter.Transitions>
+                    </ContentPresenter>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <!-- 鼠标悬停状态样式 -->
+    <Style Selector="Button.NavigationButton:pointerover">
+        <Setter Property="Background" Value="#3a3a3a"/>
+        <Setter Property="BorderBrush" Value="#5a5a5a"/>
+        <Setter Property="Foreground" Value="#d0d0d0"/>
+    </Style>
+    
+    <!-- 图标缩放动画 - 只影响内容 -->
+    <Style Selector="Button.NavigationButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="RenderTransform" Value="scale(1.15)"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton:focus:not(.active)">
+        <Setter Property="Background" Value="#3a3a3a"/>
+        <Setter Property="BorderBrush" Value="#5a5a5a"/>
+        <Setter Property="Foreground" Value="#d0d0d0"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton:focus:not(.active) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="RenderTransform" Value="scale(1.05)"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="RenderTransform" Value="scale(0.95)"/>
+    </Style>
+    
+    <!-- 选中状态样式 -->
+    <Style Selector="Button.NavigationButton.active">
+        <Setter Property="Background" Value="#3a3a3a"/>
+        <Setter Property="BorderBrush" Value="#5a5a5a"/>
+        <Setter Property="Foreground" Value="#0078d4"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.active:pointerover">
+        <Setter Property="Background" Value="#4a4a4a"/>
+        <Setter Property="BorderBrush" Value="#6a6a6a"/>
+        <Setter Property="Foreground" Value="#1e90ff"/>
+    </Style>
+    
+    <!-- SVG图标状态切换 - 数据库按钮 -->
+    <Style Selector="Button.NavigationButton.database-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/database/database-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.database-button.active svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/database/database-active.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.database-button.active:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/database/database-active-hover.svg"/>
+    </Style>
+    
+    <!-- SVG图标状态切换 - 效果按钮 -->
+    <Style Selector="Button.NavigationButton.effect-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/effect/effect-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.effect-button.active svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/effect/effect-active.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.effect-button.active:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/effect/effect-active-hover.svg"/>
+    </Style>
+    
+    <!-- SVG图标状态切换 - 模板按钮 -->
+    <Style Selector="Button.NavigationButton.template-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/template/template-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.template-button.active svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/template/template-active.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.template-button.active:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/template/template-active-hover.svg"/>
+    </Style>
+    
+    <!-- SVG图标状态切换 - 设置按钮 -->
+    <Style Selector="Button.NavigationButton.settings-button:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/settings/settings-hover.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.settings-button.active svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/settings/settings-active.svg"/>
+    </Style>
+    
+    <Style Selector="Button.NavigationButton.settings-button.active:pointerover svg|Svg">
+        <Setter Property="Path" Value="avares://JoyConfig/Icons/settings/settings-active-hover.svg"/>
+    </Style>
+    
+</Styles>

@@ -57,10 +57,10 @@ public partial class MainViewModel : ObservableObject
     private GridLength _primarySidebarWidth = new GridLength(250);
     
     [ObservableProperty]
-    private GridLength _secondarySidebarWidth = new GridLength(250);
+    private GridLength _secondarySidebarWidth = new GridLength(0); // 启动时隐藏副侧栏
     
     [ObservableProperty]
-    private GridLength _panelHeight = new GridLength(200);
+    private GridLength _panelHeight = new GridLength(0); // 启动时隐藏底部面板
     
     [ObservableProperty]
     private object? _secondaryContent;

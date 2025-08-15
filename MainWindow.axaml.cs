@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using JoyConfig.ViewModels;
 
 namespace JoyConfig;
 
@@ -34,5 +35,15 @@ public partial class MainWindow : Window
                 }
             };
         }
+        
+        // 设置分割器拖拽事件
+        SetupSplitterEvents();
+    }
+    
+    private void SetupSplitterEvents()
+    {
+        // 这里可以添加分割器拖拽事件处理逻辑
+        // 由于Avalonia的GridSplitter会自动处理拖拽，
+        // 我们主要通过绑定和转换器来实现自动隐藏功能
     }
 }

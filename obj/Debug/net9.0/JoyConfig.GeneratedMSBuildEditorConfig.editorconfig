@@ -40,6 +40,15 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/GodotProjects/AttributeDatabaseEditor/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/GodotProjects/AttributeDatabaseEditor/Styles/NavigationButtonStyles.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Styles/PanelStyles.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Styles/TitleBarStyles.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeDatabaseView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
