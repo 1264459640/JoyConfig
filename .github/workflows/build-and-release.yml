@@ -1,0 +1,169 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main, develop, 'release/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  release:
+    types: [published]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_NAME: 'JoyConfig'
+  SOLUTION_FILE: 'JoyConfig.sln'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+      id: gitversion
+
+    - name: Display Version
+      run: |
+        echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
+        echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_FILE }}
+
+    - name: Build application
+      run: |
+        dotnet build ${{ env.SOLUTION_FILE }} \
+          --configuration Release \
+          --no-restore \
+          -p:Version=${{ steps.gitversion.outputs.semVer }} \
+          -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} \
+          -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} \
+          -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
+
+    - name: Run unit tests
+      run: dotnet test ${{ env.SOLUTION_FILE }} --configuration Release --no-build --verbosity normal
+
+    - name: Publish application
+      if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
+      run: |
+        dotnet publish src/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj \
+          --configuration Release \
+          --framework net8.0 \
+          --runtime win-x64 \
+          --self-contained true \
+          --output publish \
+          -p:PublishSingleFile=true \
+          -p:PublishReadyToRun=true \
+          -p:Version=${{ steps.gitversion.outputs.semVer }}
+
+    - name: Upload build artifacts
+      if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-${{ steps.gitversion.outputs.semVer }}
+        path: publish/
+        retention-days: 30
+
+  package:
+    needs: build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: app-${{ needs.build.outputs.semVer }}
+        path: publish/
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+      id: gitversion
+
+    - name: Create Squirrel package
+      run: |
+        # 安装Squirrel.Windows或类似打包工具
+        # 这里使用简化的打包流程
+        $version = "${{ steps.gitversion.outputs.semVer }}"
+        $publishPath = "publish"
+        $outputPath = "Releases"
+        
+        # 创建发布目录
+        New-Item -ItemType Directory -Force -Path $outputPath
+        
+        # 复制文件到发布目录
+        Copy-Item -Path "$publishPath\*" -Destination $outputPath -Recurse -Force
+        
+        # 创建压缩包作为示例
+        Compress-Archive -Path "$outputPath\*" -DestinationPath "Releases\${{ env.PROJECT_NAME }}-$version.zip" -Force
+
+    - name: Upload package artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-${{ steps.gitversion.outputs.semVer }}
+        path: Releases/
+        retention-days: 90
+
+  release:
+    needs: [build, package]
+    runs-on: windows-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download package artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: package-${{ needs.build.outputs.semVer }}
+        path: Releases/
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
+        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
+        asset_content_type: application/zip

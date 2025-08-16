@@ -5,6 +5,7 @@ bin/
 obj/
 publish/
 Templates/
+LocalDoc/
 
 # Ignore common build and IDE files
 *.user
