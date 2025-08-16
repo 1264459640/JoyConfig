@@ -2,7 +2,7 @@ id: template_20250816_000247_55415430
 name: Template
 description: 基于属性集 '玩家1' 创建的模板
 created_at: 2025-08-16T00:02:47.9602658+08:00
-updated_at: 2025-08-16T00:02:47.9602662+08:00
+updated_at: 2025-08-16T15:44:08.3631778+08:00
 version: 1.0.0
 tags:
 - auto-generated
@@ -12,77 +12,77 @@ attributes:
   category: Character
   base_value: 10
   min_value: 0
-  max_value: 999999
-  comment: Agility
+  max_value: 999998
+  comment: 
 - id: Character.Core.Charisma
   category: Character
   base_value: 10
   min_value: 0
   max_value: 999999
-  comment: Charisma
+  comment: 
 - id: Character.Core.Constitution
   category: Character
   base_value: 10
   min_value: 0
   max_value: 999999
-  comment: Constitution
+  comment: 
 - id: Character.Core.Intelligence
   category: Character
   base_value: 10
   min_value: 0
   max_value: 999999
-  comment: Intelligence
+  comment: 
 - id: Character.Core.Perception
   category: Character
   base_value: 10
   min_value: 0
   max_value: 999999
-  comment: Perception
+  comment: 
 - id: Character.Core.Will
   category: Character
   base_value: 10
   min_value: 0
   max_value: 999999
-  comment: Will
+  comment: 
 - id: Character.Derived.DD.LifeValue
   category: Character.Derived.DD
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: LifeValue
+  comment: 
 - id: Character.Derived.DD.MentalValue
   category: Character.Derived.DD
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: MentalValue
+  comment: 
 - id: Character.Derived.DD.MovementSpeed
   category: Character.Derived.DD
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: MovementSpeed
+  comment: 
 - id: Character.Energy
   category: Character
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: Energy
+  comment: 
 - id: Character.Health
   category: Character
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: Health
+  comment: 
 - id: Character.MaxHealth
   category: Character
   base_value: 100
   min_value: 0
   max_value: 999999
-  comment: MaxHealth
+  comment: 
 - id: Character.Speed
   category: Character
   base_value: 1000
   min_value: 0
   max_value: 999999
-  comment: Speed
+  comment: 

@@ -66,6 +66,12 @@
         <DataTemplate DataType="vm:SettingsViewModel">
             <views:SettingsView/>
         </DataTemplate>
+        <DataTemplate DataType="vm:TemplateWorkspaceViewModel">
+            <views:TemplateWorkspaceView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:TemplateEditorViewModel">
+            <views:TemplateEditorView/>
+        </DataTemplate>
     </Window.DataTemplates>
 
     <!-- 背景层 -->
@@ -270,37 +276,7 @@
                             <ContentControl Content="{Binding CurrentEditor}" Margin="8"/>
                         </DockPanel>
                         
-                        <!-- 模板管理器视图 -->
-                        <DockPanel IsVisible="{Binding IsTemplateManagerVisible}">
-                            <!-- 模板管理器标题栏 -->
-                            <Border DockPanel.Dock="Top" 
-                                Background="#2a2a2b" 
-                                BorderBrush="#3c3c3c" 
-                                BorderThickness="0,0,0,1" 
-                                Height="40"
-                                CornerRadius="8,8,0,0">
 
-                                <Grid ColumnDefinitions="Auto,*,Auto">
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
-                                        <svg:Svg Path="avares://JoyConfig/Icons/template/template.svg" Width="16" Height="16" Margin="0,0,8,0"/>
-                                        <TextBlock Text="模板管理器"
-                                                   FontSize="14"
-                                                   FontWeight="Medium"
-                                                   Foreground="#f0f0f0"/>
-                                    </StackPanel>
-                                    
-                                    <TextBlock Grid.Column="1" Text="管理和编辑属性模板"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               FontSize="12"
-                                               Foreground="#a0a0a0"/>
-                                
-                                </Grid>
-                            </Border>
-                            
-                            <!-- 模板管理器内容 -->
-                            <views:TemplateManagerView DataContext="{Binding TemplateManagerViewModel}" Margin="8"/>
-                        </DockPanel>
                         
                         <!-- 设置视图 -->
                         <DockPanel IsVisible="{Binding IsSettingsVisible}">

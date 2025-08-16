@@ -41,6 +41,16 @@ public interface IViewModelFactory
     TemplateManagerViewModel CreateTemplateManagerViewModel(MainViewModel mainViewModel);
     
     /// <summary>
+    /// 创建模板编辑器ViewModel
+    /// </summary>
+    TemplateEditorViewModel CreateTemplateEditorViewModel(string templateId, MainViewModel mainViewModel);
+    
+    /// <summary>
+    /// 创建模板工作区ViewModel
+    /// </summary>
+    TemplateWorkspaceViewModel CreateTemplateWorkspaceViewModel(MainViewModel mainViewModel);
+    
+    /// <summary>
     /// 创建分类ViewModel
     /// </summary>
     CategoryViewModel CreateCategoryViewModel(AttributeDatabaseViewModel parentViewModel);

@@ -268,13 +268,22 @@ public partial class TemplateManagerViewModel : ObservableObject
     {
         if (template == null) return;
         
-        // 切换到属性数据库视图并打开模板编辑器
-        _mainViewModel.OpenAttributeDatabase();
-        var attributeDatabaseVm = _mainViewModel.CurrentWorkspace as AttributeDatabaseViewModel;
-        if (attributeDatabaseVm != null)
+        try
         {
-            var vm = await _viewModelFactory.CreateAttributeSetViewModelAsync(template.Id, attributeDatabaseVm);
-            _mainViewModel.CurrentEditor = vm;
+            Console.WriteLine($"[EditTemplate] 开始编辑模板：{template.Id} - {template.Name}");
+            
+            // 创建模板编辑器ViewModel
+            var templateEditorVm = _viewModelFactory.CreateTemplateEditorViewModel(template.Id, _mainViewModel);
+            
+            // 在编辑器中打开模板
+            _mainViewModel.CurrentEditor = templateEditorVm;
+            
+            Console.WriteLine($"[EditTemplate] 模板编辑器已打开：{template.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[EditTemplate] 打开模板编辑器时发生错误：{ex.Message}");
+            await _dialogService.ShowMessageBoxAsync("错误", $"打开模板编辑器时发生错误: {ex.Message}");
         }
     }
 

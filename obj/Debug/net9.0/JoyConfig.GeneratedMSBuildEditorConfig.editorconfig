@@ -76,5 +76,11 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/GodotProjects/AttributeDatabaseEditor/Views/SettingsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateEditorView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateManagerView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateWorkspaceView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

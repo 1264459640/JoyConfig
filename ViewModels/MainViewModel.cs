@@ -21,7 +21,7 @@ public partial class MainViewModel : ObservableObject
     private SettingsViewModel? _settingsViewModel;
     
     [ObservableProperty]
-    private TemplateManagerViewModel? _templateManagerViewModel;
+    private TemplateWorkspaceViewModel? _templateWorkspaceViewModel;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMainContentVisible))]
@@ -149,11 +149,11 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void OpenTemplateManager()
     {
-        TemplateManagerViewModel = _viewModelFactory.CreateTemplateManagerViewModel(this);
-        IsTemplateManagerVisible = true;
+        TemplateWorkspaceViewModel = _viewModelFactory.CreateTemplateWorkspaceViewModel(this);
+        CurrentWorkspace = TemplateWorkspaceViewModel;
+        IsTemplateManagerVisible = false;
         IsSettingsVisible = false;
         SelectedWorkspace = "TemplateManager";
-        CurrentWorkspace = null;
     }
 
     public void LoadAttributeDatabase()

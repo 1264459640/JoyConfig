@@ -117,11 +117,6 @@
         <Setter Property="Padding" Value="12,6,12,8"/>
         <Setter Property="Margin" Value="0,0,8,0"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Transitions">
-            <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.2"/>
-            </Transitions>
-        </Setter>
     </Style>
     
     <Style Selector="Border.PanelTab:pointerover">

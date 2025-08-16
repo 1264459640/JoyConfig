@@ -1,0 +1,179 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.TemplateWorkspaceView"
+             x:DataType="vm:TemplateWorkspaceViewModel">
+    
+    <UserControl.Styles>
+        <!-- 工作区列表样式 -->
+        <Style Selector="ListBox.WorkspaceList">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
+        <Style Selector="ListBox.WorkspaceList ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="2,1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <Style Selector="ListBox.WorkspaceList ListBoxItem:pointerover">
+            <Setter Property="Background" Value="#3a3a3a"/>
+        </Style>
+        
+        <Style Selector="ListBox.WorkspaceList ListBoxItem:selected">
+            <Setter Property="Background" Value="#0078d4"/>
+        </Style>
+        
+        <Style Selector="ListBox.WorkspaceList ListBoxItem:selected:pointerover">
+            <Setter Property="Background" Value="#106ebe"/>
+        </Style>
+        
+        <!-- 工具按钮样式 -->
+        <Style Selector="Button.WorkspaceToolButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="CornerRadius" Value="2"/>
+        </Style>
+        
+        <Style Selector="Button.WorkspaceToolButton:pointerover">
+            <Setter Property="Background" Value="#3a3a3a"/>
+        </Style>
+        
+        <!-- 文本样式 -->
+        <Style Selector="TextBlock.WorkspaceTitle">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#f0f0f0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="TextBlock.WorkspaceItemName">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#f0f0f0"/>
+        </Style>
+        
+        <Style Selector="TextBlock.WorkspaceSubtitle">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="Gray"/>
+        </Style>
+        
+        <Style Selector="TextBlock.WorkspaceVersionTag">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="#0078d4"/>
+        </Style>
+        
+        <Style Selector="TextBlock.WorkspaceItemDetail">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="Gray"/>
+        </Style>
+    </UserControl.Styles>
+    <DockPanel>
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   DockPanel.Dock="Bottom"
+                   Margin="10"/>
+
+        <ScrollViewer>
+            <StackPanel>
+                <!-- Templates Section -->
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="模板列表" Classes="WorkspaceTitle"/>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="5">
+                                <Button Command="{Binding CreateTemplateCommand}"
+                                        ToolTip.Tip="创建新模板"
+                                        Classes="WorkspaceToolButton">
+                                    <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                                </Button>
+                                <Button Command="{Binding RefreshCommand}"
+                                        ToolTip.Tip="刷新模板列表"
+                                        Classes="WorkspaceToolButton">
+                                    <PathIcon Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+                    </Expander.Header>
+                    <Grid>
+                        <ListBox ItemsSource="{Binding Templates}"
+                                 SelectedItem="{Binding SelectedTemplate, Mode=TwoWay}"
+                                 Classes="WorkspaceList">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="{Binding Name}" Classes="WorkspaceItemName"/>
+                                        <TextBlock Text="{Binding Id}" Classes="WorkspaceSubtitle"/>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="{Binding Version, StringFormat='v{0}'}" Classes="WorkspaceVersionTag"/>
+                                            <TextBlock Text="{Binding Attributes.Count, StringFormat='{}{0} 属性'}" Classes="WorkspaceItemDetail"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="编辑模板"
+                                              Command="{Binding $parent[UserControl].DataContext.EditTemplateCommand}"
+                                              CommandParameter="{Binding $parent[ListBox].SelectedItem}"/>
+                                    <MenuItem Header="使用模板创建属性集"
+                                              Command="{Binding $parent[UserControl].DataContext.UseTemplateCommand}"
+                                              CommandParameter="{Binding $parent[ListBox].SelectedItem}"/>
+                                    <Separator/>
+                                    <MenuItem Header="删除模板"
+                                              Command="{Binding $parent[UserControl].DataContext.DeleteTemplateCommand}"
+                                              CommandParameter="{Binding $parent[ListBox].SelectedItem}"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                        
+                        <!-- 空状态提示 -->
+                        <Border IsVisible="{Binding !Templates.Count}" 
+                                Background="#1a1a1a" 
+                                CornerRadius="4" 
+                                Padding="24" 
+                                Margin="5"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="8" HorizontalAlignment="Center">
+                                <TextBlock Text="📝" 
+                                           FontSize="32" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="暂无模板" 
+                                           FontSize="14" 
+                                           Foreground="Gray" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="点击上方'+'按钮创建新模板" 
+                                           FontSize="12" 
+                                           Foreground="Gray" 
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Expander>
+
+                <!-- Template Categories Section (Future Enhancement) -->
+                <Expander IsExpanded="False" IsVisible="False">
+                    <Expander.Header>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="模板分类" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Expander.Header>
+                    <StackPanel>
+                        <TextBlock Text="分类功能待实现" Margin="10" Foreground="Gray"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

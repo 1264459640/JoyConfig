@@ -57,6 +57,18 @@ public class ViewModelFactory : IViewModelFactory
         return new TemplateManagerViewModel(mainViewModel, _dialogService, templateService, this);
     }
     
+    public TemplateEditorViewModel CreateTemplateEditorViewModel(string templateId, MainViewModel mainViewModel)
+    {
+        var templateService = new TemplateService(_attributeSetRepository);
+        return new TemplateEditorViewModel(templateId, templateService, _dialogService, _attributeRepository, this, mainViewModel);
+    }
+    
+    public TemplateWorkspaceViewModel CreateTemplateWorkspaceViewModel(MainViewModel mainViewModel)
+    {
+        var templateService = new TemplateService(_attributeSetRepository);
+        return new TemplateWorkspaceViewModel(mainViewModel, _dialogService, templateService, this);
+    }
+    
     public CategoryViewModel CreateCategoryViewModel(AttributeDatabaseViewModel parentViewModel)
     {
         return new CategoryViewModel(parentViewModel);
