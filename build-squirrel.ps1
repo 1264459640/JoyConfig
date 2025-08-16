@@ -85,7 +85,28 @@ Write-Host "正在使用 Squirrel 创建安装包..." -ForegroundColor Cyan
 # 安装 Squirrel.Windows 工具（如果未安装）
 if (!(Get-Command "squirrel" -ErrorAction SilentlyContinue)) {
     Write-Host "正在安装 Squirrel.Windows 工具..." -ForegroundColor Yellow
-    dotnet tool install --global Squirrel.Windows
+    
+    # 尝试使用 Chocolatey 安装
+    try {
+        choco install squirrel-windows -y
+        Write-Host "使用 Chocolatey 安装成功" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "Chocolatey 安装失败，尝试使用 NuGet 直接下载..." -ForegroundColor Yellow
+        
+        # 创建 tools 目录
+        if (!(Test-Path "tools")) {
+            New-Item -ItemType Directory -Path "tools" -Force | Out-Null
+        }
+        
+        # 使用 NuGet 直接下载
+        nuget install Squirrel.Windows -ExcludeVersion -OutputDirectory tools
+        $squirrelPath = Join-Path $PWD "tools\Squirrel.Windows\tools"
+        
+        # 添加到 PATH
+        $env:PATH = "$squirrelPath;$env:PATH"
+        Write-Host "使用 NuGet 下载成功，已添加到 PATH" -ForegroundColor Green
+    }
 }
 
 # 创建 Squirrel 发布

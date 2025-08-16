@@ -151,7 +151,16 @@ jobs:
         nuget-version: 'latest'
     
     - name: Install Squirrel.Windows Tool
-      run: dotnet tool install --global Squirrel.Windows
+      run: |
+        # 尝试使用 Chocolatey 安装 Squirrel.Windows
+        choco install squirrel-windows -y
+        # 如果 Chocolatey 安装失败，尝试使用 NuGet 直接下载
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "Chocolatey installation failed, trying NuGet direct download..."
+          nuget install Squirrel.Windows -ExcludeVersion -OutputDirectory tools
+          $squirrelPath = Join-Path $PWD "tools\Squirrel.Windows\tools"
+          Add-Content $env:GITHUB_PATH "$squirrelPath"
+        }
     
     - name: Create Squirrel package
       run: |
