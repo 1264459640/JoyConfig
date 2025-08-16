@@ -5,7 +5,7 @@
              xmlns:vm="using:JoyConfig.ViewModels"
              xmlns:models="using:JoyConfig.Models"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
-             x:Class="JoyConfig.Views.AttributeDatabaseView"
+             x:Class="JoyConfig.Views.Workspaces.AttributeDatabaseView"
              x:DataType="vm:AttributeDatabaseViewModel">
     <DockPanel>
         <TextBlock Text="{Binding ErrorMessage}"

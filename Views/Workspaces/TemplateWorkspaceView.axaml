@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:JoyConfig.ViewModels"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
-             x:Class="JoyConfig.Views.TemplateWorkspaceView"
+             x:Class="JoyConfig.Views.Workspaces.TemplateWorkspaceView"
              x:DataType="vm:TemplateWorkspaceViewModel">
     
     <UserControl.Styles>

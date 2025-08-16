@@ -4,6 +4,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:JoyConfig.ViewModels"
         xmlns:views="using:JoyConfig.Views"
+        xmlns:workspaces="using:JoyConfig.Views.Workspaces"
+        xmlns:editors="using:JoyConfig.Views.Editors"
+        xmlns:dialogs="using:JoyConfig.Views.Dialogs"
         xmlns:svg="using:Avalonia.Svg"
 
 
@@ -52,25 +55,25 @@
                        VerticalAlignment="Center"/>
         </DataTemplate>
         <DataTemplate DataType="vm:AttributeDatabaseViewModel">
-            <views:AttributeDatabaseView/>
+            <workspaces:AttributeDatabaseView/>
         </DataTemplate>
         <DataTemplate DataType="vm:AttributeViewModel">
-            <views:AttributeView/>
+            <editors:AttributeView/>
         </DataTemplate>
         <DataTemplate DataType="vm:AttributeSetViewModel">
-            <views:AttributeSetView/>
+            <editors:AttributeSetView/>
         </DataTemplate>
         <DataTemplate DataType="vm:CategoryViewModel">
-            <views:CategoryView/>
+            <editors:CategoryView/>
         </DataTemplate>
         <DataTemplate DataType="vm:SettingsViewModel">
-            <views:SettingsView/>
+            <editors:SettingsView/>
         </DataTemplate>
         <DataTemplate DataType="vm:TemplateWorkspaceViewModel">
-            <views:TemplateWorkspaceView/>
+            <workspaces:TemplateWorkspaceView/>
         </DataTemplate>
         <DataTemplate DataType="vm:TemplateEditorViewModel">
-            <views:TemplateEditorView/>
+            <editors:TemplateEditorView/>
         </DataTemplate>
     </Window.DataTemplates>
 
@@ -307,7 +310,7 @@
                             </Border>
                             
                             <!-- 设置内容 -->
-                            <views:SettingsView DataContext="{Binding SettingsViewModel}" Margin="8"/>
+                            <editors:SettingsView DataContext="{Binding SettingsViewModel}" Margin="8"/>
                         </DockPanel>
                     </Grid>
                 </Border>

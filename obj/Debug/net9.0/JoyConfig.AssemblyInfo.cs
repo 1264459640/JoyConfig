@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JoyConfig")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20d8f35e0db7eff96f054f1945362a95bc5ac068")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+850f909c3a95c457e42fd5a3cd6e89766942e4a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("JoyConfig")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JoyConfig")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

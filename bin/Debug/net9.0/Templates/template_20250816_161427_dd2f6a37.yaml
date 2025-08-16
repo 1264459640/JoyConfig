@@ -1,0 +1,9 @@
+id: template_20250816_161427_dd2f6a37
+name: 新模板
+description: 手动创建的模板
+created_at: 2025-08-16T16:14:27.6431884+08:00
+updated_at: 2025-08-16T16:14:27.6431908+08:00
+version: 1.0.0
+tags:
+- manual
+attributes: []

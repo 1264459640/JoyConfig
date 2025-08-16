@@ -3,7 +3,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using JoyConfig.ViewModels;
 
-namespace JoyConfig.Views;
+namespace JoyConfig.Views.Workspaces;
 
 public partial class AttributeDatabaseView : UserControl
 {

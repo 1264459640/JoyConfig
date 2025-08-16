@@ -28,6 +28,9 @@ public partial class AttributeSetViewModel : EditorViewModelBase
     private ObservableCollection<AttributeValueViewModel> _attributeValues = new();
 
     [ObservableProperty]
+    private AttributeValueViewModel? _selectedAttributeValue;
+
+    [ObservableProperty]
     private string? _errorMessage;
 
     public AttributeSetViewModel(
@@ -291,6 +294,18 @@ public partial class AttributeSetViewModel : EditorViewModelBase
                 await _dialogService.ShowMessageBoxAsync("Error", errorMessage);
             }
         }
+    }
+
+    [RelayCommand]
+    private void EditAttributeValue(AttributeValueViewModel? attributeValueVm)
+    {
+        if (attributeValueVm == null) return;
+        
+        // 设置选中的属性值，这样用户可以在详细视图中编辑
+        SelectedAttributeValue = attributeValueVm;
+        
+        // 可以在这里添加打开详细编辑对话框的逻辑
+        // 或者在右侧面板显示编辑表单
     }
 
     [RelayCommand]

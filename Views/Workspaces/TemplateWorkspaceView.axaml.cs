@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace JoyConfig.Views;
+namespace JoyConfig.Views.Workspaces;
 
 public partial class TemplateWorkspaceView : UserControl
 {

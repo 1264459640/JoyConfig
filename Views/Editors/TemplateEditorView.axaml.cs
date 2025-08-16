@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace JoyConfig.Views;
+namespace JoyConfig.Views.Editors;
 
 public partial class TemplateEditorView : UserControl
 {

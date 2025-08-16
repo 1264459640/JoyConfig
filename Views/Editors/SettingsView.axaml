@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:JoyConfig.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="JoyConfig.Views.SettingsView"
+             x:Class="JoyConfig.Views.Editors.SettingsView"
              x:DataType="vm:SettingsViewModel">
 
     <UserControl.Resources>

@@ -49,38 +49,38 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/GodotProjects/AttributeDatabaseEditor/Styles/TitleBarStyles.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeDatabaseView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/AttributeValueCardView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeSetView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/TemplateManagerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeValueCardView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Dialogs/ConfirmationDialogView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/AttributeView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Dialogs/InputDialogView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/CategoryView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Dialogs/SelectAttributeView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/ConfirmationDialogView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Editors/AttributeSetView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/InputDialogView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Editors/AttributeView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/SelectAttributeView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Editors/CategoryView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/SettingsView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Editors/SettingsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateEditorView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Editors/TemplateEditorView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateManagerView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Workspaces/AttributeDatabaseView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/GodotProjects/AttributeDatabaseEditor/Views/TemplateWorkspaceView.axaml]
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Workspaces/TemplateWorkspaceView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
