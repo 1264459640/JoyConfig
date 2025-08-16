@@ -1,6 +1,5 @@
 # Ignore directories
 Example/
-.vscode/
 bin/
 obj/
 publish/
