@@ -1,0 +1,44 @@
+# Ignore directories
+Example/
+.vscode/
+bin/
+obj/
+publish/
+Templates/
+
+# Ignore common build and IDE files
+*.user
+*.suo
+*.userprefs
+*.DS_Store
+*.log
+*.tlog
+*.lastbuildstate
+*.ide-shm
+*.ide-wal
+*.pdb
+*.cache
+*.tmp
+*.temp
+
+# Ignore Visual Studio specific files
+.vs/
+*.VC.db
+*.VC.VC.opendb
+
+# Ignore Rider specific files
+.idea/
+
+# Ignore dotnet specific files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
