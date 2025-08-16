@@ -16,6 +16,10 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    outputs:
+      semVer: ${{ steps.version.outputs.semVer }}
+      assemblySemVer: ${{ steps.version.outputs.assemblySemVer }}
+      informationalVersion: ${{ steps.version.outputs.informationalVersion }}
     
     steps:
     - name: Checkout code
@@ -114,7 +118,7 @@ jobs:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: app-${{ needs.build.outputs.version.semVer }}
+        name: app-${{ needs.build.outputs.semVer }}
         path: publish/
 
     - name: Install GitVersion
@@ -162,7 +166,7 @@ jobs:
     - name: Download package artifacts
       uses: actions/download-artifact@v4
       with:
-        name: package-${{ needs.build.outputs.version.semVer }}
+        name: package-${{ needs.build.outputs.semVer }}
         path: Releases/
 
     - name: Upload Release Asset
@@ -171,6 +175,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.build.outputs.version.semVer }}.zip
-        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.build.outputs.version.semVer }}.zip
+        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
+        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
         asset_content_type: application/zip
