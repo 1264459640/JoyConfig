@@ -145,22 +145,22 @@ jobs:
         echo "INFORMATIONAL_VERSION=${{ steps.gitversion.outputs.informationalVersion }}" >> $GITHUB_ENV
         echo "semVer=${{ steps.gitversion.outputs.semVer }}" >> $GITHUB_OUTPUT
 
+    - name: Install NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: 'latest'
+    
+    - name: Install Squirrel.Windows Tool
+      run: dotnet tool install --global Squirrel.Windows
+    
     - name: Create Squirrel package
       run: |
-        # 安装Squirrel.Windows或类似打包工具
-        # 这里使用简化的打包流程
         $version = "${{ steps.gitversion.outputs.semVer }}"
-        $publishPath = "publish"
-        $outputPath = "Releases"
         
-        # 创建发布目录
-        New-Item -ItemType Directory -Force -Path $outputPath
+        # 使用 PowerShell 脚本进行打包
+        .\build-squirrel.ps1 -Version $version -Configuration Release -OutputPath "Releases"
         
-        # 复制文件到发布目录
-        Copy-Item -Path "$publishPath\*" -Destination $outputPath -Recurse -Force
-        
-        # 创建压缩包作为示例
-        Compress-Archive -Path "$outputPath\*" -DestinationPath "Releases\${{ env.PROJECT_NAME }}-$version.zip" -Force
+        Write-Host "Squirrel packaging completed for version $version"
 
     - name: Upload package artifacts
       uses: actions/upload-artifact@v4
@@ -184,12 +184,32 @@ jobs:
         name: package-${{ needs.package.outputs.semVer }}
         path: Releases/
 
-    - name: Upload Release Asset
+    - name: Upload Squirrel Setup
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.package.outputs.semVer }}.zip
-        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.package.outputs.semVer }}.zip
-        asset_content_type: application/zip
+        asset_path: Releases/Setup.exe
+        asset_name: JoyConfig-Setup-${{ needs.package.outputs.semVer }}.exe
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Squirrel Update Package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: Releases/JoyConfig-${{ needs.package.outputs.semVer }}-full.nupkg
+        asset_name: JoyConfig-${{ needs.package.outputs.semVer }}-full.nupkg
+        asset_content_type: application/octet-stream
+    
+    - name: Upload RELEASES file
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: Releases/RELEASES
+        asset_name: RELEASES
+        asset_content_type: text/plain

@@ -46,6 +46,11 @@ public class AutofacModule : Module
         builder.RegisterType<DbContextFactory>()
                .As<IDbContextFactory>()
                .SingleInstance();
+        
+        // 更新服务 - 单例
+        builder.RegisterType<UpdateService>()
+               .As<IUpdateService>()
+               .SingleInstance();
     }
     
     /// <summary>

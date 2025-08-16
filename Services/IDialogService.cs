@@ -12,4 +12,5 @@ public interface IDialogService
     Task<Attribute?> ShowSelectAttributeDialogAsync(SelectAttributeViewModel viewModel);
     Task<string?> ShowOpenFileDialogAsync(string title, FilePickerFileType filter);
     Task ShowMessageBoxAsync(string title, string message);
+    Task ShowErrorAsync(string title, string message);
 }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Services;
 using Avalonia.Controls;
+using System.Threading.Tasks;
 
 namespace JoyConfig.ViewModels;
 
@@ -10,6 +12,7 @@ public partial class MainViewModel : ObservableObject
 {
     private readonly IDialogService _dialogService;
     private readonly IViewModelFactory _viewModelFactory;
+    private readonly IUpdateService _updateService;
 
     [ObservableProperty]
     private object? _currentWorkspace;
@@ -72,10 +75,11 @@ public partial class MainViewModel : ObservableObject
 
     public LocalizationManager LocalizationManager { get; }
 
-    public MainViewModel(IDialogService dialogService, IViewModelFactory viewModelFactory)
+    public MainViewModel(IDialogService dialogService, IViewModelFactory viewModelFactory, IUpdateService updateService)
     {
         _dialogService = dialogService;
         _viewModelFactory = viewModelFactory;
+        _updateService = updateService;
         LocalizationManager = LocalizationManager.Instance;
         
         // Set the default workspace
@@ -83,6 +87,9 @@ public partial class MainViewModel : ObservableObject
         
         // Set the default editor
         CurrentEditor = new WelcomeViewModel();
+        
+        // 启动时检查更新
+        _ = Task.Run(CheckForUpdatesAsync);
     }
     
     /// <summary>
@@ -201,6 +208,59 @@ public partial class MainViewModel : ObservableObject
         else
         {
             PanelHeight = new GridLength(200);
+        }
+    }
+    
+    /// <summary>
+    /// 检查应用程序更新
+    /// </summary>
+    private async Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            UpdateStatus("检查更新中...", true);
+            
+            var hasUpdate = await _updateService.IsUpdateAvailableAsync();
+            
+            if (hasUpdate)
+            {
+                UpdateStatus("发现新版本，可在设置中更新");
+            }
+            else
+            {
+                UpdateStatus("已是最新版本");
+            }
+        }
+        catch (Exception ex)
+        {
+            UpdateStatus($"检查更新失败: {ex.Message}");
+        }
+    }
+    
+    /// <summary>
+    /// 手动检查更新命令
+    /// </summary>
+    [RelayCommand]
+    private async Task CheckForUpdates()
+    {
+        await CheckForUpdatesAsync();
+    }
+    
+    /// <summary>
+    /// 安装更新并重启命令
+    /// </summary>
+    [RelayCommand]
+    private async Task InstallUpdatesAndRestart()
+    {
+        try
+        {
+            UpdateStatus("正在下载并安装更新...", true);
+            await _updateService.InstallUpdatesAndRestartAsync();
+        }
+        catch (Exception ex)
+        {
+            UpdateStatus($"更新失败: {ex.Message}");
+            await _dialogService.ShowErrorAsync("更新失败", ex.Message);
         }
     }
 }

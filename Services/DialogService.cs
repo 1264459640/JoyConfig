@@ -136,4 +136,9 @@ public class DialogService : IDialogService
             await dialog.ShowDialog(desktop.MainWindow);
         }
     }
+    
+    public async Task ShowErrorAsync(string title, string message)
+    {
+        await ShowMessageBoxAsync(title, message);
+    }
 }

@@ -13,20 +13,23 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IDialogService _dialogService;
     private readonly IAttributeRepository _attributeRepository;
     private readonly IAttributeSetRepository _attributeSetRepository;
+    private readonly IUpdateService _updateService;
     
     public ViewModelFactory(
         IDialogService dialogService,
         IAttributeRepository attributeRepository,
-        IAttributeSetRepository attributeSetRepository)
+        IAttributeSetRepository attributeSetRepository,
+        IUpdateService updateService)
     {
         _dialogService = dialogService;
         _attributeRepository = attributeRepository;
         _attributeSetRepository = attributeSetRepository;
+        _updateService = updateService;
     }
     
     public MainViewModel CreateMainViewModel()
     {
-        return new MainViewModel(_dialogService, this);
+        return new MainViewModel(_dialogService, this, _updateService);
     }
     
     public AttributeDatabaseViewModel CreateAttributeDatabaseViewModel(MainViewModel mainViewModel)

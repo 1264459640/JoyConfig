@@ -7,6 +7,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <RootNamespace>JoyConfig</RootNamespace>
+    
+    <!-- Squirrel Configuration -->
+    <AssemblyTitle>JoyConfig</AssemblyTitle>
+    <AssemblyDescription>Attribute Database Editor for Game Development</AssemblyDescription>
+    <AssemblyCompany>JoyConfig Team</AssemblyCompany>
+    <AssemblyProduct>JoyConfig</AssemblyProduct>
+    <AssemblyCopyright>Copyright © 2025</AssemblyCopyright>
+    <ApplicationIcon>public\Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
