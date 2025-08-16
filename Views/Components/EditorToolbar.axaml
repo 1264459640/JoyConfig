@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
+             x:Class="JoyConfig.Views.Components.EditorToolbar"
+             x:Name="Toolbar">
+    
+    <Border Background="#2a2a2b" 
+            BorderBrush="#3c3c3c" 
+            BorderThickness="0,0,0,1" 
+            Padding="12,8">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <!-- 主要操作按钮 -->
+            <Button Content="{Binding #Toolbar.SaveButtonText}" 
+                    Command="{Binding #Toolbar.SaveCommand}" 
+                    Classes="Filled"
+                    IsEnabled="{Binding #Toolbar.IsSaveEnabled}"/>
+            
+            <!-- 次要操作按钮容器 -->
+            <ContentPresenter Content="{Binding #Toolbar.SecondaryActions}"/>
+            
+            <!-- 修改状态指示器 -->
+            <StackPanel Orientation="Horizontal" 
+                        Spacing="5"
+                        IsVisible="{Binding #Toolbar.IsModified}">
+                <TextBlock Text="*" 
+                           Foreground="Orange" 
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="已修改" 
+                           Foreground="Orange" 
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

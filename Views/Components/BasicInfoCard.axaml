@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Styles.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="200"
+             x:Class="JoyConfig.Views.Components.BasicInfoCard"
+             x:Name="BasicInfo">
+    
+    <material:Card Padding="16" Margin="12,12,12,8">
+        <StackPanel Spacing="12">
+            <TextBlock Text="{Binding #BasicInfo.Title}" 
+                       FontSize="16" 
+                       FontWeight="Bold"/>
+            
+            <!-- 基本信息表单 -->
+            <ContentPresenter Content="{Binding #BasicInfo.FormContent}"/>
+        </StackPanel>
+    </material:Card>
+</UserControl>

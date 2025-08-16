@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="40"
+             x:Class="JoyConfig.Views.Components.AttributeTableHeader"
+             x:Name="TableHeader">
+    
+    <!-- 紧凑的表头设计 -->
+    <Border Background="#3a3a3a" 
+            CornerRadius="4" 
+            Padding="8,6">
+        <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
+            <TextBlock Grid.Column="0" Text="属性ID" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="分类" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="2" Text="基础值" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="3" Text="最小值" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="4" Text="最大值" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="5" Text="操作" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+        </Grid>
+    </Border>
+</UserControl>

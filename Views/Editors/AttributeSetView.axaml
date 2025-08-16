@@ -2,36 +2,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JoyConfig.ViewModels"
-             xmlns:views="using:JoyConfig.Views"
-             xmlns:components="using:JoyConfig.Views.Components"
              xmlns:material="using:Material.Styles.Controls"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:components="using:JoyConfig.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Editors.AttributeSetView"
              x:DataType="vm:AttributeSetViewModel">
     
     <DockPanel>
         <!-- 工具栏 -->
-        <Border DockPanel.Dock="Top" 
-                Background="#2a2a2b" 
-                BorderBrush="#3c3c3c" 
-                BorderThickness="0,0,0,1" 
-                Padding="12,8">
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="{Binding LocalizationManager[Common_Save]}" 
-                        Command="{Binding SaveCommand}" 
-                        Classes="Filled"/>
-                <Button Content="另存为模板" 
-                        Command="{Binding SaveAsTemplateCommand}" 
-                        Classes="Outline"/>
-                <Button Content="{Binding LocalizationManager[AttributeSet_AddAttribute]}" 
-                        Command="{Binding AddAttributeValueCommand}" 
-                        Classes="Outline"/>
-                <Button Content="{Binding LocalizationManager[AttributeSet_RemoveAttribute]}" 
-                        Command="{Binding RemoveAttributeValueCommand}" 
-                        Classes="Outline"/>
-            </StackPanel>
-        </Border>
+        <components:EditorToolbar DockPanel.Dock="Top"
+                                  SaveButtonText="{Binding LocalizationManager[Common_Save]}"
+                                  SaveCommand="{Binding SaveCommand}">
+            <components:EditorToolbar.SecondaryActions>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="另存为模板" 
+                            Command="{Binding SaveAsTemplateCommand}" 
+                            Classes="Outline"/>
+                    <Button Content="{Binding LocalizationManager[AttributeSet_AddAttribute]}" 
+                            Command="{Binding AddAttributeValueCommand}" 
+                            Classes="Outline"/>
+                    <Button Content="{Binding LocalizationManager[AttributeSet_RemoveAttribute]}" 
+                            Command="{Binding RemoveAttributeValueCommand}" 
+                            Classes="Outline"/>
+                </StackPanel>
+            </components:EditorToolbar.SecondaryActions>
+        </components:EditorToolbar>
 
         <!-- 错误信息 -->
         <TextBlock Text="{Binding ErrorMessage}"
@@ -41,164 +37,108 @@
                    Margin="12,8"
                    TextWrapping="Wrap"/>
 
-        <!-- 主内容区域 -->
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="12">
-            <StackPanel Spacing="16">
+        <!-- 基本信息 - 固定区域 -->
+        <components:BasicInfoCard DockPanel.Dock="Top"
+                                  Title="{Binding LocalizationManager[AttributeSet_Details]}">
+            <components:BasicInfoCard.FormContent>
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="12" ColumnSpacing="12">
+                    <!-- ID -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                               Text="{Binding LocalizationManager[AttributeSet_ID]}" 
+                               VerticalAlignment="Center"/>
+                    <DockPanel Grid.Row="0" Grid.Column="1">
+                        <Button DockPanel.Dock="Right" 
+                                Content="修改" 
+                                Command="{Binding ChangeIdCommand}" 
+                                Classes="Outline" 
+                                Margin="8,0,0,0"/>
+                        <TextBox Text="{Binding AttributeSet.Id}" 
+                                 IsReadOnly="True" 
+                                 Watermark="Unique Identifier"/>
+                    </DockPanel>
 
-                <!-- 基本信息 -->
-                <material:Card Padding="16">
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="{Binding LocalizationManager[AttributeSet_Details]}" 
-                                   FontSize="16" 
-                                   FontWeight="Bold"/>
-                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="12" ColumnSpacing="12">
-                            <!-- ID -->
-                            <TextBlock Grid.Row="0" Grid.Column="0" 
-                                       Text="{Binding LocalizationManager[AttributeSet_ID]}" 
-                                       VerticalAlignment="Center"/>
-                            <DockPanel Grid.Row="0" Grid.Column="1">
-                                <Button DockPanel.Dock="Right" 
-                                        Content="修改" 
-                                        Command="{Binding ChangeIdCommand}" 
-                                        Classes="Outline" 
-                                        Margin="8,0,0,0"/>
-                                <TextBox Text="{Binding AttributeSet.Id}" 
-                                         IsReadOnly="True" 
-                                         Watermark="Unique Identifier"/>
-                            </DockPanel>
+                    <!-- 名称 -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                               Text="{Binding LocalizationManager[AttributeSet_Name]}" 
+                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" 
+                             Text="{Binding AttributeSet.Name, Mode=TwoWay}" 
+                             Watermark="Display Name"/>
 
-                            <!-- 名称 -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" 
-                                       Text="{Binding LocalizationManager[AttributeSet_Name]}" 
-                                       VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" 
-                                     Text="{Binding AttributeSet.Name, Mode=TwoWay}" 
-                                     Watermark="Display Name"/>
+                    <!-- 描述 -->
+                    <TextBlock Grid.Row="2" Grid.Column="0" 
+                               Text="{Binding LocalizationManager[AttributeSet_Description]}" 
+                               VerticalAlignment="Top" 
+                               Margin="0,8,0,0"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" 
+                             Text="{Binding AttributeSet.Description, Mode=TwoWay}" 
+                             AcceptsReturn="True" 
+                             TextWrapping="Wrap" 
+                             MinHeight="60" 
+                             Watermark="Optional description"/>
+                </Grid>
+            </components:BasicInfoCard.FormContent>
+        </components:BasicInfoCard>
 
-                            <!-- 描述 -->
-                            <TextBlock Grid.Row="2" Grid.Column="0" 
-                                       Text="{Binding LocalizationManager[AttributeSet_Description]}" 
-                                       VerticalAlignment="Top" 
-                                       Margin="0,8,0,0"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Text="{Binding AttributeSet.Description, Mode=TwoWay}" 
-                                     AcceptsReturn="True" 
-                                     TextWrapping="Wrap" 
-                                     MinHeight="60" 
-                                     Watermark="Optional description"/>
-                        </Grid>
-                    </StackPanel>
-                </material:Card>
-
-                <!-- 属性列表 -->
-                <material:Card Padding="16">
-                    <StackPanel Spacing="12">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Grid.Column="0" 
-                                       Text="{Binding LocalizationManager[AttributeSet_AttributeValues]}" 
-                                       FontSize="16" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" 
-                                       Text="{Binding AttributeValues.Count, StringFormat='共 {0} 个属性'}" 
-                                       Foreground="Gray" 
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                        
-                        <!-- 属性表头 -->
-                        <Border Background="#3a3a3a" 
-                                CornerRadius="4" 
-                                Padding="12,8">
-                            <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="属性ID" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="1" Text="分类" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="2" Text="基础值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="3" Text="最小值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="4" Text="最大值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="5" Text="操作" FontWeight="Bold" FontSize="12"/>
-                            </Grid>
-                        </Border>
-                        
-                        <!-- 属性列表 -->
-                        <ItemsControl ItemsSource="{Binding AttributeValues}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#2a2a2a" 
-                                            CornerRadius="4" 
-                                            Padding="12,8" 
-                                            Margin="0,2">
-                                        <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
-                                            
-                                            <!-- 属性ID -->
-                                            <TextBlock Grid.Column="0" 
-                                                       Text="{Binding AttributeValue.AttributeId}" 
-                                                       VerticalAlignment="Center" 
-                                                       FontFamily="Consolas"/>
-                                            
-                                            <!-- 分类 -->
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding AttributeValue.AttributeCategory}" 
-                                                       VerticalAlignment="Center"/>
-                                            
-                                            <!-- 基础值 -->
-                                            <NumericUpDown Grid.Column="2" 
-                                                           Value="{Binding AttributeValue.BaseValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 最小值 -->
-                                            <NumericUpDown Grid.Column="3" 
-                                                           Value="{Binding AttributeValue.MinValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 最大值 -->
-                                            <NumericUpDown Grid.Column="4" 
-                                                           Value="{Binding AttributeValue.MaxValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 删除按钮 -->
-                                            <Button Grid.Column="5" 
-                                                    Content="删除" 
-                                                    Command="{Binding RemoveCommand}" 
-                                                    CommandParameter="{Binding}" 
-                                                    Classes="Outline" 
-                                                    Foreground="Red" 
-                                                    FontSize="11" 
-                                                    Padding="8,4"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        
-                        <!-- 空状态提示 -->
-                        <Border IsVisible="{Binding !AttributeValues.Count}" 
-                                Background="#1a1a1a" 
-                                CornerRadius="4" 
-                                Padding="24" 
-                                HorizontalAlignment="Center"
-                                Margin="0,20">
-                            <StackPanel Spacing="8" HorizontalAlignment="Center">
-                                <TextBlock Text="📝" 
-                                           FontSize="32" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="暂无属性" 
-                                           FontSize="14" 
-                                           Foreground="Gray" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="点击上方'添加属性'按钮开始添加" 
-                                           FontSize="12" 
-                                           Foreground="Gray" 
-                                           HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </material:Card>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- 属性列表 - 可滚动区域 -->
+        <components:AttributeListCard Title="{Binding LocalizationManager[AttributeSet_AttributeValues]}"
+                                      CountText="{Binding AttributeValues.Count, StringFormat='共 {0} 个属性'}"
+                                      IsEmpty="{Binding !AttributeValues.Count}"
+                                      EmptyMessage="点击上方'添加属性'按钮开始添加">
+            <components:AttributeListCard.ListContent>
+                <ItemsControl ItemsSource="{Binding AttributeValues}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#2a2a2a" 
+                                    CornerRadius="4" 
+                                    Padding="8,6" 
+                                    Margin="0,1">
+                                <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
+                                    
+                                    <!-- 属性ID -->
+                                    <TextBlock Grid.Column="0" 
+                                               Text="{Binding AttributeValue.AttributeId}" 
+                                               VerticalAlignment="Center" 
+                                               FontFamily="Consolas"/>
+                                    
+                                    <!-- 分类 -->
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding AttributeValue.AttributeCategory}" 
+                                               VerticalAlignment="Center"/>
+                                    
+                                    <!-- 基础值 -->
+                                    <NumericUpDown Grid.Column="2" 
+                                                   Value="{Binding AttributeValue.BaseValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 最小值 -->
+                                    <NumericUpDown Grid.Column="3" 
+                                                   Value="{Binding AttributeValue.MinValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 最大值 -->
+                                    <NumericUpDown Grid.Column="4" 
+                                                   Value="{Binding AttributeValue.MaxValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 删除按钮 -->
+                                    <Button Grid.Column="5" 
+                                            Content="删除" 
+                                            Command="{Binding $parent[UserControl].((vm:AttributeSetViewModel)DataContext).RemoveAttributeValueCommand}" 
+                                            CommandParameter="{Binding}" 
+                                            Classes="Outline" 
+                                            Foreground="Red" 
+                                            FontSize="11" 
+                                            Padding="8,4"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </components:AttributeListCard.ListContent>
+        </components:AttributeListCard>
     </DockPanel>
 </UserControl>

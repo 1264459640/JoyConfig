@@ -49,7 +49,22 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/GodotProjects/AttributeDatabaseEditor/Styles/TitleBarStyles.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/AttributeListCard.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/AttributeScrollableList.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/AttributeTableHeader.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/GodotProjects/AttributeDatabaseEditor/Views/Components/AttributeValueCardView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/BasicInfoCard.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/GodotProjects/AttributeDatabaseEditor/Views/Components/EditorToolbar.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [D:/GodotProjects/AttributeDatabaseEditor/Views/Components/TemplateManagerView.axaml]

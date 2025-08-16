@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Styles.Controls"
+             xmlns:components="using:JoyConfig.Views.Components"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.Components.AttributeListCard"
+             x:Name="AttributeList">
+    
+    <!-- 统一Card设计，内部精确控制滚动区域 -->
+    <material:Card Margin="12,0,12,12" Padding="16">
+        <Grid RowDefinitions="Auto,Auto,*">
+            
+            <!-- 第1行：固定标题区域 -->
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding #AttributeList.Title}" 
+                           FontSize="15" 
+                           FontWeight="Bold" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding #AttributeList.CountText}" 
+                           FontSize="12"
+                           Foreground="Gray" 
+                           VerticalAlignment="Center"/>
+            </Grid>
+            
+            <!-- 第2行：固定表头区域 -->
+            <Border Grid.Row="1" Margin="0,0,0,8">
+                <components:AttributeTableHeader/>
+            </Border>
+            
+            <!-- 第3行：滚动数据区域，精确控制边界避免滚动条被裁剪 -->
+            <Border Grid.Row="2" 
+                    Background="Transparent"
+                    Margin="-4,0,-4,0">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                              VerticalScrollBarVisibility="Auto" 
+                              MaxHeight="500"
+                              Padding="4,0,4,0"
+                              Background="Transparent">
+                    <StackPanel>
+                        <!-- 自定义内容区域 -->
+                        <ContentPresenter Content="{Binding #AttributeList.ListContent}"/>
+                        
+                        <!-- 空状态提示 -->
+                        <Border IsVisible="{Binding #AttributeList.IsEmpty}" 
+                                Background="#1a1a1a" 
+                                CornerRadius="4" 
+                                Padding="20" 
+                                HorizontalAlignment="Center"
+                                Margin="0,16">
+                            <StackPanel Spacing="6" HorizontalAlignment="Center">
+                                <TextBlock Text="📝" 
+                                           FontSize="28" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="暂无属性" 
+                                           FontSize="13" 
+                                           Foreground="Gray" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding #AttributeList.EmptyMessage}" 
+                                           FontSize="11" 
+                                           Foreground="Gray" 
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </material:Card>
+</UserControl>

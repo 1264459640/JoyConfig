@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.Components.AttributeScrollableList"
+             x:Name="ScrollableList">
+    
+    <!-- 独立的滚动区域 -->
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                  VerticalScrollBarVisibility="Auto" 
+                  MaxHeight="{Binding #ScrollableList.ScrollMaxHeight}"
+                  Background="Transparent">
+        <StackPanel>
+            <!-- 自定义内容区域 -->
+            <ContentPresenter Content="{Binding #ScrollableList.ListContent}"/>
+            
+            <!-- 空状态提示 -->
+            <Border IsVisible="{Binding #ScrollableList.IsEmpty}" 
+                    Background="#1a1a1a" 
+                    CornerRadius="4" 
+                    Padding="20" 
+                    HorizontalAlignment="Center"
+                    Margin="0,16">
+                <StackPanel Spacing="6" HorizontalAlignment="Center">
+                    <TextBlock Text="📝" 
+                               FontSize="28" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="暂无属性" 
+                               FontSize="13" 
+                               Foreground="Gray" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding #ScrollableList.EmptyMessage}" 
+                               FontSize="11" 
+                               Foreground="Gray" 
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

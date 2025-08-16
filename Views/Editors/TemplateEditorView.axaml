@@ -2,38 +2,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JoyConfig.ViewModels"
              xmlns:material="using:Material.Styles.Controls"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:components="using:JoyConfig.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Editors.TemplateEditorView"
              x:DataType="vm:TemplateEditorViewModel">
     
     <DockPanel>
         <!-- 工具栏 -->
-        <Border DockPanel.Dock="Top" 
-                Background="#2a2a2b" 
-                BorderBrush="#3c3c3c" 
-                BorderThickness="0,0,0,1" 
-                Padding="12,8">
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="保存" 
-                        Command="{Binding SaveCommand}" 
-                        Classes="Filled"
-                        IsEnabled="{Binding IsModified}"/>
+        <components:EditorToolbar DockPanel.Dock="Top"
+                                  SaveButtonText="保存"
+                                  SaveCommand="{Binding SaveCommand}"
+                                  IsSaveEnabled="{Binding IsModified}"
+                                  IsModified="{Binding IsModified}">
+            <components:EditorToolbar.SecondaryActions>
                 <Button Content="添加属性" 
                         Command="{Binding AddAttributeCommand}" 
                         Classes="Outline"/>
-                <TextBlock Text="*" 
-                           Foreground="Orange" 
-                           FontWeight="Bold"
-                           VerticalAlignment="Center"
-                           IsVisible="{Binding IsModified}"/>
-                <TextBlock Text="已修改" 
-                           Foreground="Orange" 
-                           VerticalAlignment="Center"
-                           IsVisible="{Binding IsModified}"/>
-            </StackPanel>
-        </Border>
+            </components:EditorToolbar.SecondaryActions>
+        </components:EditorToolbar>
 
         <!-- 错误信息 -->
         <TextBlock Text="{Binding ErrorMessage}"
@@ -43,161 +31,105 @@
                    Margin="12,8"
                    TextWrapping="Wrap"/>
 
-        <!-- 主内容区域 -->
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="12">
-            <StackPanel Spacing="16">
-                
-                <!-- 基本信息 -->
-                <material:Card Padding="16">
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="基本信息" 
-                                   FontSize="16" 
-                                   FontWeight="Bold"/>
-                        
-                        <Grid ColumnDefinitions="Auto,*" 
-                              RowDefinitions="Auto,Auto,Auto" 
-                              ColumnSpacing="12" 
-                              RowSpacing="8">
-                            
-                            <!-- 模板名称 -->
-                            <TextBlock Grid.Row="0" Grid.Column="0" 
-                                       Text="名称:" 
-                                       VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" 
-                                     Text="{Binding TemplateName}" 
-                                     Watermark="输入模板名称"/>
-                            
-                            <!-- 版本 -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" 
-                                       Text="版本:" 
-                                       VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" 
-                                     Text="{Binding TemplateVersion}" 
-                                     Watermark="1.0.0"/>
-                            
-                            <!-- 描述 -->
-                            <TextBlock Grid.Row="2" Grid.Column="0" 
-                                       Text="描述:" 
-                                       VerticalAlignment="Top" 
-                                       Margin="0,8,0,0"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Text="{Binding TemplateDescription}" 
-                                     AcceptsReturn="True" 
-                                     TextWrapping="Wrap" 
-                                     MinHeight="60" 
-                                     Watermark="输入模板描述"/>
-                        </Grid>
-                    </StackPanel>
-                </material:Card>
+        <!-- 基本信息 - 固定区域 -->
+        <components:BasicInfoCard DockPanel.Dock="Top"
+                                  Title="基本信息">
+            <components:BasicInfoCard.FormContent>
+                <Grid ColumnDefinitions="Auto,*" 
+                      RowDefinitions="Auto,Auto,Auto" 
+                      ColumnSpacing="12" 
+                      RowSpacing="12">
+                    
+                    <!-- 模板名称 -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                               Text="名称:" 
+                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" 
+                             Text="{Binding TemplateName}" 
+                             Watermark="输入模板名称"/>
+                    
+                    <!-- 版本 -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                               Text="版本:" 
+                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" 
+                             Text="{Binding TemplateVersion}" 
+                             Watermark="1.0.0"/>
+                    
+                    <!-- 描述 -->
+                    <TextBlock Grid.Row="2" Grid.Column="0" 
+                               Text="描述:" 
+                               VerticalAlignment="Top" 
+                               Margin="0,8,0,0"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" 
+                             Text="{Binding TemplateDescription}" 
+                             AcceptsReturn="True" 
+                             TextWrapping="Wrap" 
+                             MinHeight="60" 
+                             Watermark="输入模板描述"/>
+                </Grid>
+            </components:BasicInfoCard.FormContent>
+        </components:BasicInfoCard>
 
-                <!-- 属性列表 -->
-                <material:Card Padding="16">
-                    <StackPanel Spacing="12">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Grid.Column="0" 
-                                       Text="属性列表" 
-                                       FontSize="16" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" 
-                                       Text="{Binding Attributes.Count, StringFormat='共 {0} 个属性'}" 
-                                       Foreground="Gray" 
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                        
-                        <!-- 属性表头 -->
-                        <Border Background="#3a3a3a" 
-                                CornerRadius="4" 
-                                Padding="12,8">
-                            <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="属性ID" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="1" Text="分类" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="2" Text="基础值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="3" Text="最小值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="4" Text="最大值" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Grid.Column="5" Text="操作" FontWeight="Bold" FontSize="12"/>
-                            </Grid>
-                        </Border>
-                        
-                        <!-- 属性列表 -->
-                        <ItemsControl ItemsSource="{Binding Attributes}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#2a2a2a" 
-                                            CornerRadius="4" 
-                                            Padding="12,8" 
-                                            Margin="0,2">
-                                        <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
-                                            
-                                            <!-- 属性ID -->
-                                            <TextBlock Grid.Column="0" 
-                                                       Text="{Binding AttributeId}" 
-                                                       VerticalAlignment="Center" 
-                                                       FontFamily="Consolas"/>
-                                            
-                                            <!-- 分类 -->
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding AttributeCategory}" 
-                                                       VerticalAlignment="Center"/>
-                                            
-                                            <!-- 基础值 -->
-                                            <NumericUpDown Grid.Column="2" 
-                                                           Value="{Binding BaseValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 最小值 -->
-                                            <NumericUpDown Grid.Column="3" 
-                                                           Value="{Binding MinValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 最大值 -->
-                                            <NumericUpDown Grid.Column="4" 
-                                                           Value="{Binding MaxValue}" 
-                                                           Increment="1" 
-                                                           FormatString="F1"/>
-                                            
-                                            <!-- 删除按钮 -->
-                                            <Button Grid.Column="5" 
-                                                    Content="删除" 
-                                                    Command="{Binding $parent[UserControl].DataContext.RemoveAttributeCommand}" 
-                                                    CommandParameter="{Binding}" 
-                                                    Classes="Outline" 
-                                                    Foreground="Red" 
-                                                    FontSize="11" 
-                                                    Padding="8,4"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        
-                        <!-- 空状态提示 -->
-                        <Border IsVisible="{Binding !Attributes.Count}" 
-                                Background="#1a1a1a" 
-                                CornerRadius="4" 
-                                Padding="24" 
-                                HorizontalAlignment="Center">
-                            <StackPanel Spacing="8" HorizontalAlignment="Center">
-                                <TextBlock Text="📝" 
-                                           FontSize="32" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="暂无属性" 
-                                           FontSize="14" 
-                                           Foreground="Gray" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="点击上方'添加属性'按钮开始添加" 
-                                           FontSize="12" 
-                                           Foreground="Gray" 
-                                           HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </material:Card>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- 属性列表 - 可滚动区域 -->
+        <components:AttributeListCard Title="属性列表"
+                                      CountText="{Binding Attributes.Count, StringFormat='共 {0} 个属性'}"
+                                      IsEmpty="{Binding !Attributes.Count}"
+                                      EmptyMessage="点击上方'添加属性'按钮开始添加">
+            <components:AttributeListCard.ListContent>
+                <ItemsControl ItemsSource="{Binding Attributes}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#2a2a2a" 
+                                    CornerRadius="4" 
+                                    Padding="8,6" 
+                                    Margin="0,1">
+                                <Grid ColumnDefinitions="2*,*,*,*,*,Auto" ColumnSpacing="12">
+                                    
+                                    <!-- 属性ID -->
+                                    <TextBlock Grid.Column="0" 
+                                               Text="{Binding AttributeId}" 
+                                               VerticalAlignment="Center" 
+                                               FontFamily="Consolas"/>
+                                    
+                                    <!-- 分类 -->
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding AttributeCategory}" 
+                                               VerticalAlignment="Center"/>
+                                    
+                                    <!-- 基础值 -->
+                                    <NumericUpDown Grid.Column="2" 
+                                                   Value="{Binding BaseValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 最小值 -->
+                                    <NumericUpDown Grid.Column="3" 
+                                                   Value="{Binding MinValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 最大值 -->
+                                    <NumericUpDown Grid.Column="4" 
+                                                   Value="{Binding MaxValue}" 
+                                                   Increment="1" 
+                                                   FormatString="F1"/>
+                                    
+                                    <!-- 删除按钮 -->
+                                    <Button Grid.Column="5" 
+                                            Content="删除" 
+                                            Command="{Binding $parent[UserControl].((vm:TemplateEditorViewModel)DataContext).RemoveAttributeCommand}" 
+                                            CommandParameter="{Binding}" 
+                                            Classes="Outline" 
+                                            Foreground="Red" 
+                                            FontSize="11" 
+                                            Padding="8,4"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </components:AttributeListCard.ListContent>
+        </components:AttributeListCard>
     </DockPanel>
 </UserControl>
