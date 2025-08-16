@@ -9,7 +9,7 @@ on:
     types: [published]
 
 env:
-  DOTNET_VERSION: '8.0.x'
+  DOTNET_VERSION: '9.0.x'
   PROJECT_NAME: 'JoyConfig'
   SOLUTION_FILE: 'JoyConfig.sln'
 
@@ -56,12 +56,12 @@ jobs:
 
     - name: Build application
       run: |
-        dotnet build ${{ env.SOLUTION_FILE }} \
-          --configuration Release \
-          --no-restore \
-          -p:Version=${{ steps.gitversion.outputs.semVer }} \
-          -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} \
-          -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} \
+        dotnet build ${{ env.SOLUTION_FILE }} `
+          --configuration Release `
+          --no-restore `
+          -p:Version=${{ steps.gitversion.outputs.semVer }} `
+          -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} `
+          -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} `
           -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }}
 
     - name: Run unit tests
@@ -70,14 +70,14 @@ jobs:
     - name: Publish application
       if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
       run: |
-        dotnet publish src/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj \
-          --configuration Release \
-          --framework net8.0 \
-          --runtime win-x64 \
-          --self-contained true \
-          --output publish \
-          -p:PublishSingleFile=true \
-          -p:PublishReadyToRun=true \
+        dotnet publish ${{ env.PROJECT_NAME }}.csproj `
+          --configuration Release `
+          --framework net9.0 `
+          --runtime win-x64 `
+          --self-contained true `
+          --output publish `
+          -p:PublishSingleFile=true `
+          -p:PublishReadyToRun=true `
           -p:Version=${{ steps.gitversion.outputs.semVer }}
 
     - name: Upload build artifacts
