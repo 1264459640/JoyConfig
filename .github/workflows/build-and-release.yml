@@ -61,6 +61,11 @@ jobs:
         echo "semVer=${{ steps.gitversion.outputs.semVer }}" >> $GITHUB_OUTPUT
         echo "assemblySemVer=${{ steps.gitversion.outputs.assemblySemVer }}" >> $GITHUB_OUTPUT
         echo "informationalVersion=${{ steps.gitversion.outputs.informationalVersion }}" >> $GITHUB_OUTPUT
+        
+        # 同时设置环境变量以便在后续步骤中使用
+        echo "SEM_VER=${{ steps.gitversion.outputs.semVer }}" >> $GITHUB_ENV
+        echo "ASSEMBLY_SEM_VER=${{ steps.gitversion.outputs.assemblySemVer }}" >> $GITHUB_ENV
+        echo "INFORMATIONAL_VERSION=${{ steps.gitversion.outputs.informationalVersion }}" >> $GITHUB_ENV
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_FILE }}
@@ -95,13 +100,15 @@ jobs:
       if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
       uses: actions/upload-artifact@v4
       with:
-        name: app-${{ steps.gitversion.outputs.semVer }}
+        name: app-${{ steps.version.outputs.semVer }}
         path: publish/
         retention-days: 30
 
   package:
     needs: build
     runs-on: windows-latest
+    outputs:
+      semVer: ${{ steps.set-version.outputs.semVer }}
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'release'
     
     steps:
@@ -129,6 +136,14 @@ jobs:
     - name: Determine Version
       uses: gittools/actions/gitversion/execute@v0
       id: gitversion
+      
+    - name: Set version environment variables
+      id: set-version
+      run: |
+        echo "SEM_VER=${{ steps.gitversion.outputs.semVer }}" >> $GITHUB_ENV
+        echo "ASSEMBLY_SEM_VER=${{ steps.gitversion.outputs.assemblySemVer }}" >> $GITHUB_ENV
+        echo "INFORMATIONAL_VERSION=${{ steps.gitversion.outputs.informationalVersion }}" >> $GITHUB_ENV
+        echo "semVer=${{ steps.gitversion.outputs.semVer }}" >> $GITHUB_OUTPUT
 
     - name: Create Squirrel package
       run: |
@@ -150,7 +165,7 @@ jobs:
     - name: Upload package artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: package-${{ steps.gitversion.outputs.semVer }}
+        name: package-${{ env.SEM_VER }}
         path: Releases/
         retention-days: 90
 
@@ -166,7 +181,7 @@ jobs:
     - name: Download package artifacts
       uses: actions/download-artifact@v4
       with:
-        name: package-${{ needs.build.outputs.semVer }}
+        name: package-${{ needs.package.outputs.semVer }}
         path: Releases/
 
     - name: Upload Release Asset
@@ -175,6 +190,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
-        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.build.outputs.semVer }}.zip
+        asset_path: Releases/${{ env.PROJECT_NAME }}-${{ needs.package.outputs.semVer }}.zip
+        asset_name: ${{ env.PROJECT_NAME }}-${{ needs.package.outputs.semVer }}.zip
         asset_content_type: application/zip

@@ -3,75 +3,88 @@ branches:
   main:
     regex: ^main$|^master$
     mode: ContinuousDelivery
-    tag: ''
+    label: ''
     increment: Patch
-    prevent-increment-of-merged-branch-version: true
+    prevent-increment:
+      of-merged-branch: true
     track-merge-target: false
+    track-merge-message: true
     source-branches: [ 'develop', 'release' ]
     tracks-release-branches: false
     is-release-branch: false
-    is-mainline: true
+    is-main-branch: true
     pre-release-weight: 55000
   develop:
     regex: ^dev(elop)?(ment)?$
     mode: ContinuousDeployment
-    tag: alpha
+    label: alpha
     increment: Minor
-    prevent-increment-of-merged-branch-version: false
+    prevent-increment:
+      when-current-commit-tagged: false
     track-merge-target: true
+    track-merge-message: true
     source-branches: []
     tracks-release-branches: true
     is-release-branch: false
-    is-mainline: false
+    is-main-branch: false
     pre-release-weight: 0
   release:
     regex: ^releases?[/-]
     mode: ContinuousDelivery
-    tag: rc
+    label: rc
     increment: None
-    prevent-increment-of-merged-branch-version: true
+    prevent-increment:
+      of-merged-branch: true
+      when-current-commit-tagged: false
     track-merge-target: false
+    track-merge-message: true
     source-branches: [ 'develop', 'main', 'support' ]
     tracks-release-branches: false
     is-release-branch: true
-    is-mainline: false
+    is-main-branch: false
     pre-release-weight: 30000
   feature:
     regex: ^features?[/-]
     mode: ContinuousDeployment
-    tag: useBranchName
+    label: '{BranchName}'
     increment: Inherit
-    prevent-increment-of-merged-branch-version: false
+    prevent-increment:
+      when-current-commit-tagged: false
     track-merge-target: false
+    track-merge-message: true
     source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
     tracks-release-branches: false
     is-release-branch: false
-    is-mainline: false
+    is-main-branch: false
     pre-release-weight: 30000
   hotfix:
     regex: ^hotfix(es)?[/-]
     mode: ContinuousDelivery
-    tag: beta
+    label: beta
     increment: Patch
-    prevent-increment-of-merged-branch-version: false
+    prevent-increment:
+      when-current-commit-tagged: false
     track-merge-target: false
+    track-merge-message: true
     source-branches: [ 'release', 'main', 'support' ]
     tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: false
+    is-release-branch: true
+    is-main-branch: false
     pre-release-weight: 30000
   pull-request:
-    regex: ^(pull|pr)[/-]
+    regex: ^(pull-requests|pull|pr)[/-](?<Number>\d*)
     mode: ContinuousDelivery
-    tag: PullRequest
+    label: PullRequest{Number}
     increment: Inherit
-    prevent-increment-of-merged-branch-version: false
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    prevent-increment:
+      of-merged-branch: true
+      when-current-commit-tagged: false
     track-merge-target: false
+    track-merge-message: true
     source-branches: [ 'develop', 'main', 'release', 'feature', 'hotfix', 'support' ]
     tracks-release-branches: false
     is-release-branch: false
-    is-mainline: false
+    is-main-branch: false
     pre-release-weight: 30000
 ignore:
   sha: []

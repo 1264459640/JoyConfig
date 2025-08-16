@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  DOTNET_VERSION: '8.0.x'
+  DOTNET_VERSION: '9.0.x'
   PROJECT_NAME: 'JoyConfig'
   SOLUTION_FILE: 'JoyConfig.sln'
 
@@ -103,9 +103,9 @@ jobs:
 
     - name: Publish application
       run: |
-        dotnet publish src/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj \
+        dotnet publish ${{ env.PROJECT_NAME }}.csproj \
           --configuration Release \
-          --framework net8.0 \
+          --framework net9.0 \
           --runtime ${{ matrix.runtime }} \
           --self-contained true \
           --output publish/${{ matrix.runtime }} \
@@ -123,9 +123,9 @@ jobs:
         Compress-Archive -Path "$source\*" -DestinationPath $dest -Force
         
         # Also create a portable version without runtime
-        dotnet publish src/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj `
+        dotnet publish ${{ env.PROJECT_NAME }}.csproj `
           --configuration Release `
-          --framework net8.0 `
+          --framework net9.0 `
           --runtime win-x64 `
           --self-contained false `
           --output publish/portable `
