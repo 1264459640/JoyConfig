@@ -1,5 +1,5 @@
-# Squirrel.Windows 打包脚本
-# 用于创建安装包和更新包
+# Squirrel.Windows packaging script
+# Creates installer and update packages
 
 param(
     [string]$Version = "1.0.0",
@@ -7,24 +7,24 @@ param(
     [string]$OutputPath = "Releases"
 )
 
-# 设置错误处理
+# Set error handling
 $ErrorActionPreference = "Stop"
 
-Write-Host "开始 Squirrel.Windows 打包流程..." -ForegroundColor Green
-Write-Host "版本: $Version" -ForegroundColor Yellow
-Write-Host "配置: $Configuration" -ForegroundColor Yellow
+Write-Host "Starting Squirrel.Windows packaging process..." -ForegroundColor Green
+Write-Host "Version: $Version" -ForegroundColor Yellow
+Write-Host "Configuration: $Configuration" -ForegroundColor Yellow
 
-# 清理输出目录
+# Clean output directory
 if (Test-Path $OutputPath) {
     Remove-Item $OutputPath -Recurse -Force
-    Write-Host "已清理输出目录: $OutputPath" -ForegroundColor Yellow
+    Write-Host "Cleaned output directory: $OutputPath" -ForegroundColor Yellow
 }
 
-# 创建输出目录
+# Create output directory
 New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
 
-# 发布应用程序
-Write-Host "正在发布应用程序..." -ForegroundColor Cyan
+# Publish application
+Write-Host "Publishing application..." -ForegroundColor Cyan
 dotnet publish JoyConfig.csproj `
     --configuration $Configuration `
     --framework net9.0 `
@@ -36,13 +36,13 @@ dotnet publish JoyConfig.csproj `
     -p:Version=$Version
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "发布失败"
+    Write-Error "Publishing failed"
     exit 1
 }
 
-Write-Host "应用程序发布完成" -ForegroundColor Green
+Write-Host "Application published successfully" -ForegroundColor Green
 
-# 创建 NuSpec 文件
+# Create NuSpec file
 $nuspecContent = @"
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
@@ -65,69 +65,64 @@ $nuspecContent = @"
 
 $nuspecPath = "JoyConfig.nuspec"
 $nuspecContent | Out-File -FilePath $nuspecPath -Encoding UTF8
-Write-Host "已创建 NuSpec 文件: $nuspecPath" -ForegroundColor Green
+Write-Host "Created NuSpec file: $nuspecPath" -ForegroundColor Green
 
-# 创建 NuGet 包
-Write-Host "正在创建 NuGet 包..." -ForegroundColor Cyan
-nuget pack $nuspecPath -OutputDirectory $OutputPath
+# Create NuGet package
+Write-Host "Creating NuGet package..." -ForegroundColor Cyan
+.\tools\nuget.exe pack $nuspecPath -OutputDirectory $OutputPath
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "NuGet 包创建失败"
+    Write-Error "NuGet package creation failed"
     exit 1
 }
 
 $nupkgFile = Get-ChildItem -Path $OutputPath -Filter "*.nupkg" | Select-Object -First 1
-Write-Host "NuGet 包创建完成: $($nupkgFile.Name)" -ForegroundColor Green
+Write-Host "NuGet package created: $($nupkgFile.Name)" -ForegroundColor Green
 
-# 使用 Squirrel 创建安装包
-Write-Host "正在使用 Squirrel 创建安装包..." -ForegroundColor Cyan
+# Use Squirrel to create installer
+Write-Host "Creating installer with Squirrel..." -ForegroundColor Cyan
 
-# 安装 Squirrel.Windows 工具（如果未安装）
-if (!(Get-Command "squirrel" -ErrorAction SilentlyContinue)) {
-    Write-Host "正在安装 Squirrel.Windows 工具..." -ForegroundColor Yellow
+# Ensure Squirrel.Windows tools are installed
+$squirrelExe = "tools\Squirrel.Windows\tools\squirrel.exe"
+if (!(Test-Path $squirrelExe)) {
+    Write-Host "Installing Squirrel.Windows tools..." -ForegroundColor Yellow
     
-    # 尝试使用 Chocolatey 安装
-    try {
-        choco install squirrel-windows -y
-        Write-Host "使用 Chocolatey 安装成功" -ForegroundColor Green
+    # Create tools directory
+    if (!(Test-Path "tools")) {
+        New-Item -ItemType Directory -Path "tools" -Force | Out-Null
     }
-    catch {
-        Write-Host "Chocolatey 安装失败，尝试使用 NuGet 直接下载..." -ForegroundColor Yellow
-        
-        # 创建 tools 目录
-        if (!(Test-Path "tools")) {
-            New-Item -ItemType Directory -Path "tools" -Force | Out-Null
-        }
-        
-        # 使用 NuGet 直接下载
-        nuget install Squirrel.Windows -ExcludeVersion -OutputDirectory tools
-        $squirrelPath = Join-Path $PWD "tools\Squirrel.Windows\tools"
-        
-        # 添加到 PATH
-        $env:PATH = "$squirrelPath;$env:PATH"
-        Write-Host "使用 NuGet 下载成功，已添加到 PATH" -ForegroundColor Green
+    
+    # Download NuGet.exe if not exists
+    $nugetExe = "tools\nuget.exe"
+    if (!(Test-Path $nugetExe)) {
+        Write-Host "Downloading NuGet.exe..." -ForegroundColor Yellow
+        Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile $nugetExe
     }
+    
+    # Use NuGet to download Squirrel.Windows
+    & $nugetExe install Squirrel.Windows -ExcludeVersion -OutputDirectory tools
+    Write-Host "Squirrel.Windows tools installed" -ForegroundColor Green
 }
 
-# 创建 Squirrel 发布
-squirrel --releasify $nupkgFile.FullName --releaseDir $OutputPath --setupIcon "public\Icon.ico"
+# Create Squirrel release
+& $squirrelExe --releasify $nupkgFile.FullName --releaseDir $OutputPath --setupIcon "public\Icon.ico"
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "Squirrel 打包失败"
+    Write-Error "Squirrel packaging failed"
     exit 1
 }
 
-Write-Host "Squirrel 打包完成!" -ForegroundColor Green
-Write-Host "输出目录: $OutputPath" -ForegroundColor Yellow
+Write-Host "Squirrel packaging completed!" -ForegroundColor Green
+Write-Host "Output directory: $OutputPath" -ForegroundColor Yellow
 
-# 列出生成的文件
-Write-Host "生成的文件:" -ForegroundColor Cyan
+# List generated files
+Write-Host "Generated files:" -ForegroundColor Cyan
 Get-ChildItem -Path $OutputPath | ForEach-Object {
     Write-Host "  $($_.Name)" -ForegroundColor White
 }
 
-# 清理临时文件
+# Clean up temporary files
 Remove-Item "publish" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item $nuspecPath -Force -ErrorAction SilentlyContinue
 
-Write-Host "打包流程完成!" -ForegroundColor Green
+Write-Host "Packaging process completed!" -ForegroundColor Green
