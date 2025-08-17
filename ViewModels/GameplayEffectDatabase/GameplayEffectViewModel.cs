@@ -59,6 +59,11 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         // 加载属性修改器和可用属性类型
         _ = LoadAttributeModifiersAsync();
         _ = LoadAvailableAttributeTypesAsync();
+        
+        // 临时测试：延迟添加测试数据
+        _ = Task.Delay(1000).ContinueWith(_ => AddTestModifiers());
+        
+        System.Diagnostics.Debug.WriteLine($"[DEBUG] GameplayEffectViewModel构造完成，Id: {Id}, OriginalId: {_originalId}");
     }
 
     [ObservableProperty]
@@ -214,7 +219,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
 
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
             var modifiers = await context.AttributeModifiers
-                .Where(m => m.EffectId == Id)
+                .Where(m => m.EffectId == _originalId)
                 .OrderBy(m => m.ExecutionOrder)
                 .ThenBy(m => m.Id)
                 .ToListAsync();
@@ -652,6 +657,75 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         catch (Exception ex)
         {
             await _dialogService.ShowErrorAsync("移动失败", ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 添加测试修改器数据（用于UI测试）
+    /// </summary>
+    private async void AddTestModifiers()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] 开始添加测试修改器，当前集合数量: {AttributeModifiers.Count}");
+            
+            // 创建测试用的AttributeModifier对象
+            var testModifier1 = new AttributeModifier
+            {
+                Id = 1,
+                EffectId = _originalId,
+                AttributeType = "Health",
+                OperationType = OperationTypes.Add,
+                Value = 100.0,
+                ExecutionOrder = 0
+            };
+
+            var testModifier2 = new AttributeModifier
+            {
+                Id = 2,
+                EffectId = _originalId,
+                AttributeType = "Mana",
+                OperationType = OperationTypes.Multiply,
+                Value = 1.5,
+                ExecutionOrder = 1
+            };
+
+            var testModifier3 = new AttributeModifier
+            {
+                Id = 3,
+                EffectId = _originalId,
+                AttributeType = "Damage",
+                OperationType = OperationTypes.Percentage,
+                Value = 25.0,
+                ExecutionOrder = 2
+            };
+
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] 创建了3个测试修改器，EffectId: {_originalId}");
+
+            // 在UI线程中添加数据
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                // 创建对应的ViewModel并添加到集合中
+                var viewModel1 = new AttributeModifierViewModel(testModifier1, this, _dialogService, _dbContextFactory);
+                var viewModel2 = new AttributeModifierViewModel(testModifier2, this, _dialogService, _dbContextFactory);
+                var viewModel3 = new AttributeModifierViewModel(testModifier3, this, _dialogService, _dbContextFactory);
+
+                AttributeModifiers.Clear(); // 先清空
+                 AttributeModifiers.Add(viewModel1);
+                 AttributeModifiers.Add(viewModel2);
+                 AttributeModifiers.Add(viewModel3);
+                 
+                 System.Diagnostics.Debug.WriteLine($"[DEBUG] 测试修改器添加完成，当前集合数量: {AttributeModifiers.Count}");
+                 
+                 // 强制触发UI更新
+                 OnPropertyChanged(nameof(AttributeModifiers));
+                 System.Diagnostics.Debug.WriteLine($"[DEBUG] 已触发PropertyChanged通知");
+            });
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ERROR] 添加测试修改器失败: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[ERROR] 堆栈跟踪: {ex.StackTrace}");
         }
     }
 }

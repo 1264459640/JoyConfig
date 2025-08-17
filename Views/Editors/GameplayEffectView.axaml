@@ -189,7 +189,8 @@
                         BorderBrush="#3c3c3c"
                         BorderThickness="1"
                         CornerRadius="6"
-                        Padding="16">
+                        Padding="16"
+                        MinHeight="300">
                     <DockPanel>
                         <!-- 修改器标题栏 -->
                         <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,16">
@@ -206,92 +207,60 @@
                         </Grid>
                         
                         <!-- 修改器列表 -->
-                        <Border Background="#1e1e1e" 
-                                BorderBrush="#3c3c3c" 
-                                BorderThickness="1" 
-                                CornerRadius="4">
-                            <DataGrid ItemsSource="{Binding AttributeModifiers}"
-                                      SelectedItem="{Binding SelectedAttributeModifier}"
-                                      AutoGenerateColumns="False"
-                                      CanUserReorderColumns="True"
-                                      CanUserResizeColumns="True"
-                                      CanUserSortColumns="True"
-                                      GridLinesVisibility="Horizontal"
-                                      HeadersVisibility="Column"
-                                      Background="Transparent"
-                                      RowBackground="Transparent">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="属性类型" Width="200">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).AvailableAttributeTypes}"
-                                                          SelectedItem="{Binding AttributeType}"
-                                                          HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="操作类型" Width="120">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource="{Binding OperationTypeOptions}"
-                                                          SelectedItem="{Binding OperationType}"
-                                                          HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="数值" Width="100">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <NumericUpDown Value="{Binding Value}"
-                                                               Increment="0.1"
-                                                               FormatString="F2"
-                                                               HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="执行顺序" Width="100">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <NumericUpDown Value="{Binding ExecutionOrder}"
-                                                               Increment="1"
-                                                               Minimum="0"
-                                                               Maximum="1000"
-                                                               HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="操作" Width="200">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" Spacing="2">
-                                                    <Button Content="↑" 
-                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).MoveModifierUpCommand}"
-                                                            CommandParameter="{Binding}"
-                                                            Classes="small"
-                                                            Padding="6,4"
-                                                            ToolTip.Tip="上移"/>
-                                                    <Button Content="↓" 
-                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).MoveModifierDownCommand}"
-                                                            CommandParameter="{Binding}"
-                                                            Classes="small"
-                                                            Padding="6,4"
-                                                            ToolTip.Tip="下移"/>
-                                                    <Button Content="编辑" 
-                                                            Command="{Binding SaveCommand}"
-                                                            Classes="small"
-                                                            Padding="6,4"/>
-                                                    <Button Content="删除" 
-                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).DeleteAttributeModifierCommand}"
-                                                            CommandParameter="{Binding}"
-                                                            Classes="small danger"
-                                                            Padding="6,4"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Border>
+                        <StackPanel>
+                            <!-- 表头 -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="属性类型" FontWeight="Bold" Padding="8,4"/>
+                                <TextBlock Grid.Column="1" Text="操作类型" FontWeight="Bold" Padding="8,4"/>
+                                <TextBlock Grid.Column="2" Text="数值" FontWeight="Bold" Padding="8,4"/>
+                                <TextBlock Grid.Column="3" Text="执行顺序" FontWeight="Bold" Padding="8,4"/>
+                                <TextBlock Grid.Column="4" Text="操作" FontWeight="Bold" Padding="8,4"/>
+                            </Grid>
+                            
+                            <!-- 修改器列表 -->
+                            <ListBox ItemsSource="{Binding AttributeModifiers}"
+                                     x:Name="ModifiersListBox"
+                                     SelectedItem="{Binding SelectedAttributeModifier}"
+                                     Background="#1e1e1e"
+                                     MinHeight="150"
+                                     Height="200">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#333333" 
+                                                BorderBrush="#3c3c3c" 
+                                                BorderThickness="0,0,0,1" 
+                                                Padding="0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding AttributeType}" Padding="8,4" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding OperationType}" Padding="8,4" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Value}" Padding="8,4" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding ExecutionOrder}" Padding="8,4" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="4" Padding="8,4">
+                                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                                        <Button Content="编辑" Classes="small" Padding="6,2"/>
+                                                        <Button Content="删除" Classes="small danger" Padding="6,2"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
                         
                         <!-- 空状态 -->
                         <StackPanel HorizontalAlignment="Center" 
