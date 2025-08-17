@@ -1,5 +1,6 @@
 using JoyConfig.ViewModels;
 using JoyConfig.Models.AttributeDatabase;
+using JoyConfig.Models.GameplayEffectDatabase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,6 +20,16 @@ public interface IViewModelFactory
     /// 创建属性数据库ViewModel
     /// </summary>
     AttributeDatabaseViewModel CreateAttributeDatabaseViewModel(MainViewModel mainViewModel);
+    
+    /// <summary>
+    /// 创建游戏效果数据库ViewModel
+    /// </summary>
+    GameplayEffectDatabaseViewModel CreateGameplayEffectDatabaseViewModel(MainViewModel mainViewModel);
+    
+    /// <summary>
+    /// 创建游戏效果ViewModel
+    /// </summary>
+    GameplayEffectViewModel CreateGameplayEffectViewModel(AttributeEffect effect, GameplayEffectDatabaseViewModel parentViewModel);
     
     /// <summary>
     /// 创建属性ViewModel

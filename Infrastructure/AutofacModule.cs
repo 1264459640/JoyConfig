@@ -94,6 +94,18 @@ public class AutofacModule : Module
                .AsSelf()
                .InstancePerDependency();
         
+        builder.RegisterType<GameplayEffectDatabaseViewModel>()
+               .AsSelf()
+               .InstancePerDependency();
+        
+        builder.RegisterType<GameplayEffectViewModel>()
+               .AsSelf()
+               .InstancePerDependency();
+        
+        builder.RegisterType<AttributeModifierViewModel>()
+               .AsSelf()
+               .InstancePerDependency();
+        
         builder.RegisterType<AttributeViewModel>()
                .AsSelf()
                .InstancePerDependency();

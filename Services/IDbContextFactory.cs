@@ -18,7 +18,7 @@ public interface IDbContextFactory
     /// <summary>
     /// 创建游戏效果数据库上下文
     /// </summary>
-    GameplayEffectDatabaseContext CreateGameplayEffectDbContext();
+    GameplayEffectDatabaseContext CreateGameplayEffectDatabaseContext();
     
     /// <summary>
     /// 验证属性数据库架构

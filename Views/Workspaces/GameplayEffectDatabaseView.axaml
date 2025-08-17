@@ -1,0 +1,217 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:models="using:JoyConfig.Models.GameplayEffectDatabase"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="JoyConfig.Views.Workspaces.GameplayEffectDatabaseView"
+             x:DataType="vm:GameplayEffectDatabaseViewModel">
+
+    <UserControl.Resources>
+        <!-- 转换器 -->
+        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+        
+        <!-- 效果类型颜色映射 -->
+        <SolidColorBrush x:Key="InstantEffectBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="DurationEffectBrush" Color="#FF9800"/>
+        <SolidColorBrush x:Key="InfiniteEffectBrush" Color="#9C27B0"/>
+        <SolidColorBrush x:Key="DefaultEffectBrush" Color="#757575"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- 主要内容区域 -->
+        <DockPanel>
+            <!-- 顶部工具栏 -->
+            <Border DockPanel.Dock="Top" 
+                    Background="#2a2a2b" 
+                    BorderBrush="#3c3c3c" 
+                    BorderThickness="0,0,0,1" 
+                    Padding="12,8">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <!-- 左侧操作按钮 -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                        <Button Content="新建效果" 
+                                Command="{Binding CreateNewEffectCommand}"
+                                Classes="accent"
+                                Padding="12,6"/>
+                        <Button Content="刷新" 
+                                Command="{Binding RefreshCommand}"
+                                Padding="12,6"/>
+                        <Button Content="清除筛选" 
+                                Command="{Binding ClearFiltersCommand}"
+                                Padding="12,6"/>
+                    </StackPanel>
+
+                    <!-- 中央搜索框 -->
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding SearchText}"
+                             Watermark="搜索效果名称、ID或描述..."
+                             Margin="16,0"
+                             MinWidth="200"/>
+
+                    <!-- 右侧筛选器 -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="效果类型:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                        <ComboBox ItemsSource="{Binding EffectTypeFilterOptions}"
+                                  SelectedItem="{Binding SelectedEffectTypeFilter}"
+                                  MinWidth="100"/>
+                        <TextBlock Text="来源类型:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                        <ComboBox ItemsSource="{Binding SourceTypeFilterOptions}"
+                                  SelectedItem="{Binding SelectedSourceTypeFilter}"
+                                  MinWidth="100"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 主内容区域 -->
+            <Grid>
+                <!-- 加载指示器 -->
+                <Border IsVisible="{Binding IsLoading}"
+                        Background="#80000000"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                    <StackPanel HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Spacing="16">
+                        <ProgressBar IsIndeterminate="True" 
+                                     Width="200" 
+                                     Height="4"/>
+                        <TextBlock Text="正在加载游戏效果数据..." 
+                                   Foreground="#e0e0e0" 
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 错误消息 -->
+                <Border IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        Background="#d32f2f"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="16">
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                               Foreground="White" 
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- 效果列表 -->
+                <ListBox ItemsSource="{Binding FilteredAttributeEffects}"
+                         SelectedItem="{Binding SelectedAttributeEffect}"
+                         IsVisible="{Binding !IsLoading}"
+                         Background="Transparent"
+                         Padding="8">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:AttributeEffect">
+                            <Border Background="#2a2a2b"
+                                    BorderBrush="#3c3c3c"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12"
+                                    Margin="4">
+                                <Border.Styles>
+                                    <Style Selector="Border:pointerover">
+                                        <Setter Property="Background" Value="#333333"/>
+                                    </Style>
+                                </Border.Styles>
+                                
+                                <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                                    <!-- 标题行 -->
+                                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Name}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="14" 
+                                                   Foreground="#f0f0f0"/>
+                                        <Border Grid.Column="1" 
+                                                Background="#4CAF50"
+                                                CornerRadius="3"
+                                                Padding="6,2">
+                                            <TextBlock Text="{Binding EffectType}" 
+                                                       FontSize="10" 
+                                                       Foreground="White"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- ID行 -->
+                                    <TextBlock Grid.Row="1" 
+                                               Text="{Binding Id}" 
+                                               FontSize="12" 
+                                               Foreground="#a0a0a0" 
+                                               Margin="0,2,0,0"/>
+
+                                    <!-- 描述行 -->
+                                    <TextBlock Grid.Row="2" 
+                                               Text="{Binding Description}" 
+                                               FontSize="12" 
+                                               Foreground="#c0c0c0" 
+                                               TextWrapping="Wrap" 
+                                               MaxLines="2"
+                                               Margin="0,4,0,0"
+                                               IsVisible="{Binding Description, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+                                    <!-- 底部信息行 -->
+                                    <Grid Grid.Row="3" 
+                                          ColumnDefinitions="*,Auto" 
+                                          Margin="0,8,0,0">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                            <!-- 堆叠类型 -->
+                                            <Border Background="#404040" 
+                                                    CornerRadius="2" 
+                                                    Padding="4,2">
+                                                <TextBlock Text="{Binding StackingType}" 
+                                                           FontSize="10" 
+                                                           Foreground="#e0e0e0"/>
+                                            </Border>
+                                            
+                                            <!-- 来源类型 -->
+                                            <Border Background="#404040" 
+                                                    CornerRadius="2" 
+                                                    Padding="4,2"
+                                                    IsVisible="{Binding SourceType, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                                <TextBlock Text="{Binding SourceType}" 
+                                                           FontSize="10" 
+                                                           Foreground="#e0e0e0"/>
+                                            </Border>
+                                            
+                                            <!-- 被动效果标识 -->
+                                            <Border Background="#1976d2" 
+                                                    CornerRadius="2" 
+                                                    Padding="4,2"
+                                                    IsVisible="{Binding IsPassive}">
+                                                <TextBlock Text="被动" 
+                                                           FontSize="10" 
+                                                           Foreground="White"/>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- 修改器数量 -->
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding AttributeModifiers.Count, StringFormat='{}{0} 个修改器'}" 
+                                                   FontSize="11" 
+                                                   Foreground="#808080" 
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- 空状态 -->
+                <StackPanel HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Spacing="16"
+                            IsVisible="{Binding !FilteredAttributeEffects.Count}">
+                    <TextBlock Text="暂无游戏效果" 
+                               FontSize="16" 
+                               Foreground="#808080" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="点击'新建效果'按钮创建第一个游戏效果" 
+                               FontSize="12" 
+                               Foreground="#606060" 
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

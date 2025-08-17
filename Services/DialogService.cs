@@ -141,4 +141,31 @@ public class DialogService : IDialogService
     {
         await ShowMessageBoxAsync(title, message);
     }
+    
+    // 便捷方法实现
+    public async Task<bool> ShowConfirmationAsync(string title, string message)
+    {
+        var viewModel = new ConfirmationDialogViewModel
+        {
+            Title = title,
+            Message = message
+        };
+        return await ShowConfirmationDialogAsync(viewModel);
+    }
+    
+    public async Task<string?> ShowInputAsync(string title, string prompt, string defaultValue = "")
+    {
+        var viewModel = new InputDialogViewModel
+        {
+            Title = title,
+            Message = prompt,
+            InputText = defaultValue
+        };
+        return await ShowInputDialogAsync(viewModel);
+    }
+    
+    public async Task ShowInfoAsync(string title, string message)
+    {
+        await ShowMessageBoxAsync(title, message);
+    }
 }

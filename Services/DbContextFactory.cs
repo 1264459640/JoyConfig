@@ -31,7 +31,7 @@ public class DbContextFactory : IDbContextFactory
         return context;
     }
     
-    public GameplayEffectDatabaseContext CreateGameplayEffectDbContext()
+    public GameplayEffectDatabaseContext CreateGameplayEffectDatabaseContext()
     {
         return new GameplayEffectDatabaseContext();
     }

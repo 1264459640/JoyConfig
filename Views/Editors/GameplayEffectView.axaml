@@ -1,0 +1,275 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:models="using:JoyConfig.Models.GameplayEffectDatabase"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="JoyConfig.Views.Editors.GameplayEffectView"
+             x:DataType="vm:GameplayEffectViewModel">
+
+    <UserControl.Resources>
+        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <DockPanel Margin="16">
+            <!-- 顶部工具栏 -->
+            <Border DockPanel.Dock="Top" 
+                    Background="#2a2a2b" 
+                    BorderBrush="#3c3c3c" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="16,12"
+                    Margin="0,0,0,16">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
+                        <Button Content="保存" 
+                                Command="{Binding SaveCommand}"
+                                Classes="accent"
+                                IsEnabled="{Binding HasUnsavedChanges}"
+                                Padding="16,8"/>
+                        <Button Content="删除" 
+                                Command="{Binding DeleteCommand}"
+                                Classes="danger"
+                                Padding="16,8"/>
+                        <Button Content="刷新修改器" 
+                                Command="{Binding LoadAttributeModifiersCommand}"
+                                Padding="16,8"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="{Binding HasUnsavedChanges}" 
+                                   VerticalAlignment="Center"
+                                   Foreground="#e0e0e0"/>
+                        <Border Background="#4CAF50"
+                                Width="8" Height="8" CornerRadius="4" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 错误消息 -->
+            <Border DockPanel.Dock="Top"
+                    IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    Background="#d32f2f"
+                    CornerRadius="4"
+                    Padding="16"
+                    Margin="0,0,0,16">
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="White" 
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <!-- 主要内容区域 -->
+            <Grid ColumnDefinitions="*,16,*" RowDefinitions="Auto,16,*">
+                <!-- 左侧：基本信息 -->
+                <Border Grid.Column="0" Grid.Row="0"
+                        Background="#2a2a2b"
+                        BorderBrush="#3c3c3c"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="基本信息" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#f0f0f0"/>
+                        
+                        <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
+                            <!-- ID -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ID:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Id}" Watermark="效果唯一标识符"/>
+                            
+                            <!-- 名称 -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="名称:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Name}" Watermark="效果显示名称"/>
+                            
+                            <!-- 效果类型 -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="效果类型:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <ComboBox Grid.Row="2" Grid.Column="1" 
+                                      ItemsSource="{Binding EffectTypeOptions}"
+                                      SelectedItem="{Binding EffectType}"/>
+                            
+                            <!-- 堆叠类型 -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="堆叠类型:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <ComboBox Grid.Row="3" Grid.Column="1" 
+                                      ItemsSource="{Binding StackingTypeOptions}"
+                                      SelectedItem="{Binding StackingType}"/>
+                            
+                            <!-- 来源类型 -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="来源类型:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <ComboBox Grid.Row="4" Grid.Column="1" 
+                                      ItemsSource="{Binding SourceTypeOptions}"
+                                      SelectedItem="{Binding SourceType}"/>
+                            
+                            <!-- 优先级 -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="优先级:" VerticalAlignment="Center" Foreground="#e0e0e0"/>
+                            <NumericUpDown Grid.Row="5" Grid.Column="1" 
+                                           Value="{Binding Priority}"
+                                           Increment="1"
+                                           Minimum="-1000"
+                                           Maximum="1000"/>
+                        </Grid>
+                        
+                        <!-- 描述 -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="描述:" Foreground="#e0e0e0"/>
+                            <TextBox Text="{Binding Description}" 
+                                     AcceptsReturn="True" 
+                                     TextWrapping="Wrap" 
+                                     MinHeight="80"
+                                     Watermark="效果的详细描述..."/>
+                        </StackPanel>
+                        
+                        <!-- 标签 -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="标签:" Foreground="#e0e0e0"/>
+                            <TextBox Text="{Binding Tags}" 
+                                     Watermark="用逗号分隔的标签，如：Physical,Temporary"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 右侧：高级设置 -->
+                <Border Grid.Column="2" Grid.Row="0"
+                        Background="#2a2a2b"
+                        BorderBrush="#3c3c3c"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="16">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="高级设置" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#f0f0f0"/>
+                        
+                        <!-- 布尔选项 -->
+                        <StackPanel Spacing="12">
+                            <CheckBox Content="被动效果" IsChecked="{Binding IsPassive}"/>
+                            <CheckBox Content="无限持续" IsChecked="{Binding IsInfinite}"/>
+                            <CheckBox Content="周期性效果" IsChecked="{Binding IsPeriodic}"/>
+                        </StackPanel>
+                        
+                        <!-- 持续时间设置 -->
+                        <StackPanel Spacing="8" IsVisible="{Binding ShowDurationFields}">
+                            <TextBlock Text="持续时间 (秒):" Foreground="#e0e0e0"/>
+                            <NumericUpDown Value="{Binding DurationSeconds}"
+                                           Increment="0.1"
+                                           Minimum="0"
+                                           Maximum="3600"
+                                           FormatString="F1"/>
+                        </StackPanel>
+                        
+                        <!-- 周期性设置 -->
+                        <StackPanel Spacing="8" IsVisible="{Binding ShowPeriodicFields}">
+                            <TextBlock Text="周期间隔 (秒):" Foreground="#e0e0e0"/>
+                            <NumericUpDown Value="{Binding IntervalSeconds}"
+                                           Increment="0.1"
+                                           Minimum="0.1"
+                                           Maximum="60"
+                                           FormatString="F1"/>
+                        </StackPanel>
+                        
+                        <!-- 堆叠设置 -->
+                        <StackPanel Spacing="8" IsVisible="{Binding ShowStackingFields}">
+                            <TextBlock Text="最大堆叠层数:" Foreground="#e0e0e0"/>
+                            <NumericUpDown Value="{Binding MaxStacks}"
+                                           Increment="1"
+                                           Minimum="1"
+                                           Maximum="999"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 底部：属性修改器列表 -->
+                <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
+                        Background="#2a2a2b"
+                        BorderBrush="#3c3c3c"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="16">
+                    <DockPanel>
+                        <!-- 修改器标题栏 -->
+                        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                            <TextBlock Grid.Column="0" 
+                                       Text="属性修改器" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#f0f0f0"/>
+                            <Button Grid.Column="1" 
+                                    Content="添加修改器" 
+                                    Command="{Binding AddAttributeModifierCommand}"
+                                    Classes="accent"
+                                    Padding="12,6"/>
+                        </Grid>
+                        
+                        <!-- 修改器列表 -->
+                        <Border Background="#1e1e1e" 
+                                BorderBrush="#3c3c3c" 
+                                BorderThickness="1" 
+                                CornerRadius="4">
+                            <DataGrid ItemsSource="{Binding AttributeModifiers}"
+                                      SelectedItem="{Binding SelectedAttributeModifier}"
+                                      AutoGenerateColumns="False"
+                                      CanUserReorderColumns="True"
+                                      CanUserResizeColumns="True"
+                                      CanUserSortColumns="True"
+                                      GridLinesVisibility="Horizontal"
+                                      HeadersVisibility="Column"
+                                      Background="Transparent"
+                                      RowBackground="Transparent">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="属性类型" 
+                                                        Binding="{Binding AttributeType}" 
+                                                        Width="200"/>
+                                    <DataGridTextColumn Header="操作类型" 
+                                                        Binding="{Binding OperationType}" 
+                                                        Width="120"/>
+                                    <DataGridTextColumn Header="数值" 
+                                                        Binding="{Binding Value, StringFormat=F2}" 
+                                                        Width="100"/>
+                                    <DataGridTextColumn Header="执行顺序" 
+                                                        Binding="{Binding ExecutionOrder}" 
+                                                        Width="100"/>
+                                    <DataGridTemplateColumn Header="操作" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <Button Content="编辑" 
+                                                            Command="{Binding SaveCommand}"
+                                                            Classes="small"
+                                                            Padding="8,4"/>
+                                                    <Button Content="删除" 
+                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).DeleteAttributeModifierCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            Classes="small danger"
+                                                            Padding="8,4"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        
+                        <!-- 空状态 -->
+                        <StackPanel HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Spacing="16"
+                                    IsVisible="{Binding !AttributeModifiers.Count}"
+                                    Margin="0,32">
+                            <TextBlock Text="暂无属性修改器" 
+                                       FontSize="14" 
+                                       Foreground="#808080" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="点击'添加修改器'按钮创建第一个属性修改器" 
+                                       FontSize="12" 
+                                       Foreground="#606060" 
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>

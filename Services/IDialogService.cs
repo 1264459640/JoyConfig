@@ -13,4 +13,9 @@ public interface IDialogService
     Task<string?> ShowOpenFileDialogAsync(string title, FilePickerFileType filter);
     Task ShowMessageBoxAsync(string title, string message);
     Task ShowErrorAsync(string title, string message);
+    
+    // 便捷方法
+    Task<bool> ShowConfirmationAsync(string title, string message);
+    Task<string?> ShowInputAsync(string title, string prompt, string defaultValue = "");
+    Task ShowInfoAsync(string title, string message);
 }

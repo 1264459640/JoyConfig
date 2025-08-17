@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace JoyConfig.Models.GameplayEffectDatabase;
@@ -18,4 +18,18 @@ public partial class AttributeModifier
     public int? ExecutionOrder { get; set; }
 
     public virtual AttributeEffect Effect { get; set; } = null!;
+}
+
+/// <summary>
+/// 操作类型枚举
+/// </summary>
+public static class OperationTypes
+{
+    public const string Add = "Add";
+    public const string Subtract = "Subtract";
+    public const string Multiply = "Multiply";
+    public const string Override = "Override";
+    public const string Percentage = "Percentage";
+
+    public static readonly string[] All = { Add, Subtract, Multiply, Override, Percentage };
 }

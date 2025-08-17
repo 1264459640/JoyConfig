@@ -136,8 +136,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void OpenGameplayEffectDatabase()
     {
-        // TODO: Replace with actual GameplayEffectDatabaseViewModel
-        CurrentWorkspace = new WelcomeViewModel { Title = "Gameplay Effect Database" };
+        CurrentWorkspace = _viewModelFactory.CreateGameplayEffectDatabaseViewModel(this);
         SelectedWorkspace = "GameplayEffectDatabase";
         IsSettingsVisible = false;
         IsTemplateManagerVisible = false;

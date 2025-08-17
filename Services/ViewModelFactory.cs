@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using JoyConfig.ViewModels;
 using JoyConfig.Models.AttributeDatabase;
+using JoyConfig.Models.GameplayEffectDatabase;
 
 namespace JoyConfig.Services;
 
@@ -14,17 +15,20 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IAttributeRepository _attributeRepository;
     private readonly IAttributeSetRepository _attributeSetRepository;
     private readonly IUpdateService _updateService;
+    private readonly IDbContextFactory _dbContextFactory;
     
     public ViewModelFactory(
         IDialogService dialogService,
         IAttributeRepository attributeRepository,
         IAttributeSetRepository attributeSetRepository,
-        IUpdateService updateService)
+        IUpdateService updateService,
+        IDbContextFactory dbContextFactory)
     {
         _dialogService = dialogService;
         _attributeRepository = attributeRepository;
         _attributeSetRepository = attributeSetRepository;
         _updateService = updateService;
+        _dbContextFactory = dbContextFactory;
     }
     
     public MainViewModel CreateMainViewModel()
@@ -35,6 +39,16 @@ public class ViewModelFactory : IViewModelFactory
     public AttributeDatabaseViewModel CreateAttributeDatabaseViewModel(MainViewModel mainViewModel)
     {
         return new AttributeDatabaseViewModel(mainViewModel, _dialogService, _attributeRepository, _attributeSetRepository, this);
+    }
+    
+    public GameplayEffectDatabaseViewModel CreateGameplayEffectDatabaseViewModel(MainViewModel mainViewModel)
+    {
+        return new GameplayEffectDatabaseViewModel(mainViewModel, _dialogService, _dbContextFactory, this);
+    }
+    
+    public GameplayEffectViewModel CreateGameplayEffectViewModel(AttributeEffect effect, GameplayEffectDatabaseViewModel parentViewModel)
+    {
+        return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, this);
     }
     
     public AttributeViewModel CreateAttributeViewModel(Attribute attribute, AttributeDatabaseViewModel parentViewModel)

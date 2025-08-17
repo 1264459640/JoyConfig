@@ -57,6 +57,12 @@
         <DataTemplate DataType="vm:AttributeDatabaseViewModel">
             <workspaces:AttributeDatabaseView/>
         </DataTemplate>
+        <DataTemplate DataType="vm:GameplayEffectDatabaseViewModel">
+            <workspaces:GameplayEffectDatabaseView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:GameplayEffectViewModel">
+            <editors:GameplayEffectView/>
+        </DataTemplate>
         <DataTemplate DataType="vm:AttributeViewModel">
             <editors:AttributeView/>
         </DataTemplate>
