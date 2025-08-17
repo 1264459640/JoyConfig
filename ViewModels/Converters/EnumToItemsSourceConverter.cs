@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Data.Converters;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.Converters;
 
 public class EnumToItemsSourceConverter : IValueConverter
 {

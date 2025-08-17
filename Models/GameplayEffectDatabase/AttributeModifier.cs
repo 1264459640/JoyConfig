@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JoyConfig.Models.GameplayEffectDatabase;
 
@@ -31,5 +32,65 @@ public static class OperationTypes
     public const string Override = "Override";
     public const string Percentage = "Percentage";
 
-    public static readonly string[] All = { Add, Subtract, Multiply, Override, Percentage };
+    private static readonly List<string> _customTypes = new();
+    private static readonly object _lock = new();
+
+    /// <summary>
+    /// 获取所有操作类型（包括自定义类型）
+    /// </summary>
+    public static string[] All
+    {
+        get
+        {
+            lock (_lock)
+            {
+                var defaultTypes = new[] { Add, Subtract, Multiply, Override, Percentage };
+                return defaultTypes.Concat(_customTypes).Distinct().ToArray();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 添加自定义操作类型
+    /// </summary>
+    /// <param name="operationType">操作类型名称</param>
+    public static void AddCustomType(string operationType)
+    {
+        if (string.IsNullOrWhiteSpace(operationType))
+            return;
+
+        lock (_lock)
+        {
+            if (!_customTypes.Contains(operationType) && 
+                !new[] { Add, Subtract, Multiply, Override, Percentage }.Contains(operationType))
+            {
+                _customTypes.Add(operationType);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 移除自定义操作类型
+    /// </summary>
+    /// <param name="operationType">操作类型名称</param>
+    public static void RemoveCustomType(string operationType)
+    {
+        if (string.IsNullOrWhiteSpace(operationType))
+            return;
+
+        lock (_lock)
+        {
+            _customTypes.Remove(operationType);
+        }
+    }
+
+    /// <summary>
+    /// 检查是否为有效的操作类型
+    /// </summary>
+    /// <param name="operationType">操作类型名称</param>
+    /// <returns>是否有效</returns>
+    public static bool IsValid(string operationType)
+    {
+        return All.Contains(operationType);
+    }
 }

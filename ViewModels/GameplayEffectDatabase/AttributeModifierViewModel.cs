@@ -6,7 +6,7 @@ using JoyConfig.Models.GameplayEffectDatabase;
 using JoyConfig.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.GameplayEffectDatabase;
 
 /// <summary>
 /// 属性修改器视图模型
@@ -65,6 +65,31 @@ public partial class AttributeModifierViewModel : ObservableObject
     /// 操作类型选项
     /// </summary>
     public string[] OperationTypeOptions => OperationTypes.All;
+
+    /// <summary>
+    /// 添加自定义操作类型
+    /// </summary>
+    [RelayCommand]
+    public async Task AddCustomOperationTypeAsync()
+    {
+        try
+        {
+            var customType = await _dialogService.ShowInputAsync(
+                "添加自定义操作类型", 
+                "请输入新的操作类型名称:", 
+                "");
+                
+            if (!string.IsNullOrWhiteSpace(customType))
+            {
+                OperationTypes.AddCustomType(customType);
+                OnPropertyChanged(nameof(OperationTypeOptions));
+            }
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowErrorAsync("添加失败", ex.Message);
+        }
+    }
 
     /// <summary>
     /// 是否有未保存的更改

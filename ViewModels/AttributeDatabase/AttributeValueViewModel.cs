@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.Services;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class AttributeValueViewModel : ObservableObject
 {

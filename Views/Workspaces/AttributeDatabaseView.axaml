@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:vm="using:JoyConfig.ViewModels.AttributeDatabase"
+             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
              xmlns:models="using:JoyConfig.Models"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Workspaces.AttributeDatabaseView"
@@ -111,7 +112,7 @@
         </ScrollViewer>
     </DockPanel>
     <UserControl.Resources>
-        <vm:IdToSuffixConverter x:Key="IdToSuffixConverter"/>
+        <vmConverters:IdToSuffixConverter x:Key="IdToSuffixConverter"/>
         <ControlTheme x:Key="SubExpanderTheme" TargetType="Expander">
             <Setter Property="Template">
                 <ControlTemplate>

@@ -1,4 +1,9 @@
 using JoyConfig.ViewModels;
+using JoyConfig.ViewModels.AttributeDatabase;
+using JoyConfig.ViewModels.GameplayEffectDatabase;
+using JoyConfig.ViewModels.Dialogs;
+using JoyConfig.ViewModels.Templates;
+using JoyConfig.ViewModels.Settings;
 using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.Models.GameplayEffectDatabase;
 using System.Collections.Generic;

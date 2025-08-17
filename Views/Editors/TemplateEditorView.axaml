@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:material="using:Material.Styles.Controls"
-             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:vm="using:JoyConfig.ViewModels.Templates"
              xmlns:components="using:JoyConfig.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Editors.TemplateEditorView"

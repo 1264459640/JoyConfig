@@ -7,7 +7,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Models.AttributeDatabase;
-using JoyConfig.ViewModels;
+using JoyConfig.ViewModels.AttributeDatabase;
+using JoyConfig.ViewModels.Dialogs;
 using JoyConfig.Views;
 
 namespace JoyConfig.Services;

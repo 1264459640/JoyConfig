@@ -7,7 +7,7 @@ using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class SelectAttributeViewModel : ObservableObject
 {

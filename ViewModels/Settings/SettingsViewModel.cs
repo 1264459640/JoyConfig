@@ -12,8 +12,9 @@ using JoyConfig.Services;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using JoyConfig.ViewModels.Base;
 
-namespace JoyConfig.ViewModels
+namespace JoyConfig.ViewModels.Settings
 {
     public class SettingsPage
     {

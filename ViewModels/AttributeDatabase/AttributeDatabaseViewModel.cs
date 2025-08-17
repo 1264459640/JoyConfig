@@ -10,9 +10,10 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using JoyConfig.Services;
+using JoyConfig.ViewModels.Base;
 using Avalonia.Threading;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class AttributeDatabaseViewModel : EditorViewModelBase
 {

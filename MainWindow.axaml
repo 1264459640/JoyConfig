@@ -3,6 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:vmAttr="using:JoyConfig.ViewModels.AttributeDatabase"
+             xmlns:vmEffect="using:JoyConfig.ViewModels.GameplayEffectDatabase"
+             xmlns:vmTemplate="using:JoyConfig.ViewModels.Templates"
+             xmlns:vmSettings="using:JoyConfig.ViewModels.Settings"
+             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
         xmlns:views="using:JoyConfig.Views"
         xmlns:workspaces="using:JoyConfig.Views.Workspaces"
         xmlns:editors="using:JoyConfig.Views.Editors"
@@ -41,7 +46,7 @@
     </Window.Styles>
     
     <Window.Resources>
-        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+        <vmConverters:StringEqualsConverter x:Key="StringEqualsConverter"/>
     </Window.Resources>
 
     <Design.DataContext>
@@ -54,31 +59,31 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
         </DataTemplate>
-        <DataTemplate DataType="vm:AttributeDatabaseViewModel">
+        <DataTemplate DataType="vmAttr:AttributeDatabaseViewModel">
             <workspaces:AttributeDatabaseView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:GameplayEffectDatabaseViewModel">
+        <DataTemplate DataType="vmEffect:GameplayEffectDatabaseViewModel">
             <workspaces:GameplayEffectDatabaseView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:GameplayEffectViewModel">
+        <DataTemplate DataType="vmEffect:GameplayEffectViewModel">
             <editors:GameplayEffectView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:AttributeViewModel">
+        <DataTemplate DataType="vmAttr:AttributeViewModel">
             <editors:AttributeView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:AttributeSetViewModel">
+        <DataTemplate DataType="vmAttr:AttributeSetViewModel">
             <editors:AttributeSetView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:CategoryViewModel">
+        <DataTemplate DataType="vmAttr:CategoryViewModel">
             <editors:CategoryView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:SettingsViewModel">
+        <DataTemplate DataType="vmSettings:SettingsViewModel">
             <editors:SettingsView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:TemplateWorkspaceViewModel">
+        <DataTemplate DataType="vmTemplate:TemplateWorkspaceViewModel">
             <workspaces:TemplateWorkspaceView/>
         </DataTemplate>
-        <DataTemplate DataType="vm:TemplateEditorViewModel">
+        <DataTemplate DataType="vmTemplate:TemplateEditorViewModel">
             <editors:TemplateEditorView/>
         </DataTemplate>
     </Window.DataTemplates>

@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using JoyConfig.Models.AttributeDatabase;
-using JoyConfig.ViewModels;
+using JoyConfig.ViewModels.AttributeDatabase;
+using JoyConfig.ViewModels.Dialogs;
 
 namespace JoyConfig.Services;
 

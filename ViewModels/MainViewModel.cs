@@ -3,6 +3,11 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Services;
+using JoyConfig.ViewModels.AttributeDatabase;
+using JoyConfig.ViewModels.GameplayEffectDatabase;
+using JoyConfig.ViewModels.Templates;
+using JoyConfig.ViewModels.Settings;
+using JoyConfig.ViewModels.Base;
 using Avalonia.Controls;
 using System.Threading.Tasks;
 

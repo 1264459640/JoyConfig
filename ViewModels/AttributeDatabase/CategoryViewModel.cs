@@ -2,8 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using JoyConfig.Services;
+using JoyConfig.ViewModels.Base;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class CategoryViewModel : EditorViewModelBase
 {

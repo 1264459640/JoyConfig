@@ -1,0 +1,107 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+             x:Class="JoyConfig.Views.Components.TagEditor">
+
+    <UserControl.Styles>
+        <!-- 标签样式 -->
+        <Style Selector="Border.tag">
+            <Setter Property="Background" Value="#404040"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="4,2"/>
+        </Style>
+        
+        <Style Selector="Border.tag:pointerover">
+            <Setter Property="Background" Value="#505050"/>
+        </Style>
+        
+        <Style Selector="Button.tag-remove">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Foreground" Value="#ff6b6b"/>
+        </Style>
+        
+        <Style Selector="Button.tag-remove:pointerover">
+            <Setter Property="Background" Value="#ff6b6b"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <!-- 顶部：添加标签区域 -->
+        <Border DockPanel.Dock="Top" 
+                Background="#2a2a2b" 
+                BorderBrush="#3c3c3c" 
+                BorderThickness="1" 
+                CornerRadius="4" 
+                Padding="8" 
+                Margin="0,0,0,8">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBox Grid.Column="0" 
+                         Name="NewTagTextBox"
+                         Watermark="输入新标签..."
+                         KeyDown="OnNewTagKeyDown"/>
+                <Button Grid.Column="1" 
+                        Content="添加" 
+                        Click="OnAddTagClick"
+                        Classes="accent"
+                        Margin="8,0,0,0"
+                        Padding="12,4"/>
+                <Button Grid.Column="2" 
+                        Content="预设" 
+                        Click="OnShowPresetsClick"
+                        Margin="8,0,0,0"
+                        Padding="12,4"/>
+            </Grid>
+        </Border>
+        
+        <!-- 预设标签面板 -->
+        <Border Name="PresetsPanel"
+                DockPanel.Dock="Top"
+                Background="#1e1e1e" 
+                BorderBrush="#3c3c3c" 
+                BorderThickness="1" 
+                CornerRadius="4" 
+                Padding="8" 
+                Margin="0,0,0,8"
+                IsVisible="False">
+            <StackPanel>
+                <TextBlock Text="预设标签:" 
+                           FontWeight="SemiBold" 
+                           Foreground="#e0e0e0" 
+                           Margin="0,0,0,8"/>
+                <WrapPanel Name="PresetsWrapPanel">
+                    <!-- 预设标签将在代码后台动态添加 -->
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+        
+        <!-- 主要内容：当前标签列表 -->
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock Text="当前标签:" 
+                           FontWeight="SemiBold" 
+                           Foreground="#e0e0e0" 
+                           Margin="0,0,0,8"/>
+                <WrapPanel Name="TagsWrapPanel">
+                    <!-- 标签将在代码后台动态添加 -->
+                </WrapPanel>
+                
+                <!-- 空状态 -->
+                <TextBlock Name="EmptyStateText"
+                           Text="暂无标签，请添加标签"
+                           Foreground="#808080"
+                           HorizontalAlignment="Center"
+                           Margin="0,16"
+                           IsVisible="True"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

@@ -7,12 +7,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using JoyConfig.Models.DTOs;
 using JoyConfig.Services;
+using JoyConfig.ViewModels.Base;
+using JoyConfig.ViewModels.Dialogs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Avalonia.Threading;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class AttributeViewModel : EditorViewModelBase
 {

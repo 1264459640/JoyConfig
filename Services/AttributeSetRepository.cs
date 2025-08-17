@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using JoyConfig.Models.AttributeDatabase;
-using JoyConfig.ViewModels;
+using JoyConfig.ViewModels.AttributeDatabase;
 
 namespace JoyConfig.Services;
 

@@ -2,13 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:vm="using:JoyConfig.ViewModels.Settings"
+             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="JoyConfig.Views.Editors.SettingsView"
              x:DataType="vm:SettingsViewModel">
 
     <UserControl.Resources>
-        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+        <vmConverters:StringEqualsConverter x:Key="StringEqualsConverter"/>
         
         <DataTemplate x:Key="DatabaseSettingsTemplate" x:DataType="vm:SettingsViewModel">
             <StackPanel Spacing="10" Margin="10">

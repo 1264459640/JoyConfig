@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace JoyConfig.ViewModels
+namespace JoyConfig.ViewModels.Converters
 {
     public class StringEqualsConverter : IValueConverter
     {

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Models.AttributeDatabase;
 using JoyConfig.Services;
+using JoyConfig.ViewModels.Base;
+using JoyConfig.ViewModels.Dialogs;
 using Microsoft.EntityFrameworkCore;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.AttributeDatabase;
 
 public partial class AttributeSetViewModel : EditorViewModelBase
 {

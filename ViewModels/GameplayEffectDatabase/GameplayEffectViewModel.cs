@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,10 +7,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Models.GameplayEffectDatabase;
 using JoyConfig.Services;
-using Avalonia.Threading;
+using JoyConfig.ViewModels.Base;
 using Microsoft.EntityFrameworkCore;
+using Avalonia.Threading;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.GameplayEffectDatabase;
 
 /// <summary>
 /// 游戏效果编辑器视图模型
@@ -54,8 +56,9 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         
         Title = $"效果: {effect.Name}";
         
-        // 加载属性修改器
+        // 加载属性修改器和可用属性类型
         _ = LoadAttributeModifiersAsync();
+        _ = LoadAvailableAttributeTypesAsync();
     }
 
     [ObservableProperty]
@@ -133,6 +136,12 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
     public string[] TagTypeOptions => TagTypes.All;
 
     /// <summary>
+    /// 可用的属性类型列表（从AttributeDatabase加载）
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<string> _availableAttributeTypes = new();
+
+    /// <summary>
     /// 是否显示持续时间字段
     /// </summary>
     public bool ShowDurationFields => EffectType == EffectTypes.Duration;
@@ -205,7 +214,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
 
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
             var modifiers = await context.AttributeModifiers
-                .Where(m => m.EffectId == _originalId)
+                .Where(m => m.EffectId == Id)
                 .OrderBy(m => m.ExecutionOrder)
                 .ThenBy(m => m.Id)
                 .ToListAsync();
@@ -228,6 +237,56 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         finally
         {
             IsLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// 加载可用的属性类型
+    /// </summary>
+    private async Task LoadAvailableAttributeTypesAsync()
+    {
+        try
+        {
+            // 从AttributeDatabase加载真实的属性类型
+            using var attributeContext = _dbContextFactory.CreateAttributeDbContext();
+            var attributes = await attributeContext.Attributes
+                .Select(a => a.Id)
+                .ToListAsync();
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                AvailableAttributeTypes.Clear();
+                foreach (var attributeId in attributes)
+                {
+                    AvailableAttributeTypes.Add(attributeId);
+                }
+                
+                // 如果没有找到属性，添加一些默认值作为后备
+                if (AvailableAttributeTypes.Count == 0)
+                {
+                    var defaultTypes = new[] { "Health", "Mana", "Strength", "Agility", "Intelligence" };
+                    foreach (var type in defaultTypes)
+                    {
+                        AvailableAttributeTypes.Add(type);
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"加载属性类型失败: {ex.Message}";
+            await _dialogService.ShowErrorAsync("加载失败", ex.Message);
+            
+            // 发生错误时使用默认属性类型
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                AvailableAttributeTypes.Clear();
+                var defaultTypes = new[] { "Health", "Mana", "Strength", "Agility", "Intelligence" };
+                foreach (var type in defaultTypes)
+                {
+                    AvailableAttributeTypes.Add(type);
+                }
+            });
         }
     }
 
@@ -267,40 +326,120 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
                     await _dialogService.ShowErrorAsync("保存失败", "该ID已被其他效果使用，请使用不同的ID。");
                     return;
                 }
+                
+                // 引导式级联更新：检查关联的AttributeModifiers
+                var affectedModifiers = await context.AttributeModifiers
+                    .Where(m => m.EffectId == _originalId)
+                    .ToListAsync();
+                    
+                if (affectedModifiers.Count > 0)
+                {
+                    var message = $"更改效果ID将影响 {affectedModifiers.Count} 个关联的属性修改器。\n\n" +
+                                 "系统将删除旧效果并创建新效果，同时重新创建所有修改器。\n\n" +
+                                 "确定要继续吗？";
+                    
+                    var confirmed = await _dialogService.ShowConfirmationAsync("确认ID更改", message);
+                    if (!confirmed) return;
+                }
             }
 
-            var effect = await context.AttributeEffects
-                .FirstOrDefaultAsync(e => e.Id == _originalId);
-
-            if (effect == null)
+            if (Id != _originalId)
             {
-                await _dialogService.ShowErrorAsync("保存失败", "找不到要更新的效果。");
-                return;
+                // ID发生变化时，需要删除旧实体并创建新实体
+                var oldEffect = await context.AttributeEffects
+                    .Include(e => e.AttributeModifiers)
+                    .FirstOrDefaultAsync(e => e.Id == _originalId);
+
+                if (oldEffect == null)
+                {
+                    await _dialogService.ShowErrorAsync("保存失败", "找不到要更新的效果。");
+                    return;
+                }
+
+                // 创建新效果实体
+                var newEffect = new AttributeEffect
+                {
+                    Id = Id,
+                    Name = Name,
+                    Description = string.IsNullOrWhiteSpace(Description) ? null : Description,
+                    EffectType = EffectType,
+                    StackingType = StackingType,
+                    Tags = string.IsNullOrWhiteSpace(Tags) ? null : Tags,
+                    DurationSeconds = ShowDurationFields ? DurationSeconds : null,
+                    IsInfinite = IsInfinite,
+                    MaxStacks = ShowStackingFields ? MaxStacks : null,
+                    IsPassive = IsPassive,
+                    Priority = Priority,
+                    IsPeriodic = IsPeriodic,
+                    IntervalSeconds = ShowPeriodicFields ? IntervalSeconds : 1.0,
+                    SourceType = string.IsNullOrWhiteSpace(SourceType) ? null : SourceType
+                };
+
+                // 重新创建所有属性修改器
+                foreach (var oldModifier in oldEffect.AttributeModifiers)
+                {
+                    var newModifier = new AttributeModifier
+                    {
+                        EffectId = Id,
+                        AttributeType = oldModifier.AttributeType,
+                        OperationType = oldModifier.OperationType,
+                        Value = oldModifier.Value,
+                        ExecutionOrder = oldModifier.ExecutionOrder
+                    };
+                    newEffect.AttributeModifiers.Add(newModifier);
+                }
+
+                // 删除旧实体（级联删除会自动处理关联的修改器）
+                context.AttributeEffects.Remove(oldEffect);
+                
+                // 添加新实体
+                context.AttributeEffects.Add(newEffect);
+                
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                // ID未变化，直接更新现有实体
+                var effect = await context.AttributeEffects
+                    .FirstOrDefaultAsync(e => e.Id == _originalId);
+
+                if (effect == null)
+                {
+                    await _dialogService.ShowErrorAsync("保存失败", "找不到要更新的效果。");
+                    return;
+                }
+
+                // 更新效果数据（不包括ID）
+                effect.Name = Name;
+                effect.Description = string.IsNullOrWhiteSpace(Description) ? null : Description;
+                effect.EffectType = EffectType;
+                effect.StackingType = StackingType;
+                effect.Tags = string.IsNullOrWhiteSpace(Tags) ? null : Tags;
+                effect.DurationSeconds = ShowDurationFields ? DurationSeconds : null;
+                effect.IsInfinite = IsInfinite;
+                effect.MaxStacks = ShowStackingFields ? MaxStacks : null;
+                effect.IsPassive = IsPassive;
+                effect.Priority = Priority;
+                effect.IsPeriodic = IsPeriodic;
+                effect.IntervalSeconds = ShowPeriodicFields ? IntervalSeconds : 1.0;
+                effect.SourceType = string.IsNullOrWhiteSpace(SourceType) ? null : SourceType;
+
+                await context.SaveChangesAsync();
             }
 
-            // 更新效果数据
-            effect.Id = Id;
-            effect.Name = Name;
-            effect.Description = string.IsNullOrWhiteSpace(Description) ? null : Description;
-            effect.EffectType = EffectType;
-            effect.StackingType = StackingType;
-            effect.Tags = string.IsNullOrWhiteSpace(Tags) ? null : Tags;
-            effect.DurationSeconds = ShowDurationFields ? DurationSeconds : null;
-            effect.IsInfinite = IsInfinite;
-            effect.MaxStacks = ShowStackingFields ? MaxStacks : null;
-            effect.IsPassive = IsPassive;
-            effect.Priority = Priority;
-            effect.IsPeriodic = IsPeriodic;
-            effect.IntervalSeconds = ShowPeriodicFields ? IntervalSeconds : 1.0;
-            effect.SourceType = string.IsNullOrWhiteSpace(SourceType) ? null : SourceType;
-
-            await context.SaveChangesAsync();
+            // 更新原始ID
+            var originalIdField = typeof(GameplayEffectViewModel).GetField("_originalId", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            originalIdField?.SetValue(this, Id);
 
             HasUnsavedChanges = false;
             await _dialogService.ShowInfoAsync("保存成功", "效果已成功保存。");
             
             // 刷新父视图模型的数据
             await _parentViewModel.LoadDataAsync();
+            
+            // 重新加载属性修改器以反映ID变更
+            await LoadAttributeModifiersAsync();
         }
         catch (Exception ex)
         {
@@ -370,15 +509,18 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
     {
         try
         {
-            // TODO: 实现选择属性类型的对话框
-            var attributeType = await _dialogService.ShowInputAsync("添加修改器", "请输入属性类型:", "");
-            if (string.IsNullOrWhiteSpace(attributeType))
+            // 创建属性选择对话框
+            var excludedIds = new List<string>(); // 暂时不排除任何属性
+            var selectAttributeVm = _viewModelFactory.CreateSelectAttributeViewModel(excludedIds);
+            var selectedAttribute = await _dialogService.ShowSelectAttributeDialogAsync(selectAttributeVm);
+            
+            if (selectedAttribute == null)
                 return;
 
             var newModifier = new AttributeModifier
             {
                 EffectId = _originalId,
-                AttributeType = attributeType,
+                AttributeType = selectedAttribute.Id,
                 OperationType = OperationTypes.Add,
                 Value = 0,
                 ExecutionOrder = AttributeModifiers.Count
@@ -428,6 +570,88 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         catch (Exception ex)
         {
             await _dialogService.ShowErrorAsync("删除失败", ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 上移修改器
+    /// </summary>
+    [RelayCommand]
+    public async Task MoveModifierUpAsync(AttributeModifierViewModel? modifier)
+    {
+        if (modifier == null) return;
+
+        try
+        {
+            var currentIndex = AttributeModifiers.IndexOf(modifier);
+            if (currentIndex <= 0) return; // 已经在最上面
+
+            // 交换执行顺序
+            var previousModifier = AttributeModifiers[currentIndex - 1];
+            var tempOrder = modifier.ExecutionOrder;
+            modifier.ExecutionOrder = previousModifier.ExecutionOrder;
+            previousModifier.ExecutionOrder = tempOrder;
+
+            // 保存到数据库
+            using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
+            
+            var modifierToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == modifier.Id);
+            var previousToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == previousModifier.Id);
+            
+            if (modifierToUpdate != null && previousToUpdate != null)
+            {
+                modifierToUpdate.ExecutionOrder = modifier.ExecutionOrder;
+                previousToUpdate.ExecutionOrder = previousModifier.ExecutionOrder;
+                await context.SaveChangesAsync();
+            }
+
+            // 重新加载列表以反映排序变化
+            await LoadAttributeModifiersAsync();
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowErrorAsync("移动失败", ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 下移修改器
+    /// </summary>
+    [RelayCommand]
+    public async Task MoveModifierDownAsync(AttributeModifierViewModel? modifier)
+    {
+        if (modifier == null) return;
+
+        try
+        {
+            var currentIndex = AttributeModifiers.IndexOf(modifier);
+            if (currentIndex >= AttributeModifiers.Count - 1) return; // 已经在最下面
+
+            // 交换执行顺序
+            var nextModifier = AttributeModifiers[currentIndex + 1];
+            var tempOrder = modifier.ExecutionOrder;
+            modifier.ExecutionOrder = nextModifier.ExecutionOrder;
+            nextModifier.ExecutionOrder = tempOrder;
+
+            // 保存到数据库
+            using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
+            
+            var modifierToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == modifier.Id);
+            var nextToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == nextModifier.Id);
+            
+            if (modifierToUpdate != null && nextToUpdate != null)
+            {
+                modifierToUpdate.ExecutionOrder = modifier.ExecutionOrder;
+                nextToUpdate.ExecutionOrder = nextModifier.ExecutionOrder;
+                await context.SaveChangesAsync();
+            }
+
+            // 重新加载列表以反映排序变化
+            await LoadAttributeModifiersAsync();
+        }
+        catch (Exception ex)
+        {
+            await _dialogService.ShowErrorAsync("移动失败", ex.Message);
         }
     }
 }

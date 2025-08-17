@@ -2,14 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JoyConfig.ViewModels"
+             xmlns:vm="using:JoyConfig.ViewModels.GameplayEffectDatabase"
+             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
              xmlns:models="using:JoyConfig.Models.GameplayEffectDatabase"
+             xmlns:components="using:JoyConfig.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Editors.GameplayEffectView"
              x:DataType="vm:GameplayEffectViewModel">
 
     <UserControl.Resources>
-        <vm:StringEqualsConverter x:Key="StringEqualsConverter"/>
+        <vmConverters:StringEqualsConverter x:Key="StringEqualsConverter"/>
     </UserControl.Resources>
 
     <ScrollViewer>
@@ -124,8 +126,8 @@
                         <!-- 标签 -->
                         <StackPanel Spacing="8">
                             <TextBlock Text="标签:" Foreground="#e0e0e0"/>
-                            <TextBox Text="{Binding Tags}" 
-                                     Watermark="用逗号分隔的标签，如：Physical,Temporary"/>
+                            <components:TagEditor Name="TagEditor" 
+                                                  TagsText="{Binding Tags, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -219,31 +221,70 @@
                                       Background="Transparent"
                                       RowBackground="Transparent">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="属性类型" 
-                                                        Binding="{Binding AttributeType}" 
-                                                        Width="200"/>
-                                    <DataGridTextColumn Header="操作类型" 
-                                                        Binding="{Binding OperationType}" 
-                                                        Width="120"/>
-                                    <DataGridTextColumn Header="数值" 
-                                                        Binding="{Binding Value, StringFormat=F2}" 
-                                                        Width="100"/>
-                                    <DataGridTextColumn Header="执行顺序" 
-                                                        Binding="{Binding ExecutionOrder}" 
-                                                        Width="100"/>
-                                    <DataGridTemplateColumn Header="操作" Width="120">
+                                    <DataGridTemplateColumn Header="属性类型" Width="200">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <ComboBox ItemsSource="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).AvailableAttributeTypes}"
+                                                          SelectedItem="{Binding AttributeType}"
+                                                          HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="操作类型" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding OperationTypeOptions}"
+                                                          SelectedItem="{Binding OperationType}"
+                                                          HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="数值" Width="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <NumericUpDown Value="{Binding Value}"
+                                                               Increment="0.1"
+                                                               FormatString="F2"
+                                                               HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="执行顺序" Width="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <NumericUpDown Value="{Binding ExecutionOrder}"
+                                                               Increment="1"
+                                                               Minimum="0"
+                                                               Maximum="1000"
+                                                               HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="操作" Width="200">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="2">
+                                                    <Button Content="↑" 
+                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).MoveModifierUpCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            Classes="small"
+                                                            Padding="6,4"
+                                                            ToolTip.Tip="上移"/>
+                                                    <Button Content="↓" 
+                                                            Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).MoveModifierDownCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            Classes="small"
+                                                            Padding="6,4"
+                                                            ToolTip.Tip="下移"/>
                                                     <Button Content="编辑" 
                                                             Command="{Binding SaveCommand}"
                                                             Classes="small"
-                                                            Padding="8,4"/>
+                                                            Padding="6,4"/>
                                                     <Button Content="删除" 
                                                             Command="{Binding $parent[UserControl].((vm:GameplayEffectViewModel)DataContext).DeleteAttributeModifierCommand}"
                                                             CommandParameter="{Binding}"
                                                             Classes="small danger"
-                                                            Padding="8,4"/>
+                                                            Padding="6,4"/>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>

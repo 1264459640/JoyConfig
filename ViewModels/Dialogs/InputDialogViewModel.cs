@@ -1,29 +1,28 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.Windows.Input;
 using JoyConfig.Services;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.Dialogs;
 
-public partial class ConfirmationDialogViewModel : ObservableObject
+public partial class InputDialogViewModel : ObservableObject
 {
     public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
-    private string _title = "Confirm Action";
+    private string _title = "Input";
 
     [ObservableProperty]
-    private string _message = "";
+    private string _message = "Please enter a value:";
 
     [ObservableProperty]
-    private List<string> _details = new();
+    private string _inputText = "";
 
-    public bool DialogResult { get; private set; }
+    public string? DialogResult { get; private set; }
 
     public ICommand? CloseCommand { get; set; }
 
-    public ConfirmationDialogViewModel()
+    public InputDialogViewModel()
     {
         LocalizationManager = LocalizationManager.Instance;
     }
@@ -31,14 +30,14 @@ public partial class ConfirmationDialogViewModel : ObservableObject
     [RelayCommand]
     private void Ok()
     {
-        DialogResult = true;
-        CloseCommand?.Execute(null);
+        DialogResult = InputText;
+        CloseCommand?.Execute("OK");
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        DialogResult = false;
+        DialogResult = null;
         CloseCommand?.Execute(null);
     }
 }

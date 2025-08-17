@@ -6,10 +6,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JoyConfig.Models.GameplayEffectDatabase;
 using JoyConfig.Services;
-using Avalonia.Threading;
+using JoyConfig.ViewModels.Base;
 using Microsoft.EntityFrameworkCore;
+using Avalonia.Threading;
 
-namespace JoyConfig.ViewModels;
+namespace JoyConfig.ViewModels.GameplayEffectDatabase;
 
 /// <summary>
 /// 游戏效果数据库工作空间视图模型

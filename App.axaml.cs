@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using JoyConfig.Services;
+using JoyConfig.Views;
 using JoyConfig.ViewModels;
 using JoyConfig.Infrastructure;
 using System;
