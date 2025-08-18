@@ -24,7 +24,7 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IDbContextFactory _dbContextFactory;
     private readonly IAttributeTypeService _attributeTypeService;
     private readonly IGameplayEffectTemplateService _templateService;
-    
+
     public ViewModelFactory(
         IDialogService dialogService,
         IAttributeRepository attributeRepository,
@@ -42,77 +42,77 @@ public class ViewModelFactory : IViewModelFactory
         _attributeTypeService = attributeTypeService;
         _templateService = templateService;
     }
-    
+
     public MainViewModel CreateMainViewModel()
     {
         return new MainViewModel(_dialogService, this, _updateService);
     }
-    
+
     public AttributeDatabaseViewModel CreateAttributeDatabaseViewModel(MainViewModel mainViewModel)
     {
         return new AttributeDatabaseViewModel(mainViewModel, _dialogService, _attributeRepository, _attributeSetRepository, this);
     }
-    
+
     public GameplayEffectDatabaseViewModel CreateGameplayEffectDatabaseViewModel(MainViewModel mainViewModel)
     {
         return new GameplayEffectDatabaseViewModel(mainViewModel, _dialogService, _dbContextFactory, this);
     }
-    
+
     public GameplayEffectViewModel CreateGameplayEffectViewModel(AttributeEffect effect, GameplayEffectDatabaseViewModel parentViewModel)
     {
         return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, _attributeTypeService, _templateService, this);
     }
-    
+
     public GameplayEffectTemplateViewModel CreateGameplayEffectTemplateViewModel()
     {
         return new GameplayEffectTemplateViewModel(_templateService, _dialogService);
     }
-    
+
     public AttributeViewModel CreateAttributeViewModel(Attribute attribute, AttributeDatabaseViewModel parentViewModel)
     {
         return new AttributeViewModel(attribute, parentViewModel, _dialogService, _attributeRepository);
     }
-    
+
     public async Task<AttributeSetViewModel> CreateAttributeSetViewModelAsync(string attributeSetId, AttributeDatabaseViewModel parentViewModel)
     {
         var viewModel = new AttributeSetViewModel(attributeSetId, parentViewModel, _dialogService, _attributeSetRepository, this);
         await viewModel.InitializeAsync();
         return viewModel;
     }
-    
+
     public SettingsViewModel CreateSettingsViewModel(MainViewModel mainViewModel)
     {
         return new SettingsViewModel(_dialogService, mainViewModel);
     }
-    
+
     public TemplateManagerViewModel CreateTemplateManagerViewModel(MainViewModel mainViewModel)
     {
         var templateService = new TemplateService(_attributeSetRepository);
         return new TemplateManagerViewModel(mainViewModel, _dialogService, templateService, this);
     }
-    
+
     public TemplateEditorViewModel CreateTemplateEditorViewModel(string templateId, MainViewModel mainViewModel)
     {
         var templateService = new TemplateService(_attributeSetRepository);
         return new TemplateEditorViewModel(templateId, templateService, _dialogService, _attributeRepository, this, mainViewModel);
     }
-    
+
     public TemplateWorkspaceViewModel CreateTemplateWorkspaceViewModel(MainViewModel mainViewModel)
     {
         var templateService = new TemplateService(_attributeSetRepository);
         return new TemplateWorkspaceViewModel(mainViewModel, _dialogService, templateService, this);
     }
-    
+
     public CategoryViewModel CreateCategoryViewModel(AttributeDatabaseViewModel parentViewModel)
     {
         return new CategoryViewModel(parentViewModel);
     }
-    
+
     public SelectAttributeViewModel CreateSelectAttributeViewModel(IEnumerable<string> excludedAttributeIds)
     {
         return new SelectAttributeViewModel(_attributeRepository, excludedAttributeIds);
     }
-    
+
     public ConfirmationDialogViewModel CreateConfirmationDialogViewModel(string title, string message)
     {
         return new ConfirmationDialogViewModel
@@ -121,7 +121,7 @@ public class ViewModelFactory : IViewModelFactory
             Message = message
         };
     }
-    
+
     public ConfirmationDialogViewModel CreateConfirmationDialogViewModel(string title, string message, List<string> details)
     {
         return new ConfirmationDialogViewModel
@@ -131,7 +131,7 @@ public class ViewModelFactory : IViewModelFactory
             Details = details
         };
     }
-    
+
     public InputDialogViewModel CreateInputDialogViewModel(string title, string prompt, string defaultValue = "")
     {
         return new InputDialogViewModel

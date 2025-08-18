@@ -52,7 +52,7 @@ public partial class AttributeDatabaseContext : DbContext
         modelBuilder.Entity<AttributeValue>(entity =>
         {
             entity.Property(e => e.AttributeId).HasColumnName("AttributeType");
-            
+
             entity.HasIndex(e => new { e.AttributeSetId, e.AttributeId }, "IX_AttributeValues_AttributeSetId_AttributeType").IsUnique();
 
             entity.Property(e => e.MaxValue).HasDefaultValue(999999.0);
@@ -109,9 +109,9 @@ public partial class AttributeDatabaseContext : DbContext
         }
 
         var query = from attrValue in AttributeValues
-            join attrSet in AttributeSets on attrValue.AttributeSetId equals attrSet.Id
-            where attributeIds.Contains(attrValue.AttributeId)
-            select attrSet;
+                    join attrSet in AttributeSets on attrValue.AttributeSetId equals attrSet.Id
+                    where attributeIds.Contains(attrValue.AttributeId)
+                    select attrSet;
 
         return await query.Distinct().ToListAsync();
     }
@@ -172,7 +172,7 @@ public partial class AttributeDatabaseContext : DbContext
                 return preview;
             }
         }
-        
+
         preview.IsValid = true;
 
         return preview;
@@ -192,7 +192,7 @@ public partial class AttributeDatabaseContext : DbContext
                 a => a.Id,
                 a => a.Id.Replace(preview.OldCategory, preview.NewCategory)
             );
-            
+
             // In case of a single ID change, the replace logic won't work, so we use the preview properties
             if (preview.OldCategory == preview.NewCategory && preview.OldId != preview.NewId)
             {
@@ -221,7 +221,7 @@ public partial class AttributeDatabaseContext : DbContext
                     UPDATE AttributeValues 
                     SET AttributeType = {newId} 
                     WHERE AttributeType = {oldId};");
-                
+
                 // Also update the denormalized AttributeCategory
                 await Database.ExecuteSqlInterpolatedAsync(@$"
                     UPDATE AttributeValues
@@ -264,13 +264,13 @@ public partial class AttributeDatabaseContext : DbContext
                 var valuesToDelete = await AttributeValues
                     .Where(v => attributeIds.Contains(v.AttributeId))
                     .ToListAsync();
-                
+
                 // Remove children first
                 if (valuesToDelete.Any())
                 {
                     AttributeValues.RemoveRange(valuesToDelete);
                 }
-                
+
                 // Then remove parents
                 Attributes.RemoveRange(attributesToDelete);
 
@@ -291,7 +291,7 @@ public partial class AttributeDatabaseContext : DbContext
         await using var transaction = await Database.BeginTransactionAsync();
         try
         {
-        // Step 1: Delete all referencing AttributeValues
+            // Step 1: Delete all referencing AttributeValues
             // Use the correct column name 'AttributeType' in raw SQL
             await Database.ExecuteSqlInterpolatedAsync(@$"
                 DELETE FROM AttributeValues 

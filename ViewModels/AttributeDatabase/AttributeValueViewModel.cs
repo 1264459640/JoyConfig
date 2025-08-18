@@ -8,13 +8,13 @@ namespace JoyConfig.ViewModels.AttributeDatabase;
 public partial class AttributeValueViewModel : ObservableObject
 {
     public LocalizationManager LocalizationManager { get; }
-    
+
     [ObservableProperty]
     private AttributeValue _attributeValue;
-    
+
     [ObservableProperty]
     private string _attributeName = string.Empty;
-    
+
     [ObservableProperty]
     private string _attributeCategory = string.Empty;
 

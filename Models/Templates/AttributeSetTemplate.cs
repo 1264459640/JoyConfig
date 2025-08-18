@@ -14,43 +14,43 @@ public class AttributeSetTemplate
     /// </summary>
     [YamlMember(Alias = "id")]
     public string Id { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 模板名称
     /// </summary>
     [YamlMember(Alias = "name")]
     public string Name { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 模板描述
     /// </summary>
     [YamlMember(Alias = "description")]
     public string Description { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 创建时间
     /// </summary>
     [YamlMember(Alias = "created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-    
+
     /// <summary>
     /// 最后修改时间
     /// </summary>
     [YamlMember(Alias = "updated_at")]
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
-    
+
     /// <summary>
     /// 模板版本
     /// </summary>
     [YamlMember(Alias = "version")]
     public string Version { get; set; } = "1.0.0";
-    
+
     /// <summary>
     /// 模板标签
     /// </summary>
     [YamlMember(Alias = "tags")]
     public List<string> Tags { get; set; } = new();
-    
+
     /// <summary>
     /// 属性值列表
     /// </summary>
@@ -68,31 +68,31 @@ public class AttributeValueTemplate
     /// </summary>
     [YamlMember(Alias = "id")]
     public string Id { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 属性分类
     /// </summary>
     [YamlMember(Alias = "category")]
     public string Category { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// 基础值
     /// </summary>
     [YamlMember(Alias = "base_value")]
     public double BaseValue { get; set; }
-    
+
     /// <summary>
     /// 最小值
     /// </summary>
     [YamlMember(Alias = "min_value")]
     public double MinValue { get; set; }
-    
+
     /// <summary>
     /// 最大值
     /// </summary>
     [YamlMember(Alias = "max_value")]
     public double MaxValue { get; set; }
-    
+
     /// <summary>
     /// 注释
     /// </summary>

@@ -38,9 +38,9 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
         _dialogService = dialogService;
         _dbContextFactory = dbContextFactory;
         _viewModelFactory = viewModelFactory;
-        
+
         Title = "游戏效果数据库";
-        
+
         _ = LoadDataAsync();
     }
 
@@ -49,10 +49,10 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
 
     [ObservableProperty]
     private AttributeEffect? _selectedAttributeEffect;
-    
+
     [ObservableProperty]
     private ObservableCollection<AttributeEffect> _selectedAttributeEffects = new();
-    
+
     [ObservableProperty]
     private bool _isMultiSelectMode;
 
@@ -61,7 +61,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
 
     [ObservableProperty]
     private bool _isLoading;
-    
+
     [ObservableProperty]
     private string _searchText = string.Empty;
 
@@ -121,7 +121,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             SelectedAttributeEffects.Clear();
         }
     }
-    
+
     /// <summary>
     /// 选择/取消选择效果
     /// </summary>
@@ -129,7 +129,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
     public void ToggleEffectSelection(AttributeEffect effect)
     {
         if (!IsMultiSelectMode) return;
-        
+
         if (SelectedAttributeEffects.Contains(effect))
         {
             SelectedAttributeEffects.Remove(effect);
@@ -139,7 +139,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             SelectedAttributeEffects.Add(effect);
         }
     }
-    
+
     /// <summary>
     /// 全选/取消全选
     /// </summary>
@@ -147,7 +147,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
     public void ToggleSelectAll()
     {
         if (!IsMultiSelectMode) return;
-        
+
         if (SelectedAttributeEffects.Count == FilteredAttributeEffects.Count)
         {
             // 全部已选中，取消全选
@@ -163,7 +163,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             }
         }
     }
-    
+
     /// <summary>
     /// 批量删除选中的效果
     /// </summary>
@@ -175,35 +175,35 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             await _dialogService.ShowWarningAsync("提示", "请先选择要删除的效果。");
             return;
         }
-        
+
         var effectCount = SelectedAttributeEffects.Count;
         var effectNames = string.Join(", ", SelectedAttributeEffects.Take(3).Select(e => e.Name));
         if (effectCount > 3)
         {
             effectNames += $" 等 {effectCount} 个效果";
         }
-        
+
         var confirmed = await _dialogService.ShowConfirmationAsync(
-            "确认批量删除", 
+            "确认批量删除",
             $"确定要删除以下效果吗？\n\n{effectNames}\n\n此操作将同时删除这些效果的所有关联修改器，且不可撤销。");
-            
+
         if (!confirmed) return;
-        
+
         try
         {
             IsLoading = true;
             _mainViewModel.UpdateStatus($"正在删除 {effectCount} 个游戏效果...", true);
-            
+
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-            
+
             var effectIds = SelectedAttributeEffects.Select(e => e.Id).ToList();
             var effectsToDelete = await context.AttributeEffects
                 .Where(e => effectIds.Contains(e.Id))
                 .ToListAsync();
-            
+
             context.AttributeEffects.RemoveRange(effectsToDelete);
             await context.SaveChangesAsync();
-            
+
             // 更新UI
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
@@ -214,7 +214,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
                 SelectedAttributeEffects.Clear();
                 ApplyFilters();
             });
-            
+
             _mainViewModel.UpdateStatus($"已成功删除 {effectCount} 个游戏效果");
             await _dialogService.ShowInfoAsync("删除成功", $"已成功删除 {effectCount} 个游戏效果及其关联的修改器。");
         }
@@ -229,7 +229,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             IsLoading = false;
         }
     }
-    
+
     /// <summary>
     /// 批量修改效果的公共字段
     /// </summary>
@@ -241,55 +241,55 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             await _dialogService.ShowWarningAsync("提示", "请先选择要编辑的效果。");
             return;
         }
-        
+
         // 显示批量编辑对话框
         var sourceType = await _dialogService.ShowInputAsync(
-            "批量编辑", 
-            "请输入新的来源类型（留空表示不修改）:", 
+            "批量编辑",
+            "请输入新的来源类型（留空表示不修改）:",
             "");
-            
+
         var tags = await _dialogService.ShowInputAsync(
-            "批量编辑", 
-            "请输入新的标签（留空表示不修改）:", 
+            "批量编辑",
+            "请输入新的标签（留空表示不修改）:",
             "");
-        
+
         if (string.IsNullOrWhiteSpace(sourceType) && string.IsNullOrWhiteSpace(tags))
         {
             await _dialogService.ShowInfoAsync("提示", "没有要修改的字段。");
             return;
         }
-        
+
         try
         {
             IsLoading = true;
             var effectCount = SelectedAttributeEffects.Count;
             _mainViewModel.UpdateStatus($"正在批量编辑 {effectCount} 个游戏效果...", true);
-            
+
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-            
+
             var effectIds = SelectedAttributeEffects.Select(e => e.Id).ToList();
             var effectsToUpdate = await context.AttributeEffects
                 .Where(e => effectIds.Contains(e.Id))
                 .ToListAsync();
-            
+
             foreach (var effect in effectsToUpdate)
             {
                 if (!string.IsNullOrWhiteSpace(sourceType))
                 {
                     effect.SourceType = sourceType;
                 }
-                
+
                 if (!string.IsNullOrWhiteSpace(tags))
                 {
                     effect.Tags = tags;
                 }
             }
-            
+
             await context.SaveChangesAsync();
-            
+
             // 重新加载数据
             await LoadDataAsync();
-            
+
             _mainViewModel.UpdateStatus($"已成功批量编辑 {effectCount} 个游戏效果");
             await _dialogService.ShowInfoAsync("编辑成功", $"已成功批量编辑 {effectCount} 个游戏效果。");
         }
@@ -304,7 +304,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
             IsLoading = false;
         }
     }
-    
+
     /// <summary>
     /// 应用筛选条件
     /// </summary>
@@ -315,7 +315,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
         // 搜索文本筛选
         if (!string.IsNullOrWhiteSpace(SearchText))
         {
-            filtered = filtered.Where(e => 
+            filtered = filtered.Where(e =>
                 e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                 e.Id.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                 (e.Description?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false));
@@ -460,7 +460,7 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
         try
         {
             var modifierCount = effect.AttributeModifiers?.Count ?? 0;
-            var message = modifierCount > 0 
+            var message = modifierCount > 0
                 ? $"确定要删除效果 '{effect.Name}' 吗？\n\n此操作将同时删除 {modifierCount} 个关联的属性修改器，且无法撤销。"
                 : $"确定要删除效果 '{effect.Name}' 吗？\n\n此操作无法撤销。";
 

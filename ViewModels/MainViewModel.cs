@@ -27,55 +27,55 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private SettingsViewModel? _settingsViewModel;
-    
+
     [ObservableProperty]
     private TemplateWorkspaceViewModel? _templateWorkspaceViewModel;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMainContentVisible))]
     private bool _isSettingsVisible;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMainContentVisible))]
     private bool _isTemplateManagerVisible;
 
     [ObservableProperty]
     private string? _selectedWorkspace = "AttributeDatabase";
-    
+
     [ObservableProperty]
     private string _statusMessage = "就绪";
-    
+
     [ObservableProperty]
     private string _progressText = "";
-    
+
     [ObservableProperty]
     private bool _isLoading;
-    
+
     // IDE Layout Properties
     [ObservableProperty]
     private bool _isPrimarySidebarVisible = true;
-    
+
     [ObservableProperty]
     private bool _isSecondarySidebarVisible = false;
-    
+
     [ObservableProperty]
     private bool _isPanelVisible = false;
-    
+
     [ObservableProperty]
     private GridLength _primarySidebarWidth = new GridLength(250);
-    
+
     [ObservableProperty]
     private GridLength _secondarySidebarWidth = new GridLength(0); // 启动时隐藏副侧栏
-    
+
     [ObservableProperty]
     private GridLength _panelHeight = new GridLength(0); // 启动时隐藏底部面板
-    
+
     [ObservableProperty]
     private object? _secondaryContent;
-    
+
     [ObservableProperty]
     private object? _panelContent;
-    
+
     public bool IsMainContentVisible => !IsSettingsVisible && !IsTemplateManagerVisible;
 
     public LocalizationManager LocalizationManager { get; }
@@ -86,17 +86,17 @@ public partial class MainViewModel : ObservableObject
         _viewModelFactory = viewModelFactory;
         _updateService = updateService;
         LocalizationManager = LocalizationManager.Instance;
-        
+
         // Set the default workspace
         CurrentWorkspace = _viewModelFactory.CreateAttributeDatabaseViewModel(this);
-        
+
         // Set the default editor
         CurrentEditor = new WelcomeViewModel();
-        
+
         // 启动时检查更新
         _ = Task.Run(CheckForUpdatesAsync);
     }
-    
+
     /// <summary>
     /// 更新状态栏信息
     /// </summary>
@@ -106,7 +106,7 @@ public partial class MainViewModel : ObservableObject
         IsLoading = isLoading;
         ProgressText = progressText;
     }
-    
+
     /// <summary>
     /// 设置加载状态
     /// </summary>
@@ -171,7 +171,7 @@ public partial class MainViewModel : ObservableObject
     {
         OpenAttributeDatabase();
     }
-    
+
     // IDE Layout Commands
     [RelayCommand]
     private void TogglePrimarysidebar()
@@ -186,7 +186,7 @@ public partial class MainViewModel : ObservableObject
             PrimarySidebarWidth = new GridLength(250);
         }
     }
-    
+
     [RelayCommand]
     private void ToggleSecondarySidebar()
     {
@@ -200,7 +200,7 @@ public partial class MainViewModel : ObservableObject
             SecondarySidebarWidth = new GridLength(250);
         }
     }
-    
+
     [RelayCommand]
     private void TogglePanel()
     {
@@ -214,7 +214,7 @@ public partial class MainViewModel : ObservableObject
             PanelHeight = new GridLength(200);
         }
     }
-    
+
     /// <summary>
     /// 检查应用程序更新
     /// </summary>
@@ -223,9 +223,9 @@ public partial class MainViewModel : ObservableObject
         try
         {
             UpdateStatus("检查更新中...", true);
-            
+
             var hasUpdate = await _updateService.IsUpdateAvailableAsync();
-            
+
             if (hasUpdate)
             {
                 UpdateStatus("发现新版本，可在设置中更新");
@@ -240,7 +240,7 @@ public partial class MainViewModel : ObservableObject
             UpdateStatus($"检查更新失败: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// 手动检查更新命令
     /// </summary>
@@ -249,7 +249,7 @@ public partial class MainViewModel : ObservableObject
     {
         await CheckForUpdatesAsync();
     }
-    
+
     /// <summary>
     /// 安装更新并重启命令
     /// </summary>

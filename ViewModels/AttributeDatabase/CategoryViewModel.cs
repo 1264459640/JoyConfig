@@ -35,10 +35,10 @@ public partial class CategoryViewModel : EditorViewModelBase
 
         // In a real app, we would also check for duplicate names here.
         // This requires access to the list of categories in the parent view model.
-        
+
         // For now, we just create it.
         _parentViewModel.AddNewCategory(CategoryName);
-        
+
         // TODO: Close this editor tab.
     }
 }

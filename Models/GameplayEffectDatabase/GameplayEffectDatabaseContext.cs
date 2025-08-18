@@ -18,7 +18,7 @@ public partial class GameplayEffectDatabaseContext : DbContext
     public virtual DbSet<AttributeEffect> AttributeEffects { get; set; }
 
     public virtual DbSet<AttributeModifier> AttributeModifiers { get; set; }
-    
+
     public virtual DbSet<GameplayEffectTemplate> GameplayEffectTemplates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

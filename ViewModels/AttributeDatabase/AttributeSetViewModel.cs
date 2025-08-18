@@ -35,8 +35,8 @@ public partial class AttributeSetViewModel : EditorViewModelBase
     private string? _errorMessage;
 
     public AttributeSetViewModel(
-        string attributeSetId, 
-        AttributeDatabaseViewModel parentViewModel, 
+        string attributeSetId,
+        AttributeDatabaseViewModel parentViewModel,
         IDialogService dialogService,
         IAttributeSetRepository attributeSetRepository,
         IViewModelFactory viewModelFactory)
@@ -108,7 +108,7 @@ public partial class AttributeSetViewModel : EditorViewModelBase
 
             // 获取当前属性集的属性值数量用于确认对话框
             var valueCount = AttributeValues.Count;
-            
+
             var confirmVm = _viewModelFactory.CreateConfirmationDialogViewModel(
                 "确认修改属性集ID",
                 $"修改属性集ID从 '{AttributeSet.Id}' 到 '{newId}' 将会更新 {valueCount} 个属性值的关联。此操作不可撤销。",
@@ -119,12 +119,12 @@ public partial class AttributeSetViewModel : EditorViewModelBase
             if (confirmed)
             {
                 _parentViewModel.MainViewModel.SetLoading(true, "正在修改ID...");
-                
+
                 try
                 {
                     // 执行ID更新
                     await _attributeSetRepository.UpdateAttributeSetIdAsync(_originalId, newId);
-                    
+
                     // 重新加载AttributeSet以确保UI更新
                     var updatedAttributeSet = await _attributeSetRepository.GetAttributeSetByIdAsync(newId);
                     if (updatedAttributeSet != null)
@@ -133,12 +133,12 @@ public partial class AttributeSetViewModel : EditorViewModelBase
                         _originalId = newId;
                         Title = $"Set: {AttributeSet.Name}";
                     }
-                    
+
                     await _dialogService.ShowMessageBoxAsync("Success", "属性集ID修改成功。");
-                    
+
                     // 刷新父视图
                     await _parentViewModel.RefreshAttributeSetsAsync();
-                    
+
                     _parentViewModel.MainViewModel.UpdateStatus("ID修改成功");
                 }
                 catch (Exception idEx)
@@ -162,14 +162,14 @@ public partial class AttributeSetViewModel : EditorViewModelBase
     private async Task SaveAsTemplate()
     {
         Console.WriteLine("[SaveAsTemplate] 开始执行另存为模板操作");
-        
+
         if (AttributeSet == null)
         {
             Console.WriteLine("[SaveAsTemplate] 错误：AttributeSet为null");
             await _dialogService.ShowMessageBoxAsync("Error", "AttributeSet is not loaded.");
             return;
         }
-        
+
         Console.WriteLine($"[SaveAsTemplate] 当前属性集：{AttributeSet.Id} - {AttributeSet.Name}");
         Console.WriteLine($"[SaveAsTemplate] 属性值数量：{AttributeValues.Count}");
 
@@ -191,25 +191,25 @@ public partial class AttributeSetViewModel : EditorViewModelBase
         {
             Console.WriteLine("[SaveAsTemplate] 开始创建模板流程");
             _parentViewModel.MainViewModel.SetLoading(true, "正在创建模板...");
-            
+
             // 创建TemplateService实例
             var templateService = new Services.TemplateService(_attributeSetRepository);
-            
+
             // 使用TemplateService创建模板
             var template = await templateService.CreateTemplateFromAttributeSetAsync(
-                AttributeSet.Id, 
-                templateName, 
+                AttributeSet.Id,
+                templateName,
                 $"基于属性集 '{AttributeSet.Name}' 创建的模板");
-            
+
             Console.WriteLine($"[SaveAsTemplate] 模板创建成功：{template.Id}");
-            
+
             await _dialogService.ShowMessageBoxAsync("Success", $"模板 '{templateName}' 创建成功！\n\n模板文件已保存到：{templateService.GetTemplateFilePath(template.Id)}");
-            
+
             // 刷新父视图以显示新模板
             Console.WriteLine("[SaveAsTemplate] 开始刷新父视图");
             await _parentViewModel.RefreshAttributeSetsAsync();
             Console.WriteLine("[SaveAsTemplate] 父视图刷新完成");
-            
+
             _parentViewModel.MainViewModel.UpdateStatus("模板创建成功");
             Console.WriteLine("[SaveAsTemplate] 模板创建流程完全成功");
         }
@@ -218,13 +218,13 @@ public partial class AttributeSetViewModel : EditorViewModelBase
             Console.WriteLine($"[SaveAsTemplate] 创建模板时发生异常：{ex.Message}");
             Console.WriteLine($"[SaveAsTemplate] 异常类型：{ex.GetType().Name}");
             Console.WriteLine($"[SaveAsTemplate] 异常堆栈：{ex.StackTrace}");
-            
+
             if (ex.InnerException != null)
             {
                 Console.WriteLine($"[SaveAsTemplate] 内部异常：{ex.InnerException.Message}");
                 Console.WriteLine($"[SaveAsTemplate] 内部异常堆栈：{ex.InnerException.StackTrace}");
             }
-            
+
             _parentViewModel.MainViewModel.UpdateStatus("模板创建失败");
             await _dialogService.ShowMessageBoxAsync("Error", $"创建模板时发生错误: {ex.Message}\n\n详细信息请查看控制台日志。");
         }
@@ -272,15 +272,15 @@ public partial class AttributeSetViewModel : EditorViewModelBase
         if (selectedAttribute != null)
         {
             try
-             {
-                 if (excludedIds.Contains(selectedAttribute.Id))
-                 {
-                     await _dialogService.ShowMessageBoxAsync("Error", "This attribute is already in the set.");
-                     return;
-                 }
+            {
+                if (excludedIds.Contains(selectedAttribute.Id))
+                {
+                    await _dialogService.ShowMessageBoxAsync("Error", "This attribute is already in the set.");
+                    return;
+                }
 
-                 await _attributeSetRepository.AddAttributeValueAsync(_attributeSetId, selectedAttribute.Id);
-                
+                await _attributeSetRepository.AddAttributeValueAsync(_attributeSetId, selectedAttribute.Id);
+
                 // Refresh the list
                 await InitializeAsync();
             }
@@ -301,10 +301,10 @@ public partial class AttributeSetViewModel : EditorViewModelBase
     private void EditAttributeValue(AttributeValueViewModel? attributeValueVm)
     {
         if (attributeValueVm == null) return;
-        
+
         // 设置选中的属性值，这样用户可以在详细视图中编辑
         SelectedAttributeValue = attributeValueVm;
-        
+
         // 可以在这里添加打开详细编辑对话框的逻辑
         // 或者在右侧面板显示编辑表单
     }

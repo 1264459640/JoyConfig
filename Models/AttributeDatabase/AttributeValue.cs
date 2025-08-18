@@ -14,7 +14,7 @@ public partial class AttributeValue
     // This property maps to the 'AttributeType' column in the database.
     [Column("AttributeType")]
     public string AttributeId { get; set; } = null!;
-    
+
     // This property maps to the 'AttributeCategory' column in the database.
     [Column("AttributeCategory")]
     public string AttributeCategory { get; set; } = null!;
@@ -24,7 +24,7 @@ public partial class AttributeValue
     public double MinValue { get; set; }
 
     public double MaxValue { get; set; }
-    
+
     // This property maps to the 'AttributeTypeComment' column in the database.
     [Column("AttributeTypeComment")]
     public string? Comment { get; set; }

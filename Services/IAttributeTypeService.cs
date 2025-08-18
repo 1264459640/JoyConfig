@@ -16,34 +16,34 @@ public interface IAttributeTypeService : INotifyPropertyChanged
     /// 所有可用的属性类型（只读集合）
     /// </summary>
     ReadOnlyObservableCollection<string> AvailableAttributeTypes { get; }
-    
+
     /// <summary>
     /// 是否已初始化
     /// </summary>
     bool IsInitialized { get; }
-    
+
     /// <summary>
     /// 是否正在加载
     /// </summary>
     bool IsLoading { get; }
-    
+
     /// <summary>
     /// 初始化属性类型缓存
     /// </summary>
     Task InitializeAsync();
-    
+
     /// <summary>
     /// 刷新属性类型缓存
     /// </summary>
     Task RefreshAsync();
-    
+
     /// <summary>
     /// 检查属性类型是否存在
     /// </summary>
     /// <param name="attributeType">属性类型ID</param>
     /// <returns>是否存在</returns>
     bool IsValidAttributeType(string attributeType);
-    
+
     /// <summary>
     /// 获取属性类型的详细信息
     /// </summary>

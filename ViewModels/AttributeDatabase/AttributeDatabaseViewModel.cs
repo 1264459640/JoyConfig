@@ -25,7 +25,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
     private readonly IViewModelFactory _viewModelFactory;
 
     public AttributeDatabaseViewModel(
-        MainViewModel mainViewModel, 
+        MainViewModel mainViewModel,
         IDialogService dialogService,
         IAttributeRepository attributeRepository,
         IAttributeSetRepository attributeSetRepository,
@@ -36,7 +36,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         _attributeRepository = attributeRepository;
         _attributeSetRepository = attributeSetRepository;
         _viewModelFactory = viewModelFactory;
-        
+
         _ = LoadDataAsync();
     }
     [ObservableProperty]
@@ -96,16 +96,16 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         {
             var sets = await _attributeSetRepository.GetAllAttributeSetsAsync();
             var attributes = await _attributeRepository.GetAllAttributesAsync();
-            
+
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 AttributeSets = new ObservableCollection<AttributeSet>(sets);
                 var grouped = attributes
                     .GroupBy(a => a.Category)
-                    .Select(g => new AttributeCategoryViewModel 
-                    { 
-                        CategoryName = g.Key, 
-                        Attributes = new ObservableCollection<Attribute>(g) 
+                    .Select(g => new AttributeCategoryViewModel
+                    {
+                        CategoryName = g.Key,
+                        Attributes = new ObservableCollection<Attribute>(g)
                     });
                 AttributeCategories = new ObservableCollection<AttributeCategoryViewModel>(grouped);
                 ErrorMessage = null;
@@ -131,7 +131,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             // In a real app, the CategoryViewModel would handle this and show an error.
             return;
         }
-        
+
         var newCategory = new AttributeCategoryViewModel
         {
             CategoryName = name,
@@ -147,11 +147,11 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
 
         var newAttribute = new Attribute
         {
-            Id = "New.Attribute.Id", 
+            Id = "New.Attribute.Id",
             Category = category,
             Description = "A new attribute definition."
         };
-        
+
         MainViewModel.CurrentEditor = _viewModelFactory.CreateAttributeViewModel(newAttribute, this);
     }
 
@@ -161,87 +161,87 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         try
         {
             Console.WriteLine("[CreateFromTemplate] 开始从模板创建属性集");
-            
+
             // 使用新的TemplateService获取YAML模板
             var templateService = new Services.TemplateService(_attributeSetRepository);
             var templates = await templateService.GetAllTemplatesAsync();
-            
+
             Console.WriteLine($"[CreateFromTemplate] 找到 {templates.Count} 个YAML模板");
-            
+
             if (!templates.Any())
             {
                 await _dialogService.ShowMessageBoxAsync("提示", "当前没有可用的模板。请先在模板管理中创建一些模板。");
                 return;
             }
-            
+
             // 创建模板选择对话框
             var templateOptions = templates.Select(t => $"{t.Name} (v{t.Version})").ToList();
             var selectionMessage = "可用模板：\n" + string.Join("\n", templateOptions.Select((opt, i) => $"{i + 1}. {opt}"));
-            
+
             var inputVm = _viewModelFactory.CreateInputDialogViewModel(
                 "选择模板",
                 $"{selectionMessage}\n\n请输入模板编号（1-{templates.Count}）：",
                 "1");
-            
+
             var selection = await _dialogService.ShowInputDialogAsync(inputVm);
             Console.WriteLine($"[CreateFromTemplate] 用户选择：'{selection}'");
-            
-            if (string.IsNullOrWhiteSpace(selection) || !int.TryParse(selection, out var index) || 
+
+            if (string.IsNullOrWhiteSpace(selection) || !int.TryParse(selection, out var index) ||
                 index < 1 || index > templates.Count)
             {
                 Console.WriteLine("[CreateFromTemplate] 用户取消或选择无效");
                 return; // 取消或无效选择
             }
-            
+
             var selectedTemplate = templates[index - 1];
             Console.WriteLine($"[CreateFromTemplate] 选中模板：{selectedTemplate.Id} - {selectedTemplate.Name}");
-            
+
             // 输入新属性集的名称
             var nameInputVm = _viewModelFactory.CreateInputDialogViewModel(
                 "创建属性集",
                 $"基于模板 '{selectedTemplate.Name}' 创建新属性集，请输入名称：",
                 selectedTemplate.Name.Replace("Template", "").Replace("_", "").Trim());
-            
+
             var newName = await _dialogService.ShowInputDialogAsync(nameInputVm);
             Console.WriteLine($"[CreateFromTemplate] 新属性集名称：'{newName}'");
-            
+
             if (string.IsNullOrWhiteSpace(newName))
             {
                 Console.WriteLine("[CreateFromTemplate] 用户取消操作");
                 return; // 取消操作
             }
-            
+
             // 输入新属性集的ID
             var idInputVm = _viewModelFactory.CreateInputDialogViewModel(
                 "创建属性集",
                 "请输入新属性集的ID：",
                 newName.Replace(" ", "_").ToLower());
-            
+
             var newId = await _dialogService.ShowInputDialogAsync(idInputVm);
             Console.WriteLine($"[CreateFromTemplate] 新属性集ID：'{newId}'");
-            
+
             if (string.IsNullOrWhiteSpace(newId))
             {
                 Console.WriteLine("[CreateFromTemplate] 用户取消操作");
                 return; // 取消操作
             }
-            
+
             // 使用TemplateService创建属性集
             Console.WriteLine("[CreateFromTemplate] 开始使用模板服务创建属性集");
             await templateService.CreateAttributeSetFromTemplateAsync(selectedTemplate.Id, newId, newName);
-            
+
             await _dialogService.ShowMessageBoxAsync("成功", $"属性集 '{newName}' 创建成功！");
             Console.WriteLine($"[CreateFromTemplate] 属性集创建成功：{newId}");
-            
+
             // 刷新属性集列表
             Console.WriteLine("[CreateFromTemplate] 刷新属性集列表");
             await RefreshAttributeSetsAsync();
-            
+
             // 打开新创建的属性集编辑器
             Console.WriteLine("[CreateFromTemplate] 打开新创建的属性集编辑器");
             var vm = await _viewModelFactory.CreateAttributeSetViewModelAsync(newId, this);
             MainViewModel.CurrentEditor = vm;
-            
+
             Console.WriteLine("[CreateFromTemplate] 从模板创建属性集完成");
         }
         catch (Exception ex)
@@ -281,9 +281,9 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             Name = "New Attribute Set", // Default name, can be changed in the editor
             Description = "A new attribute set created from the editor."
         };
-        
+
         await _attributeSetRepository.CreateAttributeSetAsync(newSet);
-        
+
         // Refresh the list in the UI
         AttributeSets.Add(newSet);
 
@@ -314,7 +314,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
                 {
                     MainViewModel.CurrentEditor = null;
                 }
-                
+
                 await RefreshAttributeSetsAsync();
                 ErrorMessage = $"Attribute set '{attributeSet.Name}' deleted successfully.";
             }
@@ -349,7 +349,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             Console.WriteLine("[ViewModel] Rename cancelled or name unchanged.");
             return; // Cancelled or no change
         }
-        
+
         await Dispatcher.UIThread.InvokeAsync(() => ErrorMessage = "New name received. Previewing changes...");
 
         // We need a dummy old/new ID to pass to the preview service. 
@@ -366,7 +366,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             ErrorMessage = preview.ErrorMessage;
             return;
         }
-        
+
         ErrorMessage = "Preview successful. Awaiting confirmation...";
 
         if (!preview.AffectedAttributes.Any())
@@ -388,11 +388,11 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         if (confirmed)
         {
             await Dispatcher.UIThread.InvokeAsync(() => ErrorMessage = "Confirmation received. Executing changes...");
-            
+
             Console.WriteLine("[ViewModel] Calling ExecuteAttributeChangeAsync...");
             await _attributeRepository.ExecuteAttributeChangeAsync(preview);
             Console.WriteLine("[ViewModel] ExecuteAttributeChangeAsync finished.");
-            
+
             Console.WriteLine("[ViewModel] Reloading data...");
             await LoadDataAsync(); // Reload the entire tree
             Console.WriteLine("[ViewModel] Data reloaded.");
@@ -434,11 +434,11 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         await Task.Delay(100); // Give UI time to render the new item
         SelectedAttribute = attribute;
     }
-    
+
     public async Task ReloadAndSelectAttributeAsync(string attributeId)
     {
         await LoadDataAsync();
-        
+
         // Find the attribute in the reloaded data
         var category = AttributeCategories.FirstOrDefault(c => attributeId.StartsWith(c.CategoryName + "."));
         if (category != null)
@@ -447,14 +447,14 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             if (attribute != null)
             {
                 _isProgrammaticSelection = true;
-                
+
                 // Open a new editor for this attribute
                 MainViewModel.CurrentEditor = _viewModelFactory.CreateAttributeViewModel(attribute, this);
-                
+
                 // Also update the selection in the list
                 SelectedAttribute = attribute;
                 category.IsExpanded = true;
-                
+
                 _isProgrammaticSelection = false;
             }
         }
@@ -488,12 +488,12 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
         if (categoryVm?.CategoryName is null) return;
 
         ErrorMessage = null;
-        
+
         // Safety Check
         var attributeIds = categoryVm.Attributes.Select(a => a.Id).ToList();
         var referencingSets = await _attributeSetRepository.GetReferencingAttributeSetsAsync(attributeIds);
         var affectedValuesCount = 0;
-        
+
         if (attributeIds.Any())
         {
             affectedValuesCount = await _attributeRepository.GetAttributeValueCountAsync(attributeIds);
@@ -505,7 +505,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
             $"This will permanently delete {categoryVm.Attributes.Count} attribute(s) and {affectedValuesCount} value(s) across {referencingSets.Count} attribute set(s). " +
             "This action cannot be undone.",
             referencingSets.Select(s => $"Set: {s.Id} ({s.Name})").ToList());
-        
+
         var confirmed = await _dialogService.ShowConfirmationDialogAsync(dialogViewModel);
 
         if (confirmed)

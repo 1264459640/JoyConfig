@@ -61,7 +61,7 @@ public static class OperationTypes
 
         lock (_lock)
         {
-            if (!_customTypes.Contains(operationType) && 
+            if (!_customTypes.Contains(operationType) &&
                 !new[] { Add, Subtract, Multiply, Override, Percentage }.Contains(operationType))
             {
                 _customTypes.Add(operationType);

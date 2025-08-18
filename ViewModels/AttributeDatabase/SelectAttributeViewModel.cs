@@ -13,7 +13,7 @@ public partial class SelectAttributeViewModel : ObservableObject
 {
     private readonly IAttributeRepository _attributeRepository;
     public LocalizationManager LocalizationManager { get; }
-    
+
     [ObservableProperty]
     private ObservableCollection<Attribute> _availableAttributes = new();
 

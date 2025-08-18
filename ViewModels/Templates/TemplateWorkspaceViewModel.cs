@@ -30,7 +30,7 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
         _dialogService = dialogService;
         _templateService = templateService;
         _viewModelFactory = viewModelFactory;
-        
+
         Title = "模板管理";
         _ = LoadDataAsync();
     }
@@ -62,13 +62,13 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
             try
             {
                 Console.WriteLine($"[TemplateWorkspaceViewModel] 打开模板编辑器：{template.Id} - {template.Name}");
-                
+
                 // 创建模板编辑器ViewModel
                 var templateEditorVm = _viewModelFactory.CreateTemplateEditorViewModel(template.Id, MainViewModel);
-                
+
                 // 在编辑器中打开模板
                 MainViewModel.CurrentEditor = templateEditorVm;
-                
+
                 Console.WriteLine($"[TemplateWorkspaceViewModel] 模板编辑器已打开：{template.Id}");
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
         {
             Console.WriteLine("[TemplateWorkspaceViewModel] 开始加载模板数据");
             var templates = await _templateService.GetAllTemplatesAsync();
-            
+
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 Templates.Clear();
@@ -110,7 +110,7 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
     private async Task CreateTemplate()
     {
         Console.WriteLine("[CreateTemplate] 开始执行创建模板操作");
-        
+
         try
         {
             // 输入模板名称
@@ -118,26 +118,26 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
                 "创建模板",
                 "请输入模板名称：",
                 "新模板");
-            
+
             var templateName = await _dialogService.ShowInputDialogAsync(nameInputVm);
             Console.WriteLine($"[CreateTemplate] 用户输入的模板名称：'{templateName}'");
-            
+
             if (string.IsNullOrWhiteSpace(templateName))
             {
                 return; // 取消操作
             }
-            
+
             // 输入模板描述（可选）
             var descInputVm = _viewModelFactory.CreateInputDialogViewModel(
                 "模板描述",
                 "请输入模板描述（可选）：",
                 "手动创建的模板");
-            
+
             var templateDescription = await _dialogService.ShowInputDialogAsync(descInputVm);
-            
+
             Console.WriteLine("[CreateTemplate] 开始创建空模板");
             MainViewModel.SetLoading(true, "正在创建模板...");
-            
+
             // 创建空模板
             var template = new AttributeSetTemplate
             {
@@ -150,12 +150,12 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
                 Tags = new List<string> { "manual" },
                 Attributes = new List<AttributeValueTemplate>()
             };
-            
+
             await _templateService.CreateTemplateAsync(template);
             Console.WriteLine($"[CreateTemplate] 模板创建成功：{template.Id}");
-            
+
             await _dialogService.ShowMessageBoxAsync("成功", $"模板 '{templateName}' 创建成功！");
-            
+
             await LoadDataAsync();
             MainViewModel.UpdateStatus("模板创建成功");
         }
@@ -175,17 +175,17 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
     private async Task EditTemplate(AttributeSetTemplate? template)
     {
         if (template == null) return;
-        
+
         try
         {
             Console.WriteLine($"[EditTemplate] 开始编辑模板：{template.Id} - {template.Name}");
-            
+
             // 创建模板编辑器ViewModel
             var templateEditorVm = _viewModelFactory.CreateTemplateEditorViewModel(template.Id, MainViewModel);
-            
+
             // 在编辑器中打开模板
             MainViewModel.CurrentEditor = templateEditorVm;
-            
+
             Console.WriteLine($"[EditTemplate] 模板编辑器已打开：{template.Id}");
         }
         catch (Exception ex)
@@ -199,7 +199,7 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
     private async Task UseTemplate(AttributeSetTemplate? template)
     {
         if (template == null) return;
-        
+
         try
         {
             // 输入新属性集的名称
@@ -207,34 +207,34 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
                 "创建属性集",
                 $"基于模板 '{template.Name}' 创建新属性集，请输入名称：",
                 template.Name.Replace("Template", "").Replace("_", "").Trim());
-            
+
             var newName = await _dialogService.ShowInputDialogAsync(nameInputVm);
-            
+
             if (string.IsNullOrWhiteSpace(newName))
             {
                 return; // 取消操作
             }
-            
+
             // 输入新属性集的ID
             var idInputVm = _viewModelFactory.CreateInputDialogViewModel(
                 "属性集ID",
                 "请输入新属性集的ID：",
                 newName.ToLower().Replace(" ", "_"));
-            
+
             var newId = await _dialogService.ShowInputDialogAsync(idInputVm);
-            
+
             if (string.IsNullOrWhiteSpace(newId))
             {
                 return; // 取消操作
             }
-            
+
             MainViewModel.SetLoading(true, "正在从模板创建属性集...");
-            
+
             await _templateService.CreateAttributeSetFromTemplateAsync(template.Id, newId, newName);
-            
+
             await _dialogService.ShowMessageBoxAsync("成功", $"属性集 '{newName}' 创建成功！");
             MainViewModel.UpdateStatus("属性集创建成功");
-            
+
             // 切换到属性数据库视图
             MainViewModel.OpenAttributeDatabase();
         }
@@ -253,7 +253,7 @@ public partial class TemplateWorkspaceViewModel : EditorViewModelBase
     private async Task DeleteTemplate(AttributeSetTemplate? template)
     {
         if (template == null) return;
-        
+
         var confirmVm = _viewModelFactory.CreateConfirmationDialogViewModel(
             "确认删除模板",
             $"确定要删除模板 '{template.Name}' 吗？此操作不可撤销。",

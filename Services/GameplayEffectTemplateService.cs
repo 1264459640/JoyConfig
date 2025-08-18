@@ -15,7 +15,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
 {
     private readonly IDbContextFactory _dbContextFactory;
     private readonly JsonSerializerOptions _jsonOptions;
-    
+
     public GameplayEffectTemplateService(IDbContextFactory dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
@@ -25,7 +25,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             WriteIndented = true
         };
     }
-    
+
     /// <summary>
     /// 获取所有模板
     /// </summary>
@@ -37,7 +37,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             .ThenBy(t => t.Name)
             .ToListAsync();
     }
-    
+
     /// <summary>
     /// 根据ID获取模板
     /// </summary>
@@ -47,7 +47,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
         return await context.GameplayEffectTemplates
             .FirstOrDefaultAsync(t => t.Id == templateId);
     }
-    
+
     /// <summary>
     /// 根据分类获取模板
     /// </summary>
@@ -59,7 +59,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             .OrderBy(t => t.Name)
             .ToListAsync();
     }
-    
+
     /// <summary>
     /// 搜索模板
     /// </summary>
@@ -67,10 +67,10 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return await GetAllTemplatesAsync();
-            
+
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
         var term = searchTerm.ToLower();
-        
+
         return await context.GameplayEffectTemplates
             .Where(t => t.Name.ToLower().Contains(term) ||
                        (t.Description != null && t.Description.ToLower().Contains(term)) ||
@@ -80,7 +80,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             .ThenBy(t => t.Name)
             .ToListAsync();
     }
-    
+
     /// <summary>
     /// 创建新模板
     /// </summary>
@@ -93,27 +93,27 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             request.Category,
             request.Author);
     }
-    
+
     /// <summary>
     /// 从现有效果创建模板
     /// </summary>
     public async Task<GameplayEffectTemplate> CreateTemplateFromEffectAsync(
-        string effectId, 
-        string templateName, 
+        string effectId,
+        string templateName,
         string? description = null,
         string category = "Default",
         string? author = null)
     {
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-        
+
         // 获取源效果和其修改器
         var sourceEffect = await context.AttributeEffects
             .Include(e => e.AttributeModifiers)
             .FirstOrDefaultAsync(e => e.Id == effectId);
-            
+
         if (sourceEffect == null)
             throw new ArgumentException($"效果 '{effectId}' 不存在", nameof(effectId));
-        
+
         // 创建模板数据
         var templateData = new GameplayEffectTemplateData
         {
@@ -144,11 +144,11 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
                 ExecutionOrder = m.ExecutionOrder
             }).ToList()
         };
-        
+
         // 序列化数据
         var effectJson = JsonSerializer.Serialize(templateData.Effect, _jsonOptions);
         var modifiersJson = JsonSerializer.Serialize(templateData.Modifiers, _jsonOptions);
-        
+
         // 创建模板
         var template = new GameplayEffectTemplate
         {
@@ -163,26 +163,26 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        
+
         context.GameplayEffectTemplates.Add(template);
         await context.SaveChangesAsync();
-        
+
         return template;
     }
-    
+
     /// <summary>
     /// 更新模板
     /// </summary>
     public async Task<GameplayEffectTemplate> UpdateTemplateAsync(GameplayEffectTemplate template)
     {
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-        
+
         var existingTemplate = await context.GameplayEffectTemplates
             .FirstOrDefaultAsync(t => t.Id == template.Id);
-            
+
         if (existingTemplate == null)
             throw new ArgumentException($"模板 '{template.Id}' 不存在", nameof(template));
-        
+
         // 更新字段
         existingTemplate.Name = template.Name;
         existingTemplate.Description = template.Description;
@@ -191,56 +191,56 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
         existingTemplate.Tags = template.Tags;
         existingTemplate.Version = template.Version;
         existingTemplate.UpdatedAt = DateTime.UtcNow;
-        
+
         await context.SaveChangesAsync();
         return existingTemplate;
     }
-    
+
     /// <summary>
     /// 删除模板
     /// </summary>
     public async Task<bool> DeleteTemplateAsync(string templateId)
     {
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-        
+
         var template = await context.GameplayEffectTemplates
             .FirstOrDefaultAsync(t => t.Id == templateId);
-            
+
         if (template == null)
             return false;
-        
+
         // 检查是否为内置模板
         if (template.IsBuiltIn)
             throw new InvalidOperationException("不能删除系统内置模板");
-        
+
         context.GameplayEffectTemplates.Remove(template);
         await context.SaveChangesAsync();
-        
+
         return true;
     }
-    
+
     /// <summary>
     /// 从模板创建效果
     /// </summary>
     public async Task<AttributeEffect> CreateEffectFromTemplateAsync(string templateId, string newEffectId, string newEffectName)
     {
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-        
+
         var template = await GetTemplateByIdAsync(templateId);
         if (template == null)
             throw new ArgumentException($"模板 '{templateId}' 不存在", nameof(templateId));
-        
+
         // 检查新效果ID是否已存在
         var existingEffect = await context.AttributeEffects
             .FirstOrDefaultAsync(e => e.Id == newEffectId);
         if (existingEffect != null)
             throw new ArgumentException($"效果ID '{newEffectId}' 已存在", nameof(newEffectId));
-        
+
         // 反序列化模板数据
         var templateData = await GetTemplateDataAsync(templateId);
         if (templateData == null)
             throw new InvalidOperationException($"无法解析模板 '{templateId}' 的数据");
-        
+
         // 创建新效果
         var newEffect = new AttributeEffect
         {
@@ -259,7 +259,7 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             IntervalSeconds = templateData.Effect.IntervalSeconds,
             SourceType = templateData.Effect.SourceType
         };
-        
+
         // 创建修改器
         foreach (var modifierTemplate in templateData.Modifiers)
         {
@@ -273,17 +273,17 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             };
             newEffect.AttributeModifiers.Add(newModifier);
         }
-        
+
         context.AttributeEffects.Add(newEffect);
-        
+
         // 增加模板使用次数
         await IncrementUsageCountAsync(templateId);
-        
+
         await context.SaveChangesAsync();
-        
+
         return newEffect;
     }
-    
+
     /// <summary>
     /// 获取模板数据
     /// </summary>
@@ -292,14 +292,14 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
         var template = await GetTemplateByIdAsync(templateId);
         if (template == null)
             return null;
-        
+
         try
         {
             var effect = JsonSerializer.Deserialize<AttributeEffect>(template.EffectData, _jsonOptions);
-            var modifiers = string.IsNullOrEmpty(template.ModifiersData) 
+            var modifiers = string.IsNullOrEmpty(template.ModifiersData)
                 ? new List<AttributeModifier>()
                 : JsonSerializer.Deserialize<List<AttributeModifier>>(template.ModifiersData, _jsonOptions);
-            
+
             return new GameplayEffectTemplateData
             {
                 Effect = effect ?? new AttributeEffect(),
@@ -312,17 +312,17 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             return null;
         }
     }
-    
+
     /// <summary>
     /// 增加模板使用次数
     /// </summary>
     public async Task<int> IncrementUsageCountAsync(string templateId)
     {
         using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-        
+
         var template = await context.GameplayEffectTemplates
             .FirstOrDefaultAsync(t => t.Id == templateId);
-            
+
         if (template != null)
         {
             template.UsageCount++;
@@ -330,10 +330,10 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             await context.SaveChangesAsync();
             return template.UsageCount;
         }
-        
+
         return 0;
     }
-    
+
     /// <summary>
     /// 获取所有模板分类
     /// </summary>
@@ -346,36 +346,36 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
             .OrderBy(c => c)
             .ToListAsync();
     }
-    
+
     /// <summary>
     /// 验证模板数据的有效性
     /// </summary>
     public async Task<(bool IsValid, List<string> Errors)> ValidateTemplateDataAsync(GameplayEffectTemplateData templateData)
     {
         var errors = new List<string>();
-        
+
         // 验证效果数据
         if (string.IsNullOrWhiteSpace(templateData.Effect.Name))
             errors.Add("效果名称不能为空");
-        
+
         if (string.IsNullOrWhiteSpace(templateData.Effect.EffectType))
             errors.Add("效果类型不能为空");
-        
+
         if (string.IsNullOrWhiteSpace(templateData.Effect.StackingType))
             errors.Add("堆叠类型不能为空");
-        
+
         // 验证修改器数据
         for (int i = 0; i < templateData.Modifiers.Count; i++)
         {
             var modifier = templateData.Modifiers[i];
-            
+
             if (string.IsNullOrWhiteSpace(modifier.AttributeType))
                 errors.Add($"修改器 {i + 1} 的属性类型不能为空");
-            
+
             if (string.IsNullOrWhiteSpace(modifier.OperationType))
                 errors.Add($"修改器 {i + 1} 的操作类型不能为空");
         }
-        
+
         return await Task.FromResult((errors.Count == 0, errors));
     }
 }

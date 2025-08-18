@@ -23,7 +23,7 @@ public partial class MainWindow : Window
 
         if (closeButton != null)
             closeButton.Click += (sender, e) => Close();
-        
+
         var titleBar = this.FindControl<Border>("TitleBar");
         if (titleBar != null)
         {
@@ -35,11 +35,11 @@ public partial class MainWindow : Window
                 }
             };
         }
-        
+
         // 设置分割器拖拽事件
         SetupSplitterEvents();
     }
-    
+
     private void SetupSplitterEvents()
     {
         // 这里可以添加分割器拖拽事件处理逻辑

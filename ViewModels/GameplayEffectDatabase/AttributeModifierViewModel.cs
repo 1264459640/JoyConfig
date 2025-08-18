@@ -28,7 +28,7 @@ public partial class AttributeModifierViewModel : ObservableObject
         _parentViewModel = parentViewModel;
         _dialogService = dialogService;
         _dbContextFactory = dbContextFactory;
-        
+
         // 复制修改器数据
         Id = modifier.Id;
         EffectId = modifier.EffectId;
@@ -36,7 +36,7 @@ public partial class AttributeModifierViewModel : ObservableObject
         OperationType = modifier.OperationType;
         Value = modifier.Value;
         ExecutionOrder = modifier.ExecutionOrder ?? 0;
-        
+
         // 初始化完成，允许自动保存
         _isInitializing = false;
     }
@@ -79,10 +79,10 @@ public partial class AttributeModifierViewModel : ObservableObject
         try
         {
             var customType = await _dialogService.ShowInputAsync(
-                "添加自定义操作类型", 
-                "请输入新的操作类型名称:", 
+                "添加自定义操作类型",
+                "请输入新的操作类型名称:",
                 "");
-                
+
             if (!string.IsNullOrWhiteSpace(customType))
             {
                 OperationTypes.AddCustomType(customType);
@@ -112,7 +112,7 @@ public partial class AttributeModifierViewModel : ObservableObject
             _ = SaveAsync(); // 自动保存
         }
     }
-    
+
     partial void OnOperationTypeChanged(string value)
     {
         if (!_isInitializing)
@@ -121,7 +121,7 @@ public partial class AttributeModifierViewModel : ObservableObject
             _ = SaveAsync(); // 自动保存
         }
     }
-    
+
     partial void OnValueChanged(double value)
     {
         if (!_isInitializing)
@@ -130,7 +130,7 @@ public partial class AttributeModifierViewModel : ObservableObject
             _ = SaveAsync(); // 自动保存
         }
     }
-    
+
     partial void OnExecutionOrderChanged(int value)
     {
         if (!_isInitializing)
@@ -205,7 +205,7 @@ public partial class AttributeModifierViewModel : ObservableObject
         try
         {
             var confirmed = await _dialogService.ShowConfirmationAsync(
-                "确认删除", 
+                "确认删除",
                 $"确定要删除属性修改器 '{AttributeType}' 吗？\n\n此操作无法撤销。");
             if (!confirmed) return;
 
@@ -223,7 +223,7 @@ public partial class AttributeModifierViewModel : ObservableObject
             }
 
             await _dialogService.ShowInfoAsync("删除成功", "修改器已成功删除。");
-            
+
             // 刷新父视图模型的修改器列表
             await _parentViewModel.LoadAttributeModifiersAsync();
         }

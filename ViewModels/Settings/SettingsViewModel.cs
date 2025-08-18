@@ -61,18 +61,18 @@ namespace JoyConfig.ViewModels.Settings
             Title = "Settings";
             _dialogService = dialogService;
             _mainViewModel = mainViewModel;
-            
+
             // Define the path for the settings file
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var appFolderPath = Path.Combine(appDataPath, "JoyConfig");
             Directory.CreateDirectory(appFolderPath); // Ensure the directory exists
             _settingsFilePath = Path.Combine(appFolderPath, "settings.json");
-            
+
             _appSettings = new AppSettings();
             _theme = string.Empty;
-            
+
             LoadSettings();
-            
+
             _selectedLanguage = LocalizationManager.CurrentCulture;
 
             _settingPages = new ObservableCollection<SettingsPage>
@@ -162,12 +162,12 @@ namespace JoyConfig.ViewModels.Settings
 
             _appSettings.AttributeDatabasePath = AttributeDatabasePath;
             SaveSettings();
-            
+
             // Reload the main view
             _mainViewModel.LoadAttributeDatabase();
             await _dialogService.ShowMessageBoxAsync("Success", "Attribute database loaded successfully.");
         }
-        
+
         partial void OnSelectedLanguageChanged(CultureInfo value)
         {
             if (value != null)

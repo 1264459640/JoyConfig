@@ -30,7 +30,8 @@ public class DialogService : IDialogService
             SizeToContent = SizeToContent.WidthAndHeight
         };
 
-        viewModel.CloseCommand = new RelayCommand<object?>(_ => {
+        viewModel.CloseCommand = new RelayCommand<object?>(_ =>
+        {
             dialog.Close();
         });
 
@@ -62,7 +63,8 @@ public class DialogService : IDialogService
 
         // The VM's Ok/Cancel commands will set its DialogResult property.
         // We just need a way to close the window.
-        viewModel.CloseCommand = new RelayCommand<object?>(_ => {
+        viewModel.CloseCommand = new RelayCommand<object?>(_ =>
+        {
             dialog.Close();
         });
 
@@ -137,12 +139,12 @@ public class DialogService : IDialogService
             await dialog.ShowDialog(desktop.MainWindow);
         }
     }
-    
+
     public async Task ShowErrorAsync(string title, string message)
     {
         await ShowMessageBoxAsync(title, message);
     }
-    
+
     // 便捷方法实现
     public async Task<bool> ShowConfirmationAsync(string title, string message)
     {
@@ -153,7 +155,7 @@ public class DialogService : IDialogService
         };
         return await ShowConfirmationDialogAsync(viewModel);
     }
-    
+
     public async Task<string?> ShowInputAsync(string title, string prompt, string defaultValue = "")
     {
         var viewModel = new InputDialogViewModel
@@ -164,12 +166,12 @@ public class DialogService : IDialogService
         };
         return await ShowInputDialogAsync(viewModel);
     }
-    
+
     public async Task ShowInfoAsync(string title, string message)
     {
         await ShowMessageBoxAsync(title, message);
     }
-    
+
     public async Task ShowWarningAsync(string title, string message)
     {
         await ShowMessageBoxAsync(title, message);

@@ -31,7 +31,7 @@ public partial class AttributeViewModel : EditorViewModelBase
 
     [ObservableProperty]
     private string? _errorMessage;
-    
+
     [ObservableProperty]
     private string _idSuffix;
 
@@ -42,8 +42,8 @@ public partial class AttributeViewModel : EditorViewModelBase
     public ObservableCollection<AttributeSet> ReferencingAttributeSets { get; } = new();
 
     public AttributeViewModel(
-        Attribute attribute, 
-        AttributeDatabaseViewModel parentViewModel, 
+        Attribute attribute,
+        AttributeDatabaseViewModel parentViewModel,
         IDialogService dialogService,
         IAttributeRepository attributeRepository)
     {
@@ -74,7 +74,7 @@ public partial class AttributeViewModel : EditorViewModelBase
     {
         var existing = await _attributeRepository.GetAttributeByIdAsync(Attribute.Id);
         IsNew = existing == null;
-        
+
         if (!IsNew)
         {
             await LoadReferencingAttributeSetsAsync();
@@ -95,17 +95,17 @@ public partial class AttributeViewModel : EditorViewModelBase
                 ErrorMessage = "ID suffix cannot be empty.";
                 return;
             }
-            
+
             var existing = await _attributeRepository.GetAttributeByIdAsync(newFullId);
             if (existing != null)
             {
                 ErrorMessage = $"ID '{newFullId}' already exists.";
                 return;
             }
-            
+
             Attribute.Id = newFullId;
             await _attributeRepository.CreateAttributeAsync(Attribute);
-            
+
             Title = $"Attribute: {Attribute.Id}";
             IsNew = false;
             _originalId = newFullId; // Set original ID to the new ID after creation
@@ -176,7 +176,7 @@ public partial class AttributeViewModel : EditorViewModelBase
     private async Task LoadReferencingAttributeSetsAsync()
     {
         var sets = await _attributeRepository.GetReferencingAttributeSetsAsync(Attribute.Id);
-        
+
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
             ReferencingAttributeSets.Clear();
@@ -193,7 +193,7 @@ public partial class AttributeViewModel : EditorViewModelBase
     private async Task DeleteAsync()
     {
         ErrorMessage = null;
-        
+
         var dialogViewModel = new ConfirmationDialogViewModel
         {
             Title = "Confirm Deletion"

@@ -13,15 +13,15 @@ public partial class TagEditor : UserControl
 {
     private readonly List<string> _tags = new();
     private readonly string[] _presetTags = TagTypes.All;
-    
+
     public event EventHandler<string>? TagsChanged;
-    
+
     /// <summary>
     /// TagsText依赖属性
     /// </summary>
     public static readonly StyledProperty<string> TagsTextProperty =
         AvaloniaProperty.Register<TagEditor, string>(nameof(TagsText), string.Empty);
-    
+
     /// <summary>
     /// 获取或设置标签文本
     /// </summary>
@@ -30,27 +30,27 @@ public partial class TagEditor : UserControl
         get => GetValue(TagsTextProperty);
         set => SetValue(TagsTextProperty, value);
     }
-    
+
     public TagEditor()
     {
         InitializeComponent();
         InitializePresetTags();
     }
-    
+
     /// <summary>
     /// 属性变更处理
     /// </summary>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        
+
         if (change.Property == TagsTextProperty)
         {
             var newValue = change.NewValue?.ToString() ?? string.Empty;
             UpdateTagsFromText(newValue);
         }
     }
-    
+
     /// <summary>
     /// 从文本更新标签列表
     /// </summary>
@@ -67,7 +67,7 @@ public partial class TagEditor : UserControl
         }
         RefreshTagsDisplay();
     }
-    
+
     /// <summary>
     /// 初始化预设标签
     /// </summary>
@@ -75,7 +75,7 @@ public partial class TagEditor : UserControl
     {
         var presetsPanel = this.FindControl<WrapPanel>("PresetsWrapPanel");
         if (presetsPanel == null) return;
-        
+
         foreach (var presetTag in _presetTags)
         {
             var button = new Button
@@ -85,12 +85,12 @@ public partial class TagEditor : UserControl
                 Margin = new Avalonia.Thickness(4, 2),
                 Padding = new Avalonia.Thickness(8, 4)
             };
-            
+
             button.Click += (s, e) => AddTag(presetTag);
             presetsPanel.Children.Add(button);
         }
     }
-    
+
     /// <summary>
     /// 刷新标签显示
     /// </summary>
@@ -98,19 +98,19 @@ public partial class TagEditor : UserControl
     {
         var tagsPanel = this.FindControl<WrapPanel>("TagsWrapPanel");
         var emptyStateText = this.FindControl<TextBlock>("EmptyStateText");
-        
+
         if (tagsPanel == null || emptyStateText == null) return;
-        
+
         tagsPanel.Children.Clear();
-        
+
         if (_tags.Count == 0)
         {
             emptyStateText.IsVisible = true;
             return;
         }
-        
+
         emptyStateText.IsVisible = false;
-        
+
         foreach (var tag in _tags)
         {
             var tagBorder = new Border
@@ -136,15 +136,15 @@ public partial class TagEditor : UserControl
                     }
                 }
             };
-            
+
             // 为删除按钮添加点击事件
             var removeButton = (Button)((StackPanel)tagBorder.Child).Children[1];
             removeButton.Click += (s, e) => RemoveTag(tag);
-            
+
             tagsPanel.Children.Add(tagBorder);
         }
     }
-    
+
     /// <summary>
     /// 添加标签
     /// </summary>
@@ -152,14 +152,14 @@ public partial class TagEditor : UserControl
     {
         if (string.IsNullOrWhiteSpace(tag) || _tags.Contains(tag))
             return;
-            
+
         _tags.Add(tag.Trim());
         var newTagsText = string.Join(",", _tags);
         SetValue(TagsTextProperty, newTagsText);
         RefreshTagsDisplay();
         TagsChanged?.Invoke(this, newTagsText);
     }
-    
+
     /// <summary>
     /// 删除标签
     /// </summary>
@@ -173,7 +173,7 @@ public partial class TagEditor : UserControl
             TagsChanged?.Invoke(this, newTagsText);
         }
     }
-    
+
     /// <summary>
     /// 添加标签按钮点击事件
     /// </summary>
@@ -186,7 +186,7 @@ public partial class TagEditor : UserControl
             textBox.Text = string.Empty;
         }
     }
-    
+
     /// <summary>
     /// 新标签文本框按键事件
     /// </summary>
@@ -197,7 +197,7 @@ public partial class TagEditor : UserControl
             OnAddTagClick(sender, e);
         }
     }
-    
+
     /// <summary>
     /// 显示/隐藏预设标签面板
     /// </summary>

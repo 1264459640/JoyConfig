@@ -44,7 +44,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         _templateService = templateService;
         _viewModelFactory = viewModelFactory;
         _originalId = effect.Id;
-        
+
         // 复制效果数据
         Id = effect.Id;
         Name = effect.Name;
@@ -60,15 +60,15 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         IsPeriodic = effect.IsPeriodic ?? false;
         IntervalSeconds = effect.IntervalSeconds ?? 1.0;
         SourceType = effect.SourceType ?? string.Empty;
-        
+
         Title = $"效果: {effect.Name}";
-        
+
         // 加载属性修改器
         _ = LoadAttributeModifiersAsync();
-        
+
         // 确保属性类型服务已初始化
         _ = _attributeTypeService.InitializeAsync();
-        
+
         System.Diagnostics.Debug.WriteLine($"[DEBUG] GameplayEffectViewModel构造完成，Id: {Id}, OriginalId: {_originalId}");
     }
 
@@ -282,7 +282,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
             ErrorMessage = null;
 
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-            
+
             // 检查ID是否已被其他效果使用
             if (Id != _originalId)
             {
@@ -293,18 +293,18 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
                     await _dialogService.ShowErrorAsync("保存失败", "该ID已被其他效果使用，请使用不同的ID。");
                     return;
                 }
-                
+
                 // 引导式级联更新：检查关联的AttributeModifiers
                 var affectedModifiers = await context.AttributeModifiers
                     .Where(m => m.EffectId == _originalId)
                     .ToListAsync();
-                    
+
                 if (affectedModifiers.Count > 0)
                 {
                     var message = $"更改效果ID将影响 {affectedModifiers.Count} 个关联的属性修改器。\n\n" +
                                  "系统将删除旧效果并创建新效果，同时重新创建所有修改器。\n\n" +
                                  "确定要继续吗？";
-                    
+
                     var confirmed = await _dialogService.ShowConfirmationAsync("确认ID更改", message);
                     if (!confirmed) return;
                 }
@@ -358,10 +358,10 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
 
                 // 删除旧实体（级联删除会自动处理关联的修改器）
                 context.AttributeEffects.Remove(oldEffect);
-                
+
                 // 添加新实体
                 context.AttributeEffects.Add(newEffect);
-                
+
                 await context.SaveChangesAsync();
             }
             else
@@ -395,16 +395,16 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
             }
 
             // 更新原始ID
-            var originalIdField = typeof(GameplayEffectViewModel).GetField("_originalId", 
+            var originalIdField = typeof(GameplayEffectViewModel).GetField("_originalId",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             originalIdField?.SetValue(this, Id);
 
             HasUnsavedChanges = false;
             await _dialogService.ShowInfoAsync("保存成功", "效果已成功保存。");
-            
+
             // 刷新父视图模型的数据
             await _parentViewModel.LoadDataAsync();
-            
+
             // 重新加载属性修改器以反映ID变更
             await LoadAttributeModifiersAsync();
         }
@@ -428,7 +428,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         try
         {
             var modifierCount = AttributeModifiers.Count;
-            var message = modifierCount > 0 
+            var message = modifierCount > 0
                 ? $"确定要删除效果 '{Name}' 吗？\n\n此操作将同时删除 {modifierCount} 个关联的属性修改器，且无法撤销。"
                 : $"确定要删除效果 '{Name}' 吗？\n\n此操作无法撤销。";
 
@@ -450,10 +450,10 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
             }
 
             await _dialogService.ShowInfoAsync("删除成功", "效果已成功删除。");
-            
+
             // 刷新父视图模型的数据
             await _parentViewModel.LoadDataAsync();
-            
+
             // 关闭当前编辑器
             _parentViewModel.MainViewModel.CurrentEditor = new WelcomeViewModel();
         }
@@ -480,7 +480,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
             var excludedIds = new List<string>(); // 暂时不排除任何属性
             var selectAttributeVm = _viewModelFactory.CreateSelectAttributeViewModel(excludedIds);
             var selectedAttribute = await _dialogService.ShowSelectAttributeDialogAsync(selectAttributeVm);
-            
+
             if (selectedAttribute == null)
                 return;
 
@@ -517,7 +517,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         try
         {
             var confirmed = await _dialogService.ShowConfirmationAsync(
-                "确认删除", 
+                "确认删除",
                 $"确定要删除属性修改器 '{modifier.AttributeType}' 吗？\n\n此操作无法撤销。");
             if (!confirmed) return;
 
@@ -561,10 +561,10 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
 
             // 保存到数据库
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-            
+
             var modifierToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == modifier.Id);
             var previousToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == previousModifier.Id);
-            
+
             if (modifierToUpdate != null && previousToUpdate != null)
             {
                 modifierToUpdate.ExecutionOrder = modifier.ExecutionOrder;
@@ -602,10 +602,10 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
 
             // 保存到数据库
             using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
-            
+
             var modifierToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == modifier.Id);
             var nextToUpdate = await context.AttributeModifiers.FirstOrDefaultAsync(m => m.Id == nextModifier.Id);
-            
+
             if (modifierToUpdate != null && nextToUpdate != null)
             {
                 modifierToUpdate.ExecutionOrder = modifier.ExecutionOrder;
@@ -621,7 +621,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
             await _dialogService.ShowErrorAsync("移动失败", ex.Message);
         }
     }
-    
+
     /// <summary>
     /// 另存为模板
     /// </summary>
@@ -632,32 +632,32 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         {
             // 显示创建模板对话框
             var templateName = await _dialogService.ShowInputAsync(
-                "另存为模板", 
-                "请输入模板名称:", 
+                "另存为模板",
+                "请输入模板名称:",
                 Name);
-                
+
             if (string.IsNullOrWhiteSpace(templateName))
                 return;
-            
+
             var description = await _dialogService.ShowInputAsync(
-                "另存为模板", 
-                "请输入模板描述（可选）:", 
+                "另存为模板",
+                "请输入模板描述（可选）:",
                 Description ?? "");
-            
+
             var category = await _dialogService.ShowInputAsync(
-                "另存为模板", 
-                "请输入模板分类:", 
+                "另存为模板",
+                "请输入模板分类:",
                 "Default");
-            
+
             IsLoading = true;
-            
+
             var template = await _templateService.CreateTemplateFromEffectAsync(
-                _originalId, 
-                templateName, 
-                description, 
+                _originalId,
+                templateName,
+                description,
                 category ?? "Default",
                 Environment.UserName);
-            
+
             await _dialogService.ShowInfoAsync("保存成功", $"模板 '{templateName}' 已成功创建。");
         }
         catch (Exception ex)
@@ -679,7 +679,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         try
         {
             System.Diagnostics.Debug.WriteLine($"[DEBUG] 开始添加测试修改器，当前集合数量: {AttributeModifiers.Count}");
-            
+
             // 创建测试用的AttributeModifier对象
             var testModifier1 = new AttributeModifier
             {
@@ -722,15 +722,15 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
                 var viewModel3 = new AttributeModifierViewModel(testModifier3, this, _dialogService, _dbContextFactory);
 
                 AttributeModifiers.Clear(); // 先清空
-                 AttributeModifiers.Add(viewModel1);
-                 AttributeModifiers.Add(viewModel2);
-                 AttributeModifiers.Add(viewModel3);
-                 
-                 System.Diagnostics.Debug.WriteLine($"[DEBUG] 测试修改器添加完成，当前集合数量: {AttributeModifiers.Count}");
-                 
-                 // 强制触发UI更新
-                 OnPropertyChanged(nameof(AttributeModifiers));
-                 System.Diagnostics.Debug.WriteLine($"[DEBUG] 已触发PropertyChanged通知");
+                AttributeModifiers.Add(viewModel1);
+                AttributeModifiers.Add(viewModel2);
+                AttributeModifiers.Add(viewModel3);
+
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] 测试修改器添加完成，当前集合数量: {AttributeModifiers.Count}");
+
+                // 强制触发UI更新
+                OnPropertyChanged(nameof(AttributeModifiers));
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] 已触发PropertyChanged通知");
             });
         }
         catch (Exception ex)

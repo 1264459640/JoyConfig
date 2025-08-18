@@ -31,7 +31,7 @@ public class UpdateService : IUpdateService
         try
         {
             var hasUpdate = await IsUpdateAvailableAsync();
-            
+
             if (hasUpdate)
             {
                 Debug.WriteLine("Update available");
@@ -53,21 +53,21 @@ public class UpdateService : IUpdateService
         {
             var url = $"https://api.github.com/repos/{_repoOwner}/{_repoName}/releases/latest";
             var response = await _httpClient.GetStringAsync(url);
-            
+
             using var document = JsonDocument.Parse(response);
             var root = document.RootElement;
-            
+
             if (root.TryGetProperty("tag_name", out var tagElement))
             {
                 var latestVersion = tagElement.GetString();
                 var currentVersion = GetCurrentVersion();
-                
+
                 Debug.WriteLine($"Current version: {currentVersion}, Latest version: {latestVersion}");
-                
+
                 // Simple version comparison (you might want to use a more sophisticated method)
                 return !string.Equals(currentVersion, latestVersion, StringComparison.OrdinalIgnoreCase);
             }
-            
+
             return false;
         }
         catch (Exception ex)
@@ -83,15 +83,15 @@ public class UpdateService : IUpdateService
         {
             // For now, just open the releases page in the browser
             var url = $"https://github.com/{_repoOwner}/{_repoName}/releases/latest";
-            
+
             var psi = new ProcessStartInfo
             {
                 FileName = url,
                 UseShellExecute = true
             };
-            
+
             Process.Start(psi);
-            
+
             await Task.Delay(1000); // Give time for browser to open
         }
         catch (Exception ex)
@@ -100,14 +100,14 @@ public class UpdateService : IUpdateService
             throw;
         }
     }
-    
+
     private string GetCurrentVersion()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var version = assembly.GetName().Version;
         return version?.ToString() ?? "1.0.0";
     }
-    
+
     public void Dispose()
     {
         _httpClient?.Dispose();

@@ -59,9 +59,9 @@ public partial class TemplateEditorViewModel : EditorViewModelBase
         _attributeRepository = attributeRepository;
         _viewModelFactory = viewModelFactory;
         _mainViewModel = mainViewModel;
-        
+
         Title = "模板编辑器";
-        
+
         _ = InitializeAsync();
     }
 
@@ -88,7 +88,7 @@ public partial class TemplateEditorViewModel : EditorViewModelBase
             AvailableAttributes = new ObservableCollection<JoyConfig.Models.AttributeDatabase.Attribute>(allAttributes);
 
             // 转换模板属性为ViewModel
-            var attributeViewModels = Template.Attributes.Select(attr => 
+            var attributeViewModels = Template.Attributes.Select(attr =>
                 new AttributeValueTemplateViewModel(attr, this)).ToList();
             Attributes = new ObservableCollection<AttributeValueTemplateViewModel>(attributeViewModels);
 
@@ -114,10 +114,10 @@ public partial class TemplateEditorViewModel : EditorViewModelBase
             Template.Attributes = Attributes.Select(vm => vm.ToAttributeValueTemplate()).ToList();
 
             await _templateService.UpdateTemplateAsync(Template);
-            
+
             IsModified = false;
             ErrorMessage = null;
-            
+
             await _dialogService.ShowMessageBoxAsync("成功", "模板保存成功！");
             _mainViewModel.UpdateStatus("模板保存成功");
         }
