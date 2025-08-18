@@ -3,7 +3,6 @@ Example/
 bin/
 obj/
 publish/
-Templates/
 LocalDoc/
 Releases/
 # Ignore common build and IDE files
