@@ -23,6 +23,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
     private readonly IDialogService _dialogService;
     private readonly IDbContextFactory _dbContextFactory;
     private readonly IAttributeTypeService _attributeTypeService;
+    private readonly IGameplayEffectTemplateService _templateService;
     private readonly IViewModelFactory _viewModelFactory;
     private readonly string _originalId;
     private bool _hasUnsavedChanges;
@@ -33,12 +34,14 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         IDialogService dialogService,
         IDbContextFactory dbContextFactory,
         IAttributeTypeService attributeTypeService,
+        IGameplayEffectTemplateService templateService,
         IViewModelFactory viewModelFactory)
     {
         _parentViewModel = parentViewModel;
         _dialogService = dialogService;
         _dbContextFactory = dbContextFactory;
         _attributeTypeService = attributeTypeService;
+        _templateService = templateService;
         _viewModelFactory = viewModelFactory;
         _originalId = effect.Id;
         
@@ -616,6 +619,55 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         catch (Exception ex)
         {
             await _dialogService.ShowErrorAsync("移动失败", ex.Message);
+        }
+    }
+    
+    /// <summary>
+    /// 另存为模板
+    /// </summary>
+    [RelayCommand]
+    public async Task SaveAsTemplateAsync()
+    {
+        try
+        {
+            // 显示创建模板对话框
+            var templateName = await _dialogService.ShowInputAsync(
+                "另存为模板", 
+                "请输入模板名称:", 
+                Name);
+                
+            if (string.IsNullOrWhiteSpace(templateName))
+                return;
+            
+            var description = await _dialogService.ShowInputAsync(
+                "另存为模板", 
+                "请输入模板描述（可选）:", 
+                Description ?? "");
+            
+            var category = await _dialogService.ShowInputAsync(
+                "另存为模板", 
+                "请输入模板分类:", 
+                "Default");
+            
+            IsLoading = true;
+            
+            var template = await _templateService.CreateTemplateFromEffectAsync(
+                _originalId, 
+                templateName, 
+                description, 
+                category ?? "Default",
+                Environment.UserName);
+            
+            await _dialogService.ShowInfoAsync("保存成功", $"模板 '{templateName}' 已成功创建。");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"保存模板失败: {ex.Message}";
+            await _dialogService.ShowErrorAsync("保存失败", ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 

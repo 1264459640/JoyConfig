@@ -19,4 +19,5 @@ public interface IDialogService
     Task<bool> ShowConfirmationAsync(string title, string message);
     Task<string?> ShowInputAsync(string title, string prompt, string defaultValue = "");
     Task ShowInfoAsync(string title, string message);
+    Task ShowWarningAsync(string title, string message);
 }

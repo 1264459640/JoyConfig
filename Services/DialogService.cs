@@ -169,4 +169,9 @@ public class DialogService : IDialogService
     {
         await ShowMessageBoxAsync(title, message);
     }
+    
+    public async Task ShowWarningAsync(string title, string message)
+    {
+        await ShowMessageBoxAsync(title, message);
+    }
 }

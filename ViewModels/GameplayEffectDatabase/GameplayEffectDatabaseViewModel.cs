@@ -49,10 +49,19 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
 
     [ObservableProperty]
     private AttributeEffect? _selectedAttributeEffect;
+    
+    [ObservableProperty]
+    private ObservableCollection<AttributeEffect> _selectedAttributeEffects = new();
+    
+    [ObservableProperty]
+    private bool _isMultiSelectMode;
 
     [ObservableProperty]
     private string? _errorMessage;
 
+    [ObservableProperty]
+    private bool _isLoading;
+    
     [ObservableProperty]
     private string _searchText = string.Empty;
 
@@ -61,9 +70,6 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
 
     [ObservableProperty]
     private string _selectedSourceTypeFilter = "All";
-
-    [ObservableProperty]
-    private bool _isLoading;
 
     /// <summary>
     /// 效果类型筛选选项
@@ -103,6 +109,202 @@ public partial class GameplayEffectDatabaseViewModel : EditorViewModelBase
         ApplyFilters();
     }
 
+    /// <summary>
+    /// 切换多选模式
+    /// </summary>
+    [RelayCommand]
+    public void ToggleMultiSelectMode()
+    {
+        IsMultiSelectMode = !IsMultiSelectMode;
+        if (!IsMultiSelectMode)
+        {
+            SelectedAttributeEffects.Clear();
+        }
+    }
+    
+    /// <summary>
+    /// 选择/取消选择效果
+    /// </summary>
+    [RelayCommand]
+    public void ToggleEffectSelection(AttributeEffect effect)
+    {
+        if (!IsMultiSelectMode) return;
+        
+        if (SelectedAttributeEffects.Contains(effect))
+        {
+            SelectedAttributeEffects.Remove(effect);
+        }
+        else
+        {
+            SelectedAttributeEffects.Add(effect);
+        }
+    }
+    
+    /// <summary>
+    /// 全选/取消全选
+    /// </summary>
+    [RelayCommand]
+    public void ToggleSelectAll()
+    {
+        if (!IsMultiSelectMode) return;
+        
+        if (SelectedAttributeEffects.Count == FilteredAttributeEffects.Count)
+        {
+            // 全部已选中，取消全选
+            SelectedAttributeEffects.Clear();
+        }
+        else
+        {
+            // 全选
+            SelectedAttributeEffects.Clear();
+            foreach (var effect in FilteredAttributeEffects)
+            {
+                SelectedAttributeEffects.Add(effect);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 批量删除选中的效果
+    /// </summary>
+    [RelayCommand]
+    public async Task BatchDeleteEffectsAsync()
+    {
+        if (!IsMultiSelectMode || SelectedAttributeEffects.Count == 0)
+        {
+            await _dialogService.ShowWarningAsync("提示", "请先选择要删除的效果。");
+            return;
+        }
+        
+        var effectCount = SelectedAttributeEffects.Count;
+        var effectNames = string.Join(", ", SelectedAttributeEffects.Take(3).Select(e => e.Name));
+        if (effectCount > 3)
+        {
+            effectNames += $" 等 {effectCount} 个效果";
+        }
+        
+        var confirmed = await _dialogService.ShowConfirmationAsync(
+            "确认批量删除", 
+            $"确定要删除以下效果吗？\n\n{effectNames}\n\n此操作将同时删除这些效果的所有关联修改器，且不可撤销。");
+            
+        if (!confirmed) return;
+        
+        try
+        {
+            IsLoading = true;
+            _mainViewModel.UpdateStatus($"正在删除 {effectCount} 个游戏效果...", true);
+            
+            using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
+            
+            var effectIds = SelectedAttributeEffects.Select(e => e.Id).ToList();
+            var effectsToDelete = await context.AttributeEffects
+                .Where(e => effectIds.Contains(e.Id))
+                .ToListAsync();
+            
+            context.AttributeEffects.RemoveRange(effectsToDelete);
+            await context.SaveChangesAsync();
+            
+            // 更新UI
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                foreach (var effect in SelectedAttributeEffects.ToList())
+                {
+                    AttributeEffects.Remove(effect);
+                }
+                SelectedAttributeEffects.Clear();
+                ApplyFilters();
+            });
+            
+            _mainViewModel.UpdateStatus($"已成功删除 {effectCount} 个游戏效果");
+            await _dialogService.ShowInfoAsync("删除成功", $"已成功删除 {effectCount} 个游戏效果及其关联的修改器。");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"批量删除失败: {ex.Message}";
+            _mainViewModel.UpdateStatus("批量删除游戏效果失败");
+            await _dialogService.ShowErrorAsync("删除失败", ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
+    /// <summary>
+    /// 批量修改效果的公共字段
+    /// </summary>
+    [RelayCommand]
+    public async Task BatchEditEffectsAsync()
+    {
+        if (!IsMultiSelectMode || SelectedAttributeEffects.Count == 0)
+        {
+            await _dialogService.ShowWarningAsync("提示", "请先选择要编辑的效果。");
+            return;
+        }
+        
+        // 显示批量编辑对话框
+        var sourceType = await _dialogService.ShowInputAsync(
+            "批量编辑", 
+            "请输入新的来源类型（留空表示不修改）:", 
+            "");
+            
+        var tags = await _dialogService.ShowInputAsync(
+            "批量编辑", 
+            "请输入新的标签（留空表示不修改）:", 
+            "");
+        
+        if (string.IsNullOrWhiteSpace(sourceType) && string.IsNullOrWhiteSpace(tags))
+        {
+            await _dialogService.ShowInfoAsync("提示", "没有要修改的字段。");
+            return;
+        }
+        
+        try
+        {
+            IsLoading = true;
+            var effectCount = SelectedAttributeEffects.Count;
+            _mainViewModel.UpdateStatus($"正在批量编辑 {effectCount} 个游戏效果...", true);
+            
+            using var context = _dbContextFactory.CreateGameplayEffectDatabaseContext();
+            
+            var effectIds = SelectedAttributeEffects.Select(e => e.Id).ToList();
+            var effectsToUpdate = await context.AttributeEffects
+                .Where(e => effectIds.Contains(e.Id))
+                .ToListAsync();
+            
+            foreach (var effect in effectsToUpdate)
+            {
+                if (!string.IsNullOrWhiteSpace(sourceType))
+                {
+                    effect.SourceType = sourceType;
+                }
+                
+                if (!string.IsNullOrWhiteSpace(tags))
+                {
+                    effect.Tags = tags;
+                }
+            }
+            
+            await context.SaveChangesAsync();
+            
+            // 重新加载数据
+            await LoadDataAsync();
+            
+            _mainViewModel.UpdateStatus($"已成功批量编辑 {effectCount} 个游戏效果");
+            await _dialogService.ShowInfoAsync("编辑成功", $"已成功批量编辑 {effectCount} 个游戏效果。");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"批量编辑失败: {ex.Message}";
+            _mainViewModel.UpdateStatus("批量编辑游戏效果失败");
+            await _dialogService.ShowErrorAsync("编辑失败", ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
     /// <summary>
     /// 应用筛选条件
     /// </summary>

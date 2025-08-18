@@ -61,6 +61,16 @@ public class AutofacModule : Module
         builder.RegisterType<AttributeTypeService>()
                .As<IAttributeTypeService>()
                .SingleInstance();
+        
+        // 游戏效果模板服务 - 单例
+        builder.RegisterType<GameplayEffectTemplateService>()
+               .As<IGameplayEffectTemplateService>()
+               .SingleInstance();
+        
+        // 数据验证服务 - 单例
+        builder.RegisterType<ValidationService>()
+               .As<IValidationService>()
+               .SingleInstance();
     }
     
     /// <summary>

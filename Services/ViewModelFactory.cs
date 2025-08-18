@@ -23,6 +23,7 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IUpdateService _updateService;
     private readonly IDbContextFactory _dbContextFactory;
     private readonly IAttributeTypeService _attributeTypeService;
+    private readonly IGameplayEffectTemplateService _templateService;
     
     public ViewModelFactory(
         IDialogService dialogService,
@@ -30,7 +31,8 @@ public class ViewModelFactory : IViewModelFactory
         IAttributeSetRepository attributeSetRepository,
         IUpdateService updateService,
         IDbContextFactory dbContextFactory,
-        IAttributeTypeService attributeTypeService)
+        IAttributeTypeService attributeTypeService,
+        IGameplayEffectTemplateService templateService)
     {
         _dialogService = dialogService;
         _attributeRepository = attributeRepository;
@@ -38,6 +40,7 @@ public class ViewModelFactory : IViewModelFactory
         _updateService = updateService;
         _dbContextFactory = dbContextFactory;
         _attributeTypeService = attributeTypeService;
+        _templateService = templateService;
     }
     
     public MainViewModel CreateMainViewModel()
@@ -57,7 +60,12 @@ public class ViewModelFactory : IViewModelFactory
     
     public GameplayEffectViewModel CreateGameplayEffectViewModel(AttributeEffect effect, GameplayEffectDatabaseViewModel parentViewModel)
     {
-        return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, _attributeTypeService, this);
+        return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, _attributeTypeService, _templateService, this);
+    }
+    
+    public GameplayEffectTemplateViewModel CreateGameplayEffectTemplateViewModel()
+    {
+        return new GameplayEffectTemplateViewModel(_templateService, _dialogService);
     }
     
     public AttributeViewModel CreateAttributeViewModel(Attribute attribute, AttributeDatabaseViewModel parentViewModel)
