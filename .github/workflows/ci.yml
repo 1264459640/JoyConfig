@@ -72,4 +72,4 @@ jobs:
         
     - name: Check formatting
       run: |
-        dotnet format --verify-no-changes --verbosity diagnostic
+        dotnet format JoyConfig.sln --verify-no-changes --verbosity diagnostic
