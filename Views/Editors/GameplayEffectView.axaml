@@ -3,12 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:JoyConfig.ViewModels.GameplayEffectDatabase"
-             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
              xmlns:models="using:JoyConfig.Models.GameplayEffectDatabase"
+             xmlns:converters="using:JoyConfig.ViewModels.Converters"
+             xmlns:vmConverters="using:JoyConfig.ViewModels.Converters"
              xmlns:components="using:JoyConfig.Views.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="JoyConfig.Views.Editors.GameplayEffectView"
-             x:DataType="vm:GameplayEffectViewModel">
+             x:DataType="vm:GameplayEffectViewModel"
+             x:Name="EffectView">
 
     <UserControl.Resources>
         <vmConverters:StringEqualsConverter x:Key="StringEqualsConverter"/>
@@ -230,13 +232,13 @@
                                      SelectedItem="{Binding SelectedAttributeModifier}"
                                      Background="#1e1e1e"
                                      MinHeight="150"
-                                     Height="200">
+                                     Height="300">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border Background="#333333" 
                                                 BorderBrush="#3c3c3c" 
                                                 BorderThickness="0,0,0,1" 
-                                                Padding="0">
+                                                Padding="8">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="150"/>
@@ -245,14 +247,64 @@
                                                     <ColumnDefinition Width="100"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding AttributeType}" Padding="8,4" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding OperationType}" Padding="8,4" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="2" Text="{Binding Value}" Padding="8,4" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="3" Text="{Binding ExecutionOrder}" Padding="8,4" VerticalAlignment="Center"/>
-                                                <Border Grid.Column="4" Padding="8,4">
+                                                
+                                                <!-- 属性类型下拉框 -->
+                                                <ComboBox Grid.Column="0" 
+                                                          ItemsSource="{Binding #EffectView.DataContext.AvailableAttributeTypes}"
+                                                          SelectedItem="{Binding AttributeType}"
+                                                          Margin="2"
+                                                          FontSize="12"/>
+                                                
+                                                <!-- 操作类型下拉框 -->
+                                                <ComboBox Grid.Column="1" 
+                                                          ItemsSource="{x:Static models:OperationTypes.All}"
+                                                          SelectedItem="{Binding OperationType}"
+                                                          Margin="2"
+                                                          FontSize="12">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding}" 
+                                                                        Foreground="{Binding Converter={x:Static converters:OperationTypeColorConverter.Instance}}"/>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                                
+                                                <!-- 数值输入框 -->
+                                                <NumericUpDown Grid.Column="2" 
+                                                               Value="{Binding Value}"
+                                                               Increment="1"
+                                                               FormatString="F2"
+                                                               Margin="2"
+                                                               FontSize="12"/>
+                                                
+                                                <!-- 执行顺序输入框 -->
+                                                <NumericUpDown Grid.Column="3" 
+                                                               Value="{Binding ExecutionOrder}"
+                                                               Increment="1"
+                                                               Minimum="0"
+                                                               Margin="2"
+                                                               FontSize="12"/>
+                                                
+                                                <!-- 操作按钮 -->
+                                                <Border Grid.Column="4" Padding="4">
                                                     <StackPanel Orientation="Horizontal" Spacing="4">
-                                                        <Button Content="编辑" Classes="small" Padding="6,2"/>
-                                                        <Button Content="删除" Classes="small danger" Padding="6,2"/>
+                                                        <Button Content="↑" 
+                                                                Command="{Binding $parent[UserControl].DataContext.MoveModifierUpCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Classes="small" 
+                                                                Padding="6,2"
+                                                                ToolTip.Tip="上移"/>
+                                                        <Button Content="↓" 
+                                                                Command="{Binding $parent[UserControl].DataContext.MoveModifierDownCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Classes="small" 
+                                                                Padding="6,2"
+                                                                ToolTip.Tip="下移"/>
+                                                        <Button Content="删除" 
+                                                                Command="{Binding $parent[UserControl].DataContext.DeleteAttributeModifierCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Classes="small danger" 
+                                                                Padding="6,2"/>
                                                     </StackPanel>
                                                 </Border>
                                             </Grid>

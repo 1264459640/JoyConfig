@@ -10,6 +10,7 @@ using JoyConfig.Services;
 using JoyConfig.ViewModels.Base;
 using Microsoft.EntityFrameworkCore;
 using Avalonia.Threading;
+using System.Collections.Specialized;
 
 namespace JoyConfig.ViewModels.GameplayEffectDatabase;
 
@@ -21,6 +22,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
     private readonly GameplayEffectDatabaseViewModel _parentViewModel;
     private readonly IDialogService _dialogService;
     private readonly IDbContextFactory _dbContextFactory;
+    private readonly IAttributeTypeService _attributeTypeService;
     private readonly IViewModelFactory _viewModelFactory;
     private readonly string _originalId;
     private bool _hasUnsavedChanges;
@@ -30,11 +32,13 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         GameplayEffectDatabaseViewModel parentViewModel,
         IDialogService dialogService,
         IDbContextFactory dbContextFactory,
+        IAttributeTypeService attributeTypeService,
         IViewModelFactory viewModelFactory)
     {
         _parentViewModel = parentViewModel;
         _dialogService = dialogService;
         _dbContextFactory = dbContextFactory;
+        _attributeTypeService = attributeTypeService;
         _viewModelFactory = viewModelFactory;
         _originalId = effect.Id;
         
@@ -56,12 +60,11 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         
         Title = $"效果: {effect.Name}";
         
-        // 加载属性修改器和可用属性类型
+        // 加载属性修改器
         _ = LoadAttributeModifiersAsync();
-        _ = LoadAvailableAttributeTypesAsync();
         
-        // 临时测试：延迟添加测试数据
-        _ = Task.Delay(1000).ContinueWith(_ => AddTestModifiers());
+        // 确保属性类型服务已初始化
+        _ = _attributeTypeService.InitializeAsync();
         
         System.Diagnostics.Debug.WriteLine($"[DEBUG] GameplayEffectViewModel构造完成，Id: {Id}, OriginalId: {_originalId}");
     }
@@ -141,10 +144,14 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
     public string[] TagTypeOptions => TagTypes.All;
 
     /// <summary>
-    /// 可用的属性类型列表（从AttributeDatabase加载）
+    /// 操作类型选项
     /// </summary>
-    [ObservableProperty]
-    private ObservableCollection<string> _availableAttributeTypes = new();
+    public string[] OperationTypeOptions => OperationTypes.All;
+
+    /// <summary>
+    /// 可用的属性类型列表（来自全局服务）
+    /// </summary>
+    public ReadOnlyObservableCollection<string> AvailableAttributeTypes => _attributeTypeService.AvailableAttributeTypes;
 
     /// <summary>
     /// 是否显示持续时间字段
@@ -245,55 +252,7 @@ public partial class GameplayEffectViewModel : EditorViewModelBase
         }
     }
 
-    /// <summary>
-    /// 加载可用的属性类型
-    /// </summary>
-    private async Task LoadAvailableAttributeTypesAsync()
-    {
-        try
-        {
-            // 从AttributeDatabase加载真实的属性类型
-            using var attributeContext = _dbContextFactory.CreateAttributeDbContext();
-            var attributes = await attributeContext.Attributes
-                .Select(a => a.Id)
-                .ToListAsync();
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                AvailableAttributeTypes.Clear();
-                foreach (var attributeId in attributes)
-                {
-                    AvailableAttributeTypes.Add(attributeId);
-                }
-                
-                // 如果没有找到属性，添加一些默认值作为后备
-                if (AvailableAttributeTypes.Count == 0)
-                {
-                    var defaultTypes = new[] { "Health", "Mana", "Strength", "Agility", "Intelligence" };
-                    foreach (var type in defaultTypes)
-                    {
-                        AvailableAttributeTypes.Add(type);
-                    }
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"加载属性类型失败: {ex.Message}";
-            await _dialogService.ShowErrorAsync("加载失败", ex.Message);
-            
-            // 发生错误时使用默认属性类型
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                AvailableAttributeTypes.Clear();
-                var defaultTypes = new[] { "Health", "Mana", "Strength", "Agility", "Intelligence" };
-                foreach (var type in defaultTypes)
-                {
-                    AvailableAttributeTypes.Add(type);
-                }
-            });
-        }
-    }
 
     /// <summary>
     /// 保存效果

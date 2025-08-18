@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.LogicalTree;
 using JoyConfig.ViewModels.GameplayEffectDatabase;
 using JoyConfig.Views.Components;
 
@@ -37,8 +38,11 @@ public partial class GameplayEffectView : UserControl
                 listBox.ItemsSource = vm.AttributeModifiers;
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] 直接设置ListBox ItemsSource，集合数量: {vm.AttributeModifiers.Count}");
             }
+            
+            // 属性类型绑定问题已通过XAML修复
         }
     }
+
     
     private void OnTagsChanged(object? sender, string tagsText)
     {

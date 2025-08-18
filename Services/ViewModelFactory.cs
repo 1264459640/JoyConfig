@@ -22,19 +22,22 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IAttributeSetRepository _attributeSetRepository;
     private readonly IUpdateService _updateService;
     private readonly IDbContextFactory _dbContextFactory;
+    private readonly IAttributeTypeService _attributeTypeService;
     
     public ViewModelFactory(
         IDialogService dialogService,
         IAttributeRepository attributeRepository,
         IAttributeSetRepository attributeSetRepository,
         IUpdateService updateService,
-        IDbContextFactory dbContextFactory)
+        IDbContextFactory dbContextFactory,
+        IAttributeTypeService attributeTypeService)
     {
         _dialogService = dialogService;
         _attributeRepository = attributeRepository;
         _attributeSetRepository = attributeSetRepository;
         _updateService = updateService;
         _dbContextFactory = dbContextFactory;
+        _attributeTypeService = attributeTypeService;
     }
     
     public MainViewModel CreateMainViewModel()
@@ -54,7 +57,7 @@ public class ViewModelFactory : IViewModelFactory
     
     public GameplayEffectViewModel CreateGameplayEffectViewModel(AttributeEffect effect, GameplayEffectDatabaseViewModel parentViewModel)
     {
-        return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, this);
+        return new GameplayEffectViewModel(effect, parentViewModel, _dialogService, _dbContextFactory, _attributeTypeService, this);
     }
     
     public AttributeViewModel CreateAttributeViewModel(Attribute attribute, AttributeDatabaseViewModel parentViewModel)

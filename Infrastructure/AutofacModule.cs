@@ -56,6 +56,11 @@ public class AutofacModule : Module
         builder.RegisterType<UpdateService>()
                .As<IUpdateService>()
                .SingleInstance();
+        
+        // 属性类型服务 - 单例
+        builder.RegisterType<AttributeTypeService>()
+               .As<IAttributeTypeService>()
+               .SingleInstance();
     }
     
     /// <summary>

@@ -48,6 +48,10 @@ public partial class App : Application
             // 设置默认数据库路径
             var dbContextFactory = _container.Resolve<IDbContextFactory>();
             dbContextFactory.SetAttributeDatabasePath("Example/AttributeDatabase.db");
+            
+            // 初始化属性类型服务
+            var attributeTypeService = _container.Resolve<IAttributeTypeService>();
+            _ = attributeTypeService.InitializeAsync();
 
             // 创建主ViewModel
             var viewModelFactory = _container.Resolve<IViewModelFactory>();

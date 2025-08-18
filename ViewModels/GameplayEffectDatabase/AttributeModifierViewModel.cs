@@ -17,6 +17,7 @@ public partial class AttributeModifierViewModel : ObservableObject
     private readonly IDialogService _dialogService;
     private readonly IDbContextFactory _dbContextFactory;
     private bool _hasUnsavedChanges;
+    private bool _isInitializing = true;
 
     public AttributeModifierViewModel(
         AttributeModifier modifier,
@@ -35,6 +36,9 @@ public partial class AttributeModifierViewModel : ObservableObject
         OperationType = modifier.OperationType;
         Value = modifier.Value;
         ExecutionOrder = modifier.ExecutionOrder ?? 0;
+        
+        // 初始化完成，允许自动保存
+        _isInitializing = false;
     }
 
     [ObservableProperty]
@@ -100,10 +104,41 @@ public partial class AttributeModifierViewModel : ObservableObject
         set => SetProperty(ref _hasUnsavedChanges, value);
     }
 
-    partial void OnAttributeTypeChanged(string value) => HasUnsavedChanges = true;
-    partial void OnOperationTypeChanged(string value) => HasUnsavedChanges = true;
-    partial void OnValueChanged(double value) => HasUnsavedChanges = true;
-    partial void OnExecutionOrderChanged(int value) => HasUnsavedChanges = true;
+    partial void OnAttributeTypeChanged(string value)
+    {
+        if (!_isInitializing)
+        {
+            HasUnsavedChanges = true;
+            _ = SaveAsync(); // 自动保存
+        }
+    }
+    
+    partial void OnOperationTypeChanged(string value)
+    {
+        if (!_isInitializing)
+        {
+            HasUnsavedChanges = true;
+            _ = SaveAsync(); // 自动保存
+        }
+    }
+    
+    partial void OnValueChanged(double value)
+    {
+        if (!_isInitializing)
+        {
+            HasUnsavedChanges = true;
+            _ = SaveAsync(); // 自动保存
+        }
+    }
+    
+    partial void OnExecutionOrderChanged(int value)
+    {
+        if (!_isInitializing)
+        {
+            HasUnsavedChanges = true;
+            _ = SaveAsync(); // 自动保存
+        }
+    }
 
     /// <summary>
     /// 保存修改器
@@ -148,7 +183,7 @@ public partial class AttributeModifierViewModel : ObservableObject
             await context.SaveChangesAsync();
 
             HasUnsavedChanges = false;
-            await _dialogService.ShowInfoAsync("保存成功", "修改器已成功保存。");
+            // 自动保存时不显示成功提示
         }
         catch (Exception ex)
         {
