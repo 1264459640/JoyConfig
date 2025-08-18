@@ -376,6 +376,6 @@ public class GameplayEffectTemplateService : IGameplayEffectTemplateService
                 errors.Add($"修改器 {i + 1} 的操作类型不能为空");
         }
         
-        return (errors.Count == 0, errors);
+        return await Task.FromResult((errors.Count == 0, errors));
     }
 }

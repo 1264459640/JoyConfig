@@ -22,8 +22,13 @@ public partial class GameplayEffectDatabaseContext : DbContext
     public virtual DbSet<GameplayEffectTemplate> GameplayEffectTemplates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Data Source=Example/GameplayEffectDatabase.db");
+    {
+        // 连接字符串将通过依赖注入配置，此处不需要硬编码
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite("Data Source=Example/GameplayEffectDatabase.db");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

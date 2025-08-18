@@ -18,8 +18,8 @@ namespace JoyConfig.ViewModels.Settings
 {
     public class SettingsPage
     {
-        public string Key { get; set; }
-        public string DisplayName { get; set; }
+        public required string Key { get; set; }
+        public required string DisplayName { get; set; }
     }
 
     public partial class SettingsViewModel : EditorViewModelBase

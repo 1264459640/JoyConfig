@@ -247,7 +247,7 @@ public partial class AttributeSetViewModel : EditorViewModelBase
         try
         {
             // 只保存名称和描述，ID通过专门的ChangeId命令修改
-            await _attributeSetRepository.SaveAttributeSetChangesAsync(AttributeSet.Id, AttributeSet.Name, AttributeSet.Description);
+            await _attributeSetRepository.SaveAttributeSetChangesAsync(AttributeSet.Id, AttributeSet.Name, AttributeSet.Description ?? string.Empty);
             await _dialogService.ShowMessageBoxAsync("Success", "Successfully saved changes.");
 
             // Refresh parent view

@@ -310,7 +310,7 @@ public partial class AttributeDatabaseViewModel : EditorViewModelBase
                 await _attributeSetRepository.DeleteAttributeSetAsync(attributeSet.Id);
 
                 // If the deleted set was being edited, close the editor
-                if (MainViewModel.CurrentEditor is AttributeSetViewModel vm && vm.AttributeSet.Id == attributeSet.Id)
+                if (MainViewModel.CurrentEditor is AttributeSetViewModel vm && vm.AttributeSet?.Id == attributeSet.Id)
                 {
                     MainViewModel.CurrentEditor = null;
                 }

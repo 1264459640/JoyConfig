@@ -193,7 +193,7 @@ public class ValidationService : IValidationService
         }
         
         // 验证执行顺序
-        var executionOrderValidation = ValidateNumericRange((double)modifier.ExecutionOrder, "执行顺序", -100, 100);
+        var executionOrderValidation = ValidateNumericRange((double)(modifier.ExecutionOrder ?? 0), "执行顺序", -100, 100);
         result.Merge(executionOrderValidation);
         
         return result;

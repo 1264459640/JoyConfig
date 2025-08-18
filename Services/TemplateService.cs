@@ -154,7 +154,7 @@ public class TemplateService : ITemplateService
         
         try
         {
-            File.Delete(filePath);
+            await Task.Run(() => File.Delete(filePath));
             Console.WriteLine($"[TemplateService] 模板文件已删除：{filePath}");
             return true;
         }
